@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+{% endblock %}
+{% block title %}
+    Test
+{% endblock %}
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">Vvod</div>
+        </div>
+        <div class="row">
+            <div class="col"><br></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <input class="form-control form-control-lg" type="text" placeholder="login" id="inputLogin">
+            </div>
+            <div class="col">
+                kolichestvo sotrudnikvo na uchastke
+                <span id="peopleCounter">0</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"><br></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Login</th>
+                        <th scope="col">DateTime</th>
+                        <th scope="col">Company</th>
+                        <th scope="col">fine</th>
+                        <th scope="col">Comment</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                1-2-3-4-5 pagination
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+
+    <script>
+
+        $("#inputLogin").keyup(function(event) {
+
+            if(event.keyCode==13) {
+                alert("Message!!!");
+                $("#peopleCounter").html('2');
+            }
+
+        });
+    </script>
+{% endblock %}
