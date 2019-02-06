@@ -19,6 +19,7 @@ class AttendanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Attendance::class);
     }
 
+
     // /**
     //  * @return Attendance[] Returns an array of Attendance objects
     //  */
