@@ -9,7 +9,9 @@
 
     <div class="container">
         <div class="row">
-            <div class="col">Vvod</div>
+            <div class="col-4"></div>
+            <div class="col-4 text-lg-center text"><h2>Ввод данных</h2></div>
+            <div class="col-4"></div>
         </div>
         <div class="row">
             <div class="col"><br></div>
@@ -18,9 +20,9 @@
             <div class="col-8">
                 <input class="form-control form-control-lg" type="text" placeholder="login" id="inputLogin">
             </div>
-            <div class="col-2"><a href="#" class="btn btn-sm btn-info">Начать смену</a></div>
+            <div class="col-2"><a href="#" class="btn btn-sm btn-info" id="resetPeopleCounterButton">Начать смену</a></div>
             <div class="col-2">
-                <span id="peopleCounter">0</span>
+                <span id="peopleCounter">{% if peopleCounter %}{{ peopleCounter }} {% else %} 0_ {% endif %}</span>
             </div>
         </div>
         <div class="row">
@@ -49,7 +51,30 @@
                             <td> {{ attendance.login }}</td>
                             <td> {{ attendance.dateTime|date('Y-m-d H:i:s') }}</td>
                             <td>{{ attendance.direction }}</td>
-                            <td> company-{{ attendance.id }}</td>
+                            <td>
+                                {% if attendance.login|trim|slice(2,1)=='-' %}
+                                    {% set companyPerfix = attendance.login|trim|slice(0,2) %}
+
+                                    {% if companyPerfix =='gs' %}
+                                        GSR
+                                    {% endif %}
+                                    {% if companyPerfix =='sm' %}
+                                        SMG
+                                    {% endif %}
+                                    {% if companyPerfix =='rc' %}
+                                        Realnaya Cifra
+                                    {% endif %}
+                                    {% if companyPerfix =='lt' %}
+                                        Leader Team
+                                    {% endif %}
+                                    {% if companyPerfix =='pm' %}
+                                        Premer-M
+                                    {% endif %}
+                                    {% if companyPerfix =='vp' %}
+                                        Vremya Pervih
+                                    {% endif %}
+
+                                {% endif %}
                             <td>
                                 {{ attendance.fine }}
                             </td>
@@ -103,6 +128,7 @@
             $("#inputLogin").keyup(function (event) {
                 if (event.keyCode == 13) {
                     window.location.href = '/attendance/new/' + $('#inputLogin').val();
+
                 }
             });
 
@@ -114,6 +140,10 @@
                 $comment = $('#comment_' + $commentId).val();
                 // alert($comment);
                 $(this).attr('href', $(this).attr('href') + $comment);
+            });
+
+            $("#resetPeopleCounterButton").click(function () {
+                window.location.href ="{{ path('resetPeopleCounter') }}";
             });
         });
     </script>
