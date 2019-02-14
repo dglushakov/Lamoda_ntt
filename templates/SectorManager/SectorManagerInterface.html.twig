@@ -124,9 +124,18 @@
 
     <script>
         $(document).ready(function () {
-            $("#inputLogin").keyup(function (event) {
-                if (event.keyCode == 13) {
+            // $("#inputLogin").keyup(function (event) {
+            //     if (event.keyCode == 13) {
+            //         window.location.href = '/attendance/new/' + $('#inputLogin').val();
+            //
+            //     }
+            // });
+            $("#inputLogin").focus();
+            $("#inputLogin").keydown(function (event) {
+                if (event.keyCode == 9) {
+                    $(this).prop('disabled', true);
                     window.location.href = '/attendance/new/' + $('#inputLogin').val();
+                    event.preventDefault();
 
                 }
             });
