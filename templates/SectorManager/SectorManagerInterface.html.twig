@@ -132,12 +132,23 @@
             // });
             $("#inputLogin").focus();
             $("#inputLogin").keydown(function (event) {
+
                 if (event.keyCode == 9) {
                     $(this).prop('disabled', true);
                     window.location.href = '/attendance/new/' + $('#inputLogin').val();
                     event.preventDefault();
-
                 }
+
+
+            });
+
+            $("#inputLogin").keyup(function (event) {
+                if(/[а-я]/i.test($(this).val())) {
+
+                    $(this).val('');
+                    alert('Ввод кириллицы запрещен!');
+                }
+
             });
 
             $(".editComment").click(function () {
