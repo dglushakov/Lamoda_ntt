@@ -16,29 +16,26 @@ class SectorManager extends AbstractController
      */
     public function WorkInterface()
     {
-
         // $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        //$attendances = $attendanceRepo->findAll();
-        $attendances = $attendanceRepo->findBy([], ['dateTime' => 'DESC'], 1010);
+//        $attendances = $attendanceRepo->findAll();
+        $attendances = $attendanceRepo->findAllLastDay();
 
 
-        $file_counter = "counter.txt";
-        if (file_exists($file_counter) && filesize($file_counter) != 0) {
-            $fp = fopen($file_counter, "r");
-            $peopleCounter = fread($fp, filesize($file_counter));
-            fclose($fp);
-        } else {
-            $fp = fopen($file_counter, "w");
-            fwrite($fp, "0");
-            fclose($fp);
-            $peopleCounter = 0;
-        }
+
+        $attendancesOutput=[];
+        $lastLogin ="";
+        foreach ($attendances as $attendance ) {
+            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
+                $attendancesOutput[]=$attendance;
+            }
+           $lastLogin=$attendance->getLogin();
+       }
 
 
         $result = $this->render('SectorManager/SectorManagerInterface.html.twig', [
-            'attendances' => $attendances,
-            'peopleCounter' => $peopleCounter,
+            'attendances' => $attendancesOutput,
+            'peopleCounter' => count($attendancesOutput),
         ]);
         return $result;
     }
@@ -58,22 +55,14 @@ class SectorManager extends AbstractController
         $attendance->setLogin($login);
         $attendance->setDateTime(new \DateTime());
 
-        $file_counter = "counter.txt";
-        $fp = fopen($file_counter, "r+");
-        $counter = (int)fread($fp, filesize($file_counter));
-        fclose($fp);
 
         if ($lastLoginAttendance && $lastLoginAttendance->getDirection() != 'exit') {
             $attendance->setDirection('exit');
-            $counter--;
+
         } else {
             $attendance->setDirection('entrance');
-            $counter++;
-        }
-        $fp = fopen($file_counter, "w");
-        fwrite($fp, $counter);
-        fclose($fp);
 
+        }
 
         $entityManager->persist($attendance);
         $entityManager->flush();

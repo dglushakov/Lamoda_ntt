@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Attendance;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
 /**
  * @method Attendance|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,37 @@ class AttendanceRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Attendance::class);
+    }
+
+    public function findAllLastDay()
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->setParameter('dateTime', new \DateTime('-48 hours'))
+            ->addOrderBy('a.login','ASC')
+           ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+
+
+
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->getQuery()
+//            ->getResult()
+//        ;
+
+//        return $this->createQueryBuilder('a')
+//            ->select('a.id')
+//            ->addSelect('a.dateTime')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->getQuery()
+//            ->getResult()
+//            ;
+
     }
 
 
