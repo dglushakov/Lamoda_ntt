@@ -1,0 +1,35 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Участок</th>
+        <th scope="col">Персонал</th>
+        <th scope="col">GSR</th>
+        <th scope="col">LT</th>
+        <th scope="col">SMG</th>
+        <th scope="col">Lamoda</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {{ dump(attendances) }}
+    {% for sector in sectors %}
+        <tr>
+            <td>{{ sector }}</td>
+            <td>1</td>
+            <td>3</td>
+            <td>44</td>
+            <td>11</td>
+            <td>12</td>
+        </tr>
+    {% endfor %}
+
+    <tr>
+        <td>Всего:</td>
+        <td>1</td>
+        <td>2</td>
+        <td>100</td>
+        <td>30</td>
+        <td>60</td>
+    </tr>
+    </tbody>
+</table>

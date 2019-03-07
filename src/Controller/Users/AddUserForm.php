@@ -38,20 +38,12 @@ class AddUserForm extends AbstractType
             )
             ->add('sector', ChoiceType::class,[
                 'required'=>true,
-                'choices'=>[
-                    'shift_1'=>'shift_1',
-                    'shift_2'=>'shift_2',
-                ],
+                'choices'=>USER::SECTORS_LIST,
                 'label'=> 'Участок',
             ])
             ->add('shift', ChoiceType::class,[
                 'required'=>true,
-                'choices'=>[
-                    '1'=>1,
-                    '2'=>2,
-                    '3'=>3,
-                    '4'=>4,
-                ],
+                'choices'=>USER::NUMBERS_OF_SHIFTS,
                 'label'=> 'Смена',
             ] )
         ;

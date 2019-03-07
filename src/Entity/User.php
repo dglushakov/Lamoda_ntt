@@ -16,6 +16,21 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    const NUMBERS_OF_SHIFTS=
+        [
+        1=>1,2=>2,3=>3,4=>4
+    ];
+    const SECTORS_LIST=[
+        'sector1'=>'sector1',
+        'sector2'=>'sector2',
+        'sector3'=>'sector3',
+        'sector4'=>'sector4',
+        'sector5'=>'sector5',
+        'sector6'=>'sector6',
+        'sector7'=>'sector7',
+        'sector8'=>'sector8',
+
+    ];
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

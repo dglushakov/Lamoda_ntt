@@ -20,7 +20,7 @@ class SectorManager extends AbstractController
         // $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 //        $attendances = $attendanceRepo->findAll();
-        $attendances = $attendanceRepo->findAllLastDay();
+        $attendances = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
 
 
 
@@ -52,7 +52,7 @@ class SectorManager extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
         $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        $lastLoginAttendance = $attendanceRepo->findOneBy(['login' => $login], ['dateTime' => 'DESC']);
+        $lastLoginAttendance = $attendanceRepo->findOneBy(['login' => $login, 'sector'=>$this->getUser()->getSector(),], ['dateTime' => 'DESC']);
 
         $login = trim($login);
         $attendance = new Attendance();

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 
 use App\Controller\Users\AddUserForm;
+use App\Entity\Attendance;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends AbstractController
 {
-
 
     /**
      * @Route("/userlist", name="userlist")
@@ -42,11 +42,15 @@ class AdminController extends AbstractController
         }
 
 
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
 
 
         return $this->render('Admin/Userlist.html.twig',[
             'users'=>$users,
             'addUserFOrm'=>$AddUserForm->createView(),
+            'sectors'=>USER::SECTORS_LIST,
+            'attendances'=>$attendances,
         ]);
     }
 
