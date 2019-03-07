@@ -52,7 +52,17 @@ class AttendanceRepository extends ServiceEntityRepository
     }
 
 
-    // /**
+    public function findActiveUsersOnSector()
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->setParameter('dateTime', new \DateTime('-48 hours'))
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+        // /**
     //  * @return Attendance[] Returns an array of Attendance objects
     //  */
     /*

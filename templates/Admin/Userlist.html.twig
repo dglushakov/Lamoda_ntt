@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+{% endblock %}
+{% block title %}
+    Test
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="h1 text-center">Пользователи</div>
+            </div>
+            <div class="col">
+                {% include 'inc/logout.html.twig' %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Пользователь</th>
+                        <th scope="col">Роль</th>
+                        <th scope="col">Участок</th>
+                        <th scope="col">Смена</th>
+                        <th scope="col">Ред.</th>
+                        <th scope="col">Удалить</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                {{ user.username }}
+                            </td>
+                            <td>
+                                {{ user.roles|join(',') }}
+                            </td>
+                            <td>
+                                {{ user.sector }}
+                            </td>
+                            <td>
+                                {{ user.shift }}
+                            </td>
+                            <td>
+                                <a class="btn btn-info btn-sm">+</a>
+                            </td>
+                            <td>
+                                <a href="#" data-href="/userlist/delete/{{ user.id }}" data-toggle="modal"
+                                   data-target="#confirm-delete" class="btn btn-danger delete-type">Удалить</a>
+                                {% include 'inc/deleteConfirmationModal.html.twig' %}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+
+                    <tr>
+                        <td colspan="8">
+                            {% form_theme addUserFOrm 'bootstrap_4_horizontal_layout.html.twig' %}
+                            {{ form_start(addUserFOrm) }}
+                            {{ form_widget(addUserFOrm) }}
+                            <input type="submit" class="btn btn-success" value="Add new"/>
+                            {{ form_end(addUserFOrm) }}
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#confirm-delete').on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+    </script>
+{% endblock %}

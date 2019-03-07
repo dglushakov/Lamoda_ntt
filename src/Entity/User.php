@@ -3,10 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ *     fields={"username"},
+ *     errorPath="username",
+ *     message="User already exists"
+ * )
  */
 class User implements UserInterface
 {
@@ -32,6 +38,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Sector;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $shift;
 
     public function getId(): ?int
     {
@@ -104,5 +120,29 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getSector(): ?string
+    {
+        return $this->Sector;
+    }
+
+    public function setSector(?string $Sector): self
+    {
+        $this->Sector = $Sector;
+
+        return $this;
+    }
+
+    public function getShift(): ?int
+    {
+        return $this->shift;
+    }
+
+    public function setShift(?int $shift): self
+    {
+        $this->shift = $shift;
+
+        return $this;
     }
 }

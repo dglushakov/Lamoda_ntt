@@ -51,6 +51,11 @@ class Attendance
      */
     private $fine_approved;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $shift;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +141,18 @@ class Attendance
     public function setFineApproved(?bool $fine_approved): self
     {
         $this->fine_approved = $fine_approved;
+
+        return $this;
+    }
+
+    public function getShift(): ?int
+    {
+        return $this->shift;
+    }
+
+    public function setShift(?int $shift): self
+    {
+        $this->shift = $shift;
 
         return $this;
     }

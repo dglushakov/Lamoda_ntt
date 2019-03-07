@@ -16,6 +16,7 @@ class SectorManager extends AbstractController
      */
     public function WorkInterface()
     {
+        $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
         // $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 //        $attendances = $attendanceRepo->findAll();
@@ -41,11 +42,14 @@ class SectorManager extends AbstractController
     }
 
 
+
+
     /**
      * @Route("/attendance/new/{login}", name ="AddAttendance")
      */
     public function AddAttendance($login)
     {
+        $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
         $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $lastLoginAttendance = $attendanceRepo->findOneBy(['login' => $login], ['dateTime' => 'DESC']);
@@ -54,7 +58,8 @@ class SectorManager extends AbstractController
         $attendance = new Attendance();
         $attendance->setLogin($login);
         $attendance->setDateTime(new \DateTime());
-
+        $attendance->setShift($this->getUser()->getShift());
+        $attendance->setSector($this->getUser()->getSector());
 
         if ($lastLoginAttendance && $lastLoginAttendance->getDirection() != 'exit') {
             $attendance->setDirection('exit');
@@ -78,6 +83,7 @@ class SectorManager extends AbstractController
      */
     public function EditAttendanceComment($attendanceId, $text = null)
     {
+        $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
         $entityManager = $this->getDoctrine()->getManager();
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
@@ -95,6 +101,7 @@ class SectorManager extends AbstractController
      */
     public function EditFine($attendanceId, $action = null)
     {
+        $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
         $entityManager = $this->getDoctrine()->getManager();
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
@@ -108,15 +115,15 @@ class SectorManager extends AbstractController
     }
 
 
-    /**
-     * @Route("/resetPeopleCounter", name ="resetPeopleCounter")
-     */
-    public function resetPeopleCounter()
-    {
-
-        $file_counter = "counter.txt";
-        $fp = fopen($file_counter, "w");
-        fwrite($fp, "0");
-        return $this->redirectToRoute('SMworkInterface');
-    }
+//    /**
+//     * @Route("/resetPeopleCounter", name ="resetPeopleCounter")
+//     */
+//    public function resetPeopleCounter()
+//    {
+//        $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
+//        $file_counter = "counter.txt";
+//        $fp = fopen($file_counter, "w");
+//        fwrite($fp, "0");
+//        return $this->redirectToRoute('SMworkInterface');
+//    }
 }

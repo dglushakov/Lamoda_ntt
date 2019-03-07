@@ -29,10 +29,12 @@ class UserFixtures extends Fixture
                 $user,
                 'new_pass'.$i
             ));
+
+            $user->setRoles(['ROLE_'.$i]);
+            $user->setShift(rand(1,4));
+            $user->setSector('sector'.$i);
             $manager->persist($user);
         }
-
-
 
         $manager->flush();
     }

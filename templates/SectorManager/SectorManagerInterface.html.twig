@@ -8,10 +8,15 @@
 {% block body %}
 
     <div class="container">
+        <br/>
         <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4 text-lg-center text"><h2>Ввод данных</h2></div>
-            <div class="col-4"></div>
+            <div class="col-3"><h2>Ввод данных</h2></div>
+            <div class="col-3 text-lg-center text">Сотрудник: {{ app.user.username}}</div>
+            <div class="col-2 text-lg-center text">Участок: {{ app.user.sector}}</div>
+            <div class="col-1 text-lg-center text">Смена: {{ app.user.shift}}</div>
+            <div class="col-2">
+                {% include 'inc/logout.html.twig' %}
+            </div>
         </div>
         <div class="row">
             <div class="col"><br></div>
@@ -21,8 +26,11 @@
                 <input class="form-control form-control-lg" type="text" placeholder="login" id="inputLogin">
             </div>
             {#<div class="col-2"><a href="#" class="btn btn-sm btn-info" id="resetPeopleCounterButton">Начать смену</a></div>#}
+            <div class="col-2 text-center">
+                <span id="peopleCounter">Людей на участке: </span>
+            </div>
             <div class="col-2">
-                <span id="peopleCounter">{% if peopleCounter %}Людей на участке: <h1>{{ peopleCounter }}</h1> <h1>{% else %} 0 {% endif %}</h1></span>
+                <h1>{% if peopleCounter %}{{ peopleCounter }}</h1> <h1>{% else %} 0 {% endif %}</h1>
             </div>
         </div>
         <div class="row">
@@ -163,9 +171,6 @@
                 $(this).attr('href', $(this).attr('href') + $comment);
             });
 
-            $("#resetPeopleCounterButton").click(function () {
-                window.location.href ="{{ path('resetPeopleCounter') }}";
-            });
         });
     </script>
 {% endblock %}
