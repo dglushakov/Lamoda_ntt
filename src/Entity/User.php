@@ -29,6 +29,15 @@ class User implements UserInterface
         'sector6'=>'sector6',
         'sector7'=>'sector7',
         'sector8'=>'sector8',
+        'sector9'=>'sector9',
+    ];
+    const PROVIDERS_LIST=[
+        'gs'=>'GSR',
+        'sm'=>'SMG',
+        'rc'=>'Realnaya Cifra',
+        'lt'=>'Leader Team',
+        'pm'=>'Premer-M',
+        'vp'=>'Vremya Pervih',
 
     ];
     /**

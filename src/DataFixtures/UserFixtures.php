@@ -24,17 +24,44 @@ class UserFixtures extends Fixture
 
         for ($i=1;$i<10;$i++) {
             $user = new User();
-            $user->setUsername('username'.$i);
+            $user->setUsername('user'.$i);
             $user->setPassword($this->passwordEncoder->encodePassword(
                 $user,
-                'new_pass'.$i
+                $i
             ));
 
-            $user->setRoles(['ROLE_'.$i]);
+            $user->setRoles(['ROLE_SECTOR_MANAGER']);
             $user->setShift(rand(1,4));
             $user->setSector('sector'.$i);
             $manager->persist($user);
         }
+
+        $goduser=new User();
+        $goduser->setUsername('god');
+        $goduser->setPassword($this->passwordEncoder->encodePassword(
+            $goduser,
+            'god'
+        ));
+        $goduser->setRoles(['ROLE_ADMIN', 'ROLE_PEEP', 'ROLE_SECTOR_MANAGER']);
+        $manager->persist($goduser);
+
+        $adminuser=new User();
+        $adminuser->setUsername('admin');
+        $adminuser->setPassword($this->passwordEncoder->encodePassword(
+            $adminuser,
+            'admin'
+        ));
+        $adminuser->setRoles(['ROLE_ADMIN']);
+        $manager->persist($adminuser);
+
+        $peepuser=new User();
+        $peepuser->setUsername('peep');
+        $peepuser->setPassword($this->passwordEncoder->encodePassword(
+            $peepuser,
+            'peep'
+        ));
+        $peepuser->setRoles(['ROLE_PEEP']);
+        $manager->persist($peepuser);
 
         $manager->flush();
     }

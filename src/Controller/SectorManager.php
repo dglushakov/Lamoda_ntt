@@ -22,8 +22,6 @@ class SectorManager extends AbstractController
 //        $attendances = $attendanceRepo->findAll();
         $attendances = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
 
-
-
         $attendancesOutput=[];
         $lastLogin ="";
         foreach ($attendances as $attendance ) {
