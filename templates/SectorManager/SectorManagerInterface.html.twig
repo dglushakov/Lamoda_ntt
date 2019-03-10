@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-{% endblock %}
+
 {% block title %}
     Test
 {% endblock %}
@@ -9,15 +7,7 @@
 
     <div class="container">
         <br/>
-        <div class="row">
-            <div class="col-3"><h2>Ввод данных</h2></div>
-            <div class="col-3 text-lg-center text">Сотрудник: {{ app.user.username}}</div>
-            <div class="col-2 text-lg-center text">Участок: {{ app.user.sector}}</div>
-            <div class="col-1 text-lg-center text">Смена: {{ app.user.shift}}</div>
-            <div class="col-2">
-                {% include 'inc/logout.html.twig' %}
-            </div>
-        </div>
+        {% include 'inc/topNavbar.html.twig' %}
         <div class="row">
             <div class="col"><br></div>
         </div>

@@ -1,0 +1,7 @@
+<div class="row border-bottom m-1 bg-light text-center">
+    <div class="col-4"></div>
+    <div class="col text-lg-center">Вы зашли как: {{ app.user.username}}</div>
+    <div class="col text-lg-center">Ваш участок: {{ app.user.sector}}</div>
+    <div class="col text-lg-center">Ваша смена: {{ app.user.shift}}</div>
+    <div class="col"><a href="{{ path('app_logout') }}" class="btn btn-primary">Выйти</a></div>
+</div>

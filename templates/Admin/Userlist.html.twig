@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-{% endblock %}
+
 {% block title %}
     Test
 {% endblock %}
 {% block body %}
     <div class="container-fluid">
+        {% include 'inc/topNavbar.html.twig' %}
         <div class="row">
             <div class="col-6">
                 <div class="h1 text-center">На участках</div>
@@ -14,11 +13,7 @@
             <div class="col-5">
                 <div class="h1 text-center">Пользователи</div>
             </div>
-            <div class="col-1">
-                {% include 'inc/logout.html.twig' %}
-            </div>
         </div>
-
         <div class="row">
 
             <div class="col-6">

@@ -74,11 +74,13 @@ class AttendanceRepository extends ServiceEntityRepository
             ->andWhere('a.shift = :shift')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
             ->setParameter('shift', $shift)
+            ->addOrderBy('a.sector', 'ASC')
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
             ->getQuery()
             ->getResult();
     }
+
         // /**
     //  * @return Attendance[] Returns an array of Attendance objects
     //  */

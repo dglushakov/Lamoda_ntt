@@ -1,19 +1,54 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Test
+{% endblock %}
 {% block body %}
-    <div class="container">
+    <div class="container-fluid">
+        {% include 'inc/topNavbar.html.twig' %}
         <div class="row">
-            <div class="col">Peep interface</div>
             <div class="col">
-                {% include 'inc/logout.html.twig' %}
+                {{ dump(attendances) }}
             </div>
         </div>
 
+
         <div class="row">
+            <div class="col-6">
+                {% include 'inc/activeUsersTable.html.twig' %}
+            </div>
             <div class="col">
-                data
+                <div class="row">
+                    <div class="col">Login</div>
+                    <div class="col">Time</div>
+                    <div class="col">Fine</div>
+                    <div class="col">Comment</div>
+                </div>
+                {% set currentSector =""  %}
+                {% for attendance in attendances %}
+                    {% if attendance.sector!=currentSector %}
+                        <h2 class="text-center border-bottom">{{ attendance.sector }}</h2>
+                        {% set currentSector=attendance.sector %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col">
+                            {{ attendance.login }}
+                        </div>
+                        <div class="col">
+                            {{ attendance.datetime|date("d/m/Y H:i:s") }}
+                        </div>
+                        <div class="col">
+                            {{ attendance.fine }}
+                        </div>
+                        <div class="col">
+                            {{ attendance.comment }}
+                        </div>
+                    </div>
+
+                {% endfor %}
+
             </div>
         </div>
-
     </div>
 {% endblock %}

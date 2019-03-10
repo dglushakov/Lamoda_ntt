@@ -1,0 +1,59 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Участок</th>
+        <th scope="col">Персонал</th>
+        {% for key, provider in constant('App\\Entity\\User::PROVIDERS_LIST') %}
+            <th scope="col">{{ key|capitalize }}</th>
+        {% endfor %}
+        <th scope="col">Lamoda</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {{ dump(attendances) }}
+    {{ dump(usersInSectors) }}
+    {%  set totalTotal=0 %}
+    {%  set totalGs=0 %}
+    {%  set totalSm=0 %}
+    {%  set totalRc=0 %}
+    {%  set totalLt=0 %}
+    {%  set totalPm=0 %}
+    {%  set totalVp=0 %}
+    {%  set totalLamoda=0 %}
+
+    {% for key,usersQty in usersInSectors %}
+        {% set totalTotal = totalTotal + usersQty.total %}
+        {% set totalGs = totalGs + usersQty.gs %}
+        {% set totalSm = totalSm + usersQty.sm %}
+        {% set totalRc = totalRc + usersQty.rc %}
+        {% set totalLt = totalLt + usersQty.lt %}
+        {% set totalPm = totalPm + usersQty.pm %}
+        {% set totalVp = totalVp + usersQty.vp %}
+        {% set totalLamoda = totalLamoda + usersQty.lamoda %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ usersQty.total }}</td>
+            <td>{{ usersQty.gs }}</td>
+            <td>{{ usersQty.sm }}</td>
+            <td>{{ usersQty.rc }}</td>
+            <td>{{ usersQty.lt }}</td>
+            <td>{{ usersQty.pm }}</td>
+            <td>{{ usersQty.vp }}</td>
+            <td>{{ usersQty.lamoda }}</td>
+        </tr>
+    {% endfor %}
+
+    <tr>
+        <td>Всего:</td>
+        <td>{{ totalTotal }}</td>
+        <td>{{ totalGs }}</td>
+        <td>{{ totalSm }}</td>
+        <td>{{ totalRc }}</td>
+        <td>{{ totalLt }}</td>
+        <td>{{ totalPm }}</td>
+        <td>{{ totalVp }}</td>
+        <td>{{ totalLamoda }}</td>
+    </tr>
+    </tbody>
+</table>
