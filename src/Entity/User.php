@@ -40,6 +40,11 @@ class User implements UserInterface
         'vp'=>'Vremya Pervih',
 
     ];
+    const USER_ROLES=[
+        'Admin'=>'ROLE_ADMIN',
+        'Peep'=>'ROLE_PEEP',
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

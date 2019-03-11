@@ -42,7 +42,7 @@ class UserFixtures extends Fixture
             $goduser,
             'god'
         ));
-        $goduser->setRoles(['ROLE_ADMIN', 'ROLE_PEEP', 'ROLE_SECTOR_MANAGER']);
+        $goduser->setRoles(['ROLE_GOD', 'ROLE_ADMIN', 'ROLE_PEEP', 'ROLE_SECTOR_MANAGER']);
         $manager->persist($goduser);
 
         $adminuser=new User();

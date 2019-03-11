@@ -5,37 +5,55 @@ namespace App\Controller\Users;
 
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Security\Core\Security;
 
 class AddUserForm extends AbstractType
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $userRoles=[
+            'Sector Manager' => 'ROLE_SECTOR_MANAGER',
+            'Peep' => 'ROLE_PEEP'
+        ];
+
+        $currentUserRoles = $this->security->getUser()->getRoles();
+        if(in_array('ROLE_GOD', $currentUserRoles)){
+            $userRoles['Admin']='ROLE_ADMIN';
+        }
+
+
+        //TODO если теуйщий пользователь роль_год, то еще и админов может делать
         $builder
             ->add('UserName', TextType::class,[
                 'required'=>true,
                 'label'=>'Пользователь'
 
             ])
-//            ->add('roles'
-//            )
             ->add('password', PasswordType::class,[
                 'required'=>true,
                 'label'=> 'Пароль',
                 ])
-            ->add(
-                'roles', ChoiceType::class, [
-                    'choices' => ['Админ' => 'ROLE_ADMIN', 'ROLE_CUSTOMER' => 'ROLE_CUSTOMER'],
-                    'expanded' => false,
+            ->add('roles', ChoiceType::class,[
+                    'choices' => $userRoles,
+                    'expanded' => true,
                     'multiple' => true,
                     'label'=> 'Роль',
-                ]
-            )
+            ])
             ->add('sector', ChoiceType::class,[
                 'required'=>true,
                 'choices'=>USER::SECTORS_LIST,

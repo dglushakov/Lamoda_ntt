@@ -1,0 +1,69 @@
+<table class="table table-striped">
+    <thead>
+    <th>
+        Логин
+    </th>
+    <th>
+        Дата и время
+    </th>
+    <th>
+        Компания
+    </th>
+    <th>
+        Штраф
+    </th>
+    <th>
+        Комментарий
+    </th>
+    <th>
+        Подтвердить
+    </th>
+    </thead>
+    <tbody>
+    {% for fine in attendancesForApproval %}
+        <tr>
+            <td>
+                {{ fine.login }}
+            </td>
+            <td>
+                {{ fine.dateTime|date('Y-m-d H:i:s') }}
+            </td>
+            <td>
+                {% if fine.login|trim|slice(2,1)=='-' %}
+                    {% set companyPerfix = fine.login|trim|slice(0,2) %}
+
+                    {% if companyPerfix =='gs' %}
+                        GSR
+                    {% endif %}
+                    {% if companyPerfix =='sm' %}
+                        SMG
+                    {% endif %}
+                    {% if companyPerfix =='rc' %}
+                        Realnaya Cifra
+                    {% endif %}
+                    {% if companyPerfix =='lt' %}
+                        Leader Team
+                    {% endif %}
+                    {% if companyPerfix =='pm' %}
+                        Premer-M
+                    {% endif %}
+                    {% if companyPerfix =='vp' %}
+                        Vremya Pervih
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td>
+                {{ fine.fine }}
+            </td>
+            <td>
+                {{ fine.comment }}
+            </td>
+            <td>
+                <a href="/approveFine/{{ fine.id }}" class="btn btn-sm btn-primary">+</a>
+                <a href="/declineFine/{{ fine.id }}" class="btn btn-sm btn-primary">-</a>
+            </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>

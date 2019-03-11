@@ -112,16 +112,4 @@ class SectorManager extends AbstractController
         return $this->redirectToRoute('SMworkInterface');
     }
 
-
-//    /**
-//     * @Route("/resetPeopleCounter", name ="resetPeopleCounter")
-//     */
-//    public function resetPeopleCounter()
-//    {
-//        $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
-//        $file_counter = "counter.txt";
-//        $fp = fopen($file_counter, "w");
-//        fwrite($fp, "0");
-//        return $this->redirectToRoute('SMworkInterface');
-//    }
 }

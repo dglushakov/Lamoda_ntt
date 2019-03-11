@@ -81,6 +81,30 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findUsersOnAllSectorsInAllShifts()
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->setParameter('dateTime', new \DateTime('-48 hours'))
+            ->addOrderBy('a.sector', 'ASC')
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllAttendancesWithFinesWithoutApproval()
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.fine IS NOT NULL')
+            ->andWhere('a.fine_approved IS NULL')
+            ->addOrderBy('a.sector', 'ASC')
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
         // /**
     //  * @return Attendance[] Returns an array of Attendance objects
     //  */

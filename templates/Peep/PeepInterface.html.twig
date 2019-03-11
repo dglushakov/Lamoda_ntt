@@ -6,12 +6,6 @@
 {% block body %}
     <div class="container-fluid">
         {% include 'inc/topNavbar.html.twig' %}
-        <div class="row">
-            <div class="col">
-                {{ dump(attendances) }}
-            </div>
-        </div>
-
 
         <div class="row">
             <div class="col-6">
@@ -36,7 +30,7 @@
                             {{ attendance.login }}
                         </div>
                         <div class="col">
-                            {{ attendance.datetime|date("d/m/Y H:i:s") }}
+                            {{ attendance.datetime|date('Y-m-d H:i:s') }}
                         </div>
                         <div class="col">
                             {{ attendance.fine }}
@@ -48,6 +42,11 @@
 
                 {% endfor %}
 
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col">
+                {% include 'Peep/inc/usersWithFines.html.twig' %}
             </div>
         </div>
     </div>

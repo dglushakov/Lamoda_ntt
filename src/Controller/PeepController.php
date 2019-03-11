@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Attendance;
 use App\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PeepController extends AbstractController
@@ -48,13 +48,53 @@ class PeepController extends AbstractController
             $lastLogin=$attendance->getLogin();
         }
 
+        $attendancesWithFinesWithoutApproval=[];
+        $attendancesWithFinesWithoutApproval=$attendanceRepo->findAllAttendancesWithFinesWithoutApproval();
+
 
         //dd($attendances);
         return $this->render('Peep/PeepInterface.html.twig', [
             'sectors'=>USER::SECTORS_LIST,
             'attendances'=>$attendancesOutput,
             'usersInSectors'=>$usersInSectorQty,
+            'attendancesForApproval'=>$attendancesWithFinesWithoutApproval,
             ]);
     }
+
+
+    /**
+     * @Route("/approveFine/{fineId}", name="approveFine")
+     */
+    public function approveFine($fineId){
+        $this->denyAccessUnlessGranted('ROLE_PEEP');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $attendanceWitFine = $attendanceRepo->find($fineId);
+        $attendanceWitFine->setFineApproved(true);
+
+        $entityManager->persist($attendanceWitFine);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('peepInterface');
+    }
+
+    /**
+     * @Route("/declineFine/{fineId}", name="declineFine")
+     */
+    public function declineFine($fineId){
+        $this->denyAccessUnlessGranted('ROLE_PEEP');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $attendanceWitFine = $attendanceRepo->find($fineId);
+        $attendanceWitFine->setFine(NULL);
+
+        $entityManager->persist($attendanceWitFine);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('peepInterface');
+    }
+
 
 }
