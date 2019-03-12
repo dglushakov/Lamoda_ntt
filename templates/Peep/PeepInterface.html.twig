@@ -42,7 +42,6 @@
                                     </td>
                                     <td> {{ attendance.login }}</td>
                                     <td> {{ attendance.dateTime|date('Y-m-d H:i:s') }}</td>
-
                                     <td>
                                         {% if attendance.login|trim|slice(2,1)=='-' %}
                                             {% set companyPerfix = attendance.login|trim|slice(0,2) %}

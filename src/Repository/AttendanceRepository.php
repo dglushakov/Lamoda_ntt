@@ -98,6 +98,8 @@ class AttendanceRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->andWhere('a.fine IS NOT NULL')
             ->andWhere('a.fine_approved IS NULL')
+            ->orWhere ('a.sector = :deleted_sector')
+            ->setParameter('deleted_sector', 'manually deleted')
             ->addOrderBy('a.sector', 'ASC')
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
