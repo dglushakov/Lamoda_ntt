@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Attendance;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 
 class SectorManager extends AbstractController
@@ -48,6 +49,8 @@ class SectorManager extends AbstractController
     public function AddAttendance($login)
     {
         $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
+
+
         $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $lastLoginAttendance = $attendanceRepo->findOneBy(['login' => $login, 'sector'=>$this->getUser()->getSector(),], ['dateTime' => 'DESC']);
@@ -72,7 +75,6 @@ class SectorManager extends AbstractController
 
         //return new Response('Saved new product with id '.$attendance->getId());
 
-        //TODO изменение счетчика
         return $this->redirectToRoute('SMworkInterface');
     }
 
@@ -105,6 +107,24 @@ class SectorManager extends AbstractController
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $attendance = $attendanceRepo->find($attendanceId);
         $attendance->setFine($action);
+
+        $entityManager->persist($attendance);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('SMworkInterface');
+    }
+
+    /**
+     * @Route("/attendance/delete/{attendanceId}")
+     */
+    public function deleteAttendance($attendanceId)
+    {
+        $this->denyAccessUnlessGranted('ROLE_SECTOR_MANAGER');
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $attendance = $attendanceRepo->find($attendanceId);
+        $attendance->setSector("manually deleted");
 
         $entityManager->persist($attendance);
         $entityManager->flush();

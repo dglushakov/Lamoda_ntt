@@ -34,6 +34,8 @@ class PeepController extends AbstractController
             $usersInSectorQty[$sector]['lamoda']=0;
         }
 
+//        dd($usersInSectorQty);
+        //dump($attendances);
         foreach ($attendances as $attendance ) {
             if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
                 $attendancesOutput[]=$attendance;
@@ -48,6 +50,7 @@ class PeepController extends AbstractController
             $lastLogin=$attendance->getLogin();
         }
 
+        //dump($attendancesOutput);
         $attendancesWithFinesWithoutApproval=[];
         $attendancesWithFinesWithoutApproval=$attendanceRepo->findAllAttendancesWithFinesWithoutApproval();
 
@@ -93,6 +96,59 @@ class PeepController extends AbstractController
         $entityManager->persist($attendanceWitFine);
         $entityManager->flush();
 
+        return $this->redirectToRoute('peepInterface');
+    }
+
+
+    /**
+     * @Route("/setShift/{shiftId}", name="setShift")
+     */
+    public function setShift($shiftId){
+        $this->denyAccessUnlessGranted('ROLE_PEEP');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $usersRepo = $this->getDoctrine()->getRepository(User::class);
+        $userForSetShift = $this->getUser();
+
+        $userForSetShift->setShift($shiftId);
+
+        $entityManager->persist($userForSetShift);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('peepInterface');
+    }
+
+    /**
+     * @Route("/peepAttendance/new/{login}", name ="AddAttendanceByPeep")
+     */
+    public function AddAttendanceByPeep($login)
+    {
+        $this->denyAccessUnlessGranted('ROLE_PEEP');
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $lastLoginAttendance = $attendanceRepo->findOneBy(['login' => $login, 'sector'=>$this->getUser()->getSector(),], ['dateTime' => 'DESC']);
+
+        $login = trim($login);
+        $attendance = new Attendance();
+        $attendance->setLogin($login);
+        $attendance->setDateTime(new \DateTime());
+        $attendance->setShift($this->getUser()->getShift());
+        $attendance->setSector($this->getUser()->getSector());
+
+        if ($lastLoginAttendance && $lastLoginAttendance->getDirection() != 'exit') {
+            $attendance->setDirection('exit');
+
+        } else {
+            $attendance->setDirection('entrance');
+
+        }
+
+        $entityManager->persist($attendance);
+        $entityManager->flush();
+
+        //return new Response('Saved new product with id '.$attendance->getId());
         return $this->redirectToRoute('peepInterface');
     }
 

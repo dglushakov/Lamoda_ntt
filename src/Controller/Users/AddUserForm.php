@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Security;
@@ -28,13 +29,14 @@ class AddUserForm extends AbstractType
 
         $userRoles=[
             'Sector Manager' => 'ROLE_SECTOR_MANAGER',
-            'Peep' => 'ROLE_PEEP'
+            'Peep' => 'ROLE_PEEP',
+            'Admin'=> 'ROLE_ADMIN',
         ];
 
         $currentUserRoles = $this->security->getUser()->getRoles();
-        if(in_array('ROLE_GOD', $currentUserRoles)){
-            $userRoles['Admin']='ROLE_ADMIN';
-        }
+//        if(in_array('ROLE_GOD', $currentUserRoles)){
+//            $userRoles['Admin']='ROLE_ADMIN';
+//        }
 
 
         //TODO если теуйщий пользователь роль_год, то еще и админов может делать
@@ -63,6 +65,7 @@ class AddUserForm extends AbstractType
                 'required'=>true,
                 'choices'=>USER::NUMBERS_OF_SHIFTS,
                 'label'=> 'Смена',
+                'placeholder'=>'Выберите смену'
             ] )
         ;
 

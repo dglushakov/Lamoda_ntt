@@ -33,6 +33,7 @@
                     <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Delete</th>
                         <th scope="col">Login</th>
                         <th scope="col">DateTime</th>
                         <th scope="col">Direction</th>
@@ -45,6 +46,13 @@
                     {% for attendance in attendances %}
                         <tr>
                             <th scope="row">{{ loop.index }}</th>
+                            <td>
+                                <a href="#" data-href="/attendance/delete/{{ attendance.id }}" data-toggle="modal"
+                                   data-target="#confirm-delete" class="btn btn-sm delete-type">
+                                    <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
+                                </a>
+                                {% include 'inc/deleteConfirmationModal.html.twig' %}
+                            </td>
                             <td> {{ attendance.login }}</td>
                             <td> {{ attendance.dateTime|date('Y-m-d H:i:s') }}</td>
                             <td> {{ attendance.direction }}</td>
@@ -99,7 +107,9 @@
                             </td>
                             <td>
                                 <a href="/editcomment/{{ attendance.id }}/" class="btn btn-info btn-sm editComment"
-                                   data-commentId="{{ attendance.id }}">+</a>
+                                   data-commentId="{{ attendance.id }}">
+                                    <img alt="edit" width="20px" src="{{ asset('img/edit.png') }}">
+                                </a>
                             </td>
 
                         </tr>
@@ -159,6 +169,10 @@
                 $comment = $('#comment_' + $commentId).val();
                 // alert($comment);
                 $(this).attr('href', $(this).attr('href') + $comment);
+            });
+
+            $('#confirm-delete').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
             });
 
         });

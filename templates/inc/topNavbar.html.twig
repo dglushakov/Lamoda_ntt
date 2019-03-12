@@ -1,7 +1,29 @@
 <div class="row border-bottom m-1 bg-light text-center">
     <div class="col-4"></div>
-    <div class="col text-lg-center">Вы зашли как: {{ app.user.username}}</div>
-    <div class="col text-lg-center">Ваш участок: {{ app.user.sector}}</div>
-    <div class="col text-lg-center">Ваша смена: {{ app.user.shift}}</div>
+    <div class="col text-lg-center">Вы зашли как: {{ app.user.username }}</div>
+    <div class="col text-lg-center">Ваш участок: {{ app.user.sector }}</div>
+    <div class="col text-lg-center">Ваша смена:
+        {% set userIsPeep = false %}
+        {% for role in app.user.roles %}
+            {% if role=='ROLE_PEEP' %}
+                {% set userIsPeep = true %}
+                <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button"
+                   id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    {{ app.user.shift }}
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% for shift in constant('App\\Entity\\USER::NUMBERS_OF_SHIFTS') %}
+                        <a class="dropdown-item" href="/setShift/{{ shift }}">{{ shift }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if not userIsPeep %}
+            {{ app.user.shift }}
+        {% endif %}
+
+    </div>
     <div class="col"><a href="{{ path('app_logout') }}" class="btn btn-primary">Выйти</a></div>
 </div>

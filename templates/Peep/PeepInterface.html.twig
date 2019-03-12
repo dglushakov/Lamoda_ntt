@@ -6,42 +6,80 @@
 {% block body %}
     <div class="container-fluid">
         {% include 'inc/topNavbar.html.twig' %}
-
         <div class="row">
             <div class="col-6">
                 {% include 'inc/activeUsersTable.html.twig' %}
             </div>
             <div class="col">
-                <div class="row">
-                    <div class="col">Login</div>
-                    <div class="col">Time</div>
-                    <div class="col">Fine</div>
-                    <div class="col">Comment</div>
+                <div class="col">
+                    <input class="form-control form-control-lg" type="text" placeholder="login" id="inputLogin">
                 </div>
-                {% set currentSector =""  %}
-                {% for attendance in attendances %}
-                    {% if attendance.sector!=currentSector %}
-                        <h2 class="text-center border-bottom">{{ attendance.sector }}</h2>
-                        {% set currentSector=attendance.sector %}
-                    {% endif %}
+                <div class="row">
+                    <div class="col">
 
-                    <div class="row">
-                        <div class="col">
-                            {{ attendance.login }}
-                        </div>
-                        <div class="col">
-                            {{ attendance.datetime|date('Y-m-d H:i:s') }}
-                        </div>
-                        <div class="col">
-                            {{ attendance.fine }}
-                        </div>
-                        <div class="col">
-                            {{ attendance.comment }}
-                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Delete</th>
+                                <th scope="col">Login</th>
+                                <th scope="col">DateTime</th>
+                                <th scope="col">Company</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for attendance in attendances %}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>
+                                        <a href="#" data-href="/attendance/delete/{{ attendance.id }}"
+                                           data-toggle="modal"
+                                           data-target="#confirm-delete" class="btn btn-sm delete-type">
+                                            <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
+                                        </a>
+                                        {% include 'inc/deleteConfirmationModal.html.twig' %}
+                                    </td>
+                                    <td> {{ attendance.login }}</td>
+                                    <td> {{ attendance.dateTime|date('Y-m-d H:i:s') }}</td>
+
+                                    <td>
+                                        {% if attendance.login|trim|slice(2,1)=='-' %}
+                                            {% set companyPerfix = attendance.login|trim|slice(0,2) %}
+
+                                            {% if companyPerfix =='gs' %}
+                                                GSR
+                                            {% endif %}
+                                            {% if companyPerfix =='sm' %}
+                                                SMG
+                                            {% endif %}
+                                            {% if companyPerfix =='rc' %}
+                                                Realnaya Cifra
+                                            {% endif %}
+                                            {% if companyPerfix =='lt' %}
+                                                Leader Team
+                                            {% endif %}
+                                            {% if companyPerfix =='pm' %}
+                                                Premer-M
+                                            {% endif %}
+                                            {% if companyPerfix =='vp' %}
+                                                Vremya Pervih
+                                            {% endif %}
+                                        {% else %}
+                                            Lamoda
+                                        {% endif %}
+                                    <td>
+                                        {{ attendance.fine }}
+                                    </td>
+
+
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
                     </div>
-
-                {% endfor %}
-
+                </div>
             </div>
         </div>
         <div class="row text-center">
@@ -50,4 +88,36 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+            $("#inputLogin").focus();
+            $("#inputLogin").keydown(function (event) {
+
+                if (event.keyCode == 9) {
+                    $(this).prop('disabled', true);
+                    window.location.href = '/peepAttendance/new/' + $('#inputLogin').val();
+                    event.preventDefault();
+                }
+                if (event.keyCode == 13) {
+                    $(this).val('');
+                }
+
+            });
+
+            $("#inputLogin").keyup(function (event) {
+                if (/[а-я]/i.test($(this).val())) {
+
+                    $(this).val('');
+                    alert('Ввод кириллицы запрещен!');
+                }
+
+            });
+
+        });
+    </script>
 {% endblock %}

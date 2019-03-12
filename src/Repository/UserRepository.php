@@ -19,6 +19,20 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function findAllAdminsButOnlyMyShiftSectorManagets($shift)
+    {
+        return $this->createQueryBuilder('u')
+            ->orWhere('u.shift = :shift')
+            ->orWhere('u.roles LIKE :role')
+            ->setParameter('shift', $shift)
+            ->setParameter('role', '%ROLE_ADMIN%')
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

@@ -30,6 +30,7 @@ class User implements UserInterface
         'sector7'=>'sector7',
         'sector8'=>'sector8',
         'sector9'=>'sector9',
+        'PUP_porter'=>'PUP_porter',
     ];
     const PROVIDERS_LIST=[
         'gs'=>'GSR',

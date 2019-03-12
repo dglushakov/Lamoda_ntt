@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h2>Редактирование пользователя</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col bg-light">
+                {% form_theme editUserForm 'bootstrap_4_horizontal_layout.html.twig' %}
+                {{ form_start(editUserForm) }}
+                {{ form_widget(editUserForm) }}
+                <input type="submit" class="btn btn-success" value="Save"/>
+                <a href="{{ path('userlist') }}" class="btn btn-danger">Cancel</a>
+                {{ form_end(editUserForm) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

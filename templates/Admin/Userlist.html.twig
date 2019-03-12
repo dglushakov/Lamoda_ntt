@@ -4,6 +4,7 @@
     Test
 {% endblock %}
 {% block body %}
+
     <div class="container-fluid">
         {% include 'inc/topNavbar.html.twig' %}
         <div class="row">
@@ -41,7 +42,15 @@
                                 {{ user.username }}
                             </td>
                             <td>
-                                {{ user.roles|join(',') }}
+                                {% for role in user.roles %}
+                                    {% if role == 'ROLE_ADMIN' %}
+                                        Admin
+                                    {% elseif role =='ROLE_SECTOR_MANAGER'%}
+                                        Sector manager
+                                    {% elseif role =='ROLE_PEEP' %}
+                                        Peep
+                                    {% endif %}
+                                {% endfor %}
                             </td>
                             <td>
                                 {{ user.sector }}
@@ -50,11 +59,13 @@
                                 {{ user.shift }}
                             </td>
                             <td>
-                                <a class="btn btn-info btn-sm">+</a>
+                                <a href="/userlist/edit/{{ user.id }}" class="btn btn-info btn-sm"><img alt="edit" width="20px" src="{{ asset('img/edit.png') }}"></a>
                             </td>
                             <td>
                                 <a href="#" data-href="/userlist/delete/{{ user.id }}" data-toggle="modal"
-                                   data-target="#confirm-delete" class="btn btn-danger delete-type">Удалить</a>
+                                   data-target="#confirm-delete" class="btn btn-sm delete-type">
+                                    <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
+                                </a>
                                 {% include 'inc/deleteConfirmationModal.html.twig' %}
                             </td>
 
@@ -63,11 +74,11 @@
 
                     <tr>
                         <td colspan="8">
-                            {% form_theme addUserFOrm 'bootstrap_4_horizontal_layout.html.twig' %}
-                            {{ form_start(addUserFOrm) }}
-                            {{ form_widget(addUserFOrm) }}
+                            {% form_theme addUserForm 'bootstrap_4_horizontal_layout.html.twig' %}
+                            {{ form_start(addUserForm) }}
+                            {{ form_widget(addUserForm) }}
                             <input type="submit" class="btn btn-success" value="Add new"/>
-                            {{ form_end(addUserFOrm) }}
+                            {{ form_end(addUserForm) }}
                         </td>
                     </tr>
 
