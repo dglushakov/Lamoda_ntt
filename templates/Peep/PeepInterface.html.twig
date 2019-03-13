@@ -99,7 +99,7 @@
 
                 if (event.keyCode == 9) {
                     $(this).prop('disabled', true);
-                    window.location.href = '/peepAttendance/new/' + $('#inputLogin').val();
+                    window.location.href = '/attendance/new/' + $('#inputLogin').val();
                     event.preventDefault();
                 }
                 if (event.keyCode == 13) {
@@ -114,7 +114,11 @@
                     $(this).val('');
                     alert('Ввод кириллицы запрещен!');
                 }
+            });
 
+
+            $('#confirm-delete').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
             });
 
         });

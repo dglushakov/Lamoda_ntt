@@ -16,11 +16,18 @@
                 <input class="form-control form-control-lg" type="text" placeholder="login" id="inputLogin">
             </div>
             {#<div class="col-2"><a href="#" class="btn btn-sm btn-info" id="resetPeopleCounterButton">Начать смену</a></div>#}
-            <div class="col-2 text-center">
+            <div class="col-1 text-center">
                 <span id="peopleCounter">Людей на участке: </span>
             </div>
-            <div class="col-2">
+            <div class="col-1">
                 <h1>{% if peopleCounter %}{{ peopleCounter }}</h1> <h1>{% else %} 0 {% endif %}</h1>
+            </div>
+            <div class="col">
+                <a href="{{ path('finishShift') }}" class="btn btn-danger" data-toggle="tooltip"
+                   data-placement="bottom"
+                   title='Внимание! Все сотрудники будут принудительно "выведены" с участка'>
+                Закончить смену
+                </a>
             </div>
         </div>
         <div class="row">
@@ -47,7 +54,8 @@
                         <tr>
                             <th scope="row">{{ loop.index }}</th>
                             <td>
-                                <a href="#" data-href="/attendance/delete/{{ attendance.id }}" data-toggle="modal"
+                                <a href="#"
+                                   data-href="/attendance/delete/{{ attendance.id }}" data-toggle="modal"
                                    data-target="#confirm-delete" class="btn btn-sm delete-type">
                                     <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
                                 </a>
@@ -174,6 +182,10 @@
             $('#confirm-delete').on('show.bs.modal', function (e) {
                 $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
             });
+
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
 
         });
     </script>

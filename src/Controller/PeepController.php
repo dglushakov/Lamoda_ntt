@@ -21,6 +21,17 @@ class PeepController extends AbstractController
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
+        $attendancesInPeepSector = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
+
+        $attendancesOutput=[];
+        $lastLogin ="";
+        foreach ($attendancesInPeepSector as $attendance ) {
+            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
+                $attendancesOutput[]=$attendance;
+            }
+            $lastLogin=$attendance->getLogin();
+        }
+
 
         //dd($attendances);
         $attendancesOutput=[];
@@ -62,94 +73,6 @@ class PeepController extends AbstractController
             'usersInSectors'=>$usersInSectorQty,
             'attendancesForApproval'=>$attendancesWithFinesWithoutApproval,
             ]);
-    }
-
-
-    /**
-     * @Route("/approveFine/{fineId}", name="approveFine")
-     */
-    public function approveFine($fineId){
-        $this->denyAccessUnlessGranted('ROLE_PEEP');
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        $attendanceWitFine = $attendanceRepo->find($fineId);
-        $attendanceWitFine->setFineApproved(true);
-
-        $entityManager->persist($attendanceWitFine);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('peepInterface');
-    }
-
-    /**
-     * @Route("/declineFine/{fineId}", name="declineFine")
-     */
-    public function declineFine($fineId){
-        $this->denyAccessUnlessGranted('ROLE_PEEP');
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        $attendanceWitFine = $attendanceRepo->find($fineId);
-        $attendanceWitFine->setFine(NULL);
-
-        $entityManager->persist($attendanceWitFine);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('peepInterface');
-    }
-
-
-    /**
-     * @Route("/setShift/{shiftId}", name="setShift")
-     */
-    public function setShift($shiftId){
-        $this->denyAccessUnlessGranted('ROLE_PEEP');
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $usersRepo = $this->getDoctrine()->getRepository(User::class);
-        $userForSetShift = $this->getUser();
-
-        $userForSetShift->setShift($shiftId);
-
-        $entityManager->persist($userForSetShift);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('peepInterface');
-    }
-
-    /**
-     * @Route("/peepAttendance/new/{login}", name ="AddAttendanceByPeep")
-     */
-    public function AddAttendanceByPeep($login)
-    {
-        $this->denyAccessUnlessGranted('ROLE_PEEP');
-
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        $lastLoginAttendance = $attendanceRepo->findOneBy(['login' => $login, 'sector'=>$this->getUser()->getSector(),], ['dateTime' => 'DESC']);
-
-        $login = trim($login);
-        $attendance = new Attendance();
-        $attendance->setLogin($login);
-        $attendance->setDateTime(new \DateTime());
-        $attendance->setShift($this->getUser()->getShift());
-        $attendance->setSector($this->getUser()->getSector());
-
-        if ($lastLoginAttendance && $lastLoginAttendance->getDirection() != 'exit') {
-            $attendance->setDirection('exit');
-
-        } else {
-            $attendance->setDirection('entrance');
-
-        }
-
-        $entityManager->persist($attendance);
-        $entityManager->flush();
-
-        //return new Response('Saved new product with id '.$attendance->getId());
-        return $this->redirectToRoute('peepInterface');
     }
 
 
