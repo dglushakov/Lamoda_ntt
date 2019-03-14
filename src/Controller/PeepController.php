@@ -23,14 +23,16 @@ class PeepController extends AbstractController
         $attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
         $attendancesInPeepSector = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
 
-        $attendancesOutput=[];
+        //dd($attendancesInPeepSector);
+        $attendancesInPeepSectorOutput=[];
         $lastLogin ="";
         foreach ($attendancesInPeepSector as $attendance ) {
             if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
-                $attendancesOutput[]=$attendance;
+                $attendancesInPeepSectorOutput[]=$attendance;
             }
             $lastLogin=$attendance->getLogin();
         }
+       //dd($attendancesOutput);
 
 
         //dd($attendances);
@@ -69,7 +71,7 @@ class PeepController extends AbstractController
         //dd($attendances);
         return $this->render('Peep/PeepInterface.html.twig', [
             'sectors'=>USER::SECTORS_LIST,
-            'attendances'=>$attendancesOutput,
+            'attendances'=>$attendancesInPeepSectorOutput,
             'usersInSectors'=>$usersInSectorQty,
             'attendancesForApproval'=>$attendancesWithFinesWithoutApproval,
             ]);
