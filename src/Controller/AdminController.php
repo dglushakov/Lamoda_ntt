@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\Controller\Users\AddUserForm;
+use App\Controller\Users\Forms\AddUserForm;
 use App\Entity\Attendance;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;

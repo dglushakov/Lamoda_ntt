@@ -18,6 +18,15 @@
                 {{ form_end(editUserForm) }}
             </div>
         </div>
+        <div class="row">
+            <div class="col bg-light">
+                {% form_theme editUserPasswordForm 'bootstrap_4_horizontal_layout.html.twig' %}
+                {{ form_start(editUserPasswordForm) }}
+                {{ form_widget(editUserPasswordForm) }}
+                <input type="submit" class="btn btn-success" value="Change Password"/>
+                {{ form_end(editUserPasswordForm) }}
+            </div>
+        </div>
     </div>
 
 {% endblock %}

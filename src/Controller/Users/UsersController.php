@@ -4,6 +4,8 @@
 namespace App\Controller\Users;
 
 
+use App\Controller\Users\Forms\EditUserForm;
+use App\Controller\Users\Forms\EditUserPasswordForm;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,24 +40,37 @@ class UsersController extends AbstractController
         $usersRepo = $this->getDoctrine()->getRepository(User::class);
         $userToEdit = $usersRepo->find($id);
 
-        $EditUserForm = $this->createForm(AddUserForm::class, $userToEdit);
+        $EditUserForm = $this->createForm(EditUserForm::class, $userToEdit);
 
         $EditUserForm->handleRequest($request);
         if ($EditUserForm->isSubmitted() && $EditUserForm->isValid()) {
             $userToEdit = $EditUserForm->getData();
-
-            $plainPassword = $userToEdit->getPassword();
-            $encoded = $encoder->encodePassword($userToEdit, $plainPassword);
-            $userToEdit->setPassword($encoded);
 
             $em->persist($userToEdit);
             $em->flush();
             return $this->redirectToRoute('userlist');
         }
 
+        $EditUserPasswordForm = $this->createForm(EditUserPasswordForm::class, $userToEdit);
+        $EditUserPasswordForm->handleRequest($request);
+        if ($EditUserPasswordForm->isSubmitted() && $EditUserPasswordForm->isValid()) {
+            $userToEdit = $EditUserForm->getData();
+
+            $plainPassword = $EditUserForm->getData()->getPassword();
+
+            $encoded = $encoder->encodePassword($userToEdit, $plainPassword);
+            $userToEdit->setPassword($encoded);
+            $em->persist($userToEdit);
+            $em->flush();
+            return $this->redirectToRoute('editUser', [
+                'id'=>$userToEdit->getId(),
+            ]);
+        }
+
 
         return $this->render('Admin/editUser.html.twig',[
             'editUserForm'=>$EditUserForm->createView(),
+            'editUserPasswordForm'=>$EditUserPasswordForm->createView(),
         ]);
     }
 

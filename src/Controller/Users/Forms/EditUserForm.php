@@ -1,21 +1,18 @@
 <?php
 
 
-namespace App\Controller\Users;
+namespace App\Controller\Users\Forms;
 
 
 use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Security;
 
-class AddUserForm extends AbstractType
+class EditUserForm extends AbstractType
 {
     private $security;
 
@@ -33,26 +30,21 @@ class AddUserForm extends AbstractType
             'Admin'=> 'ROLE_ADMIN',
         ];
 
-//        $currentUserRoles = $this->security->getUser()->getRoles();
-//        if(in_array('ROLE_GOD', $currentUserRoles)){
-//            $userRoles['Admin']='ROLE_ADMIN';
-//        }
-
         $builder
             ->add('UserName', TextType::class,[
                 'required'=>true,
                 'label'=>'Пользователь'
 
             ])
-            ->add('password', PasswordType::class,[
-                'required'=>true,
-                'label'=> 'Пароль',
-                ])
+//            ->add('password', PasswordType::class,[
+//                'required'=>true,
+//                'label'=> 'Пароль',
+//            ])
             ->add('roles', ChoiceType::class,[
-                    'choices' => $userRoles,
-                    'expanded' => true,
-                    'multiple' => true,
-                    'label'=> 'Роль',
+                'choices' => $userRoles,
+                'expanded' => true,
+                'multiple' => true,
+                'label'=> 'Роль',
             ])
             ->add('sector', ChoiceType::class,[
                 'required'=>true,
