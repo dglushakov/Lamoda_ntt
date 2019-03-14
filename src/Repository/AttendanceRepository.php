@@ -30,25 +30,7 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
-
-
-
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.dateTime > :dateTime')
-//            ->setParameter('dateTime', new \DateTime('-48 hours'))
-//            ->getQuery()
-//            ->getResult()
-//        ;
-
-//        return $this->createQueryBuilder('a')
-//            ->select('a.id')
-//            ->addSelect('a.dateTime')
-//            ->andWhere('a.dateTime > :dateTime')
-//            ->setParameter('dateTime', new \DateTime('-48 hours'))
-//            ->getQuery()
-//            ->getResult()
-//            ;
-
+        
     }
 
     public function findActiveUsersOnSectorInShift($sector, $shift)
