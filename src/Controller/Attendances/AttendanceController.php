@@ -135,7 +135,7 @@ class AttendanceController extends AbstractController
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $attendance = $attendanceRepo->find($attendanceId);
-        $attendance->setFie("manually deleted");
+        $attendance->setFine("manually deleted");
 
         $entityManager->persist($attendance);
         $entityManager->flush();
