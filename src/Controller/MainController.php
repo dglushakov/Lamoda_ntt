@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="app_home", schemes={"%secure_channel%"})
+     * @Route("/", name="app_home")
      *
      */
     public function home()
