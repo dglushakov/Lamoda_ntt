@@ -22,23 +22,23 @@ class User implements UserInterface
     ];
     const SECTORS_LIST=[
         'INBOUND'=>'INBOUND',
-        'OPS_M'=>'OPS_M',
-        'OUTBOUND'=>'OUTBOUND',
-        'INDITEX'=>'INDITEX',
-        'QUALITY'=>'QUALITY',
-        'PICK_M2'=>'PICK_M2',
-        'IN'=>'IN',
         'UNPACK'=>'UNPACK',
-        'SORT'=>'SORT',
-        'PACK_MB'=>'PACK_MB',
-        'PICK_M1'=>'PICK_M1',
-        'PACK_IS'=>'PACK_IS',
-        'PUT_M1'=>'PUT_M1',
-        'LOAD'=>'LOAD',
-        'CAD_IN'=>'CAD_IN',
+        'IN'=>'IN',
         'RET'=>'RET',
+        'PUT_M1'=>'PUT_M1',
         'PUT_M2'=>'PUT_M2',
+        'OUTBOUND'=>'OUTBOUND',
+        'PICK_M1'=>'PICK_M1',
+        'PICK_M2'=>'PICK_M2',
+        'PACK_MB'=>'PACK_MB',
+        'PACK_IS'=>'PACK_IS',
+        'SORT'=>'SORT',
+        'LOAD'=>'LOAD',
         'PUP_porter'=>'PUP_porter',
+        'CAD_IN'=>'CAD_IN',
+        'QUALITY'=>'QUALITY',
+        'OPS_M'=>'OPS_M',
+        'INDITEX'=>'INDITEX',
         'manually deleted'=>'manually deleted',
     ];
     const PROVIDERS_LIST=[
@@ -48,6 +48,8 @@ class User implements UserInterface
         'lt'=>'Leader Team',
         'pm'=>'Premer-M',
         'vp'=>'Vremya Pervih',
+        'mk'=>'MK Expert',
+        'ar'=>'Arcada',
 
     ];
     const USER_ROLES=[

@@ -63,7 +63,7 @@ class AdminController extends AbstractController
                 $usersInSectorQty[$attendance->getSector()]['total']++;
                 if (substr($attendance->getLogin(), 2, 1) == '_') {
                     $providerPerfix = substr($attendance->getLogin(), 0, 2);
-                    $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
+                        $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
                 } else {
                     $usersInSectorQty[$attendance->getSector()]['lamoda']++;
                 }

@@ -18,6 +18,8 @@
     {%  set totalLt=0 %}
     {%  set totalPm=0 %}
     {%  set totalVp=0 %}
+    {%  set totalMk=0 %}
+    {%  set totalAr=0 %}
     {%  set totalLamoda=0 %}
 
     {% for key,usersQty in usersInSectors %}
@@ -28,6 +30,8 @@
         {% set totalLt = totalLt + usersQty.lt %}
         {% set totalPm = totalPm + usersQty.pm %}
         {% set totalVp = totalVp + usersQty.vp %}
+        {% set totalMk = totalMk + usersQty.mk %}
+        {% set totalAr = totalAr + usersQty.ar %}
         {% set totalLamoda = totalLamoda + usersQty.lamoda %}
         <tr>
             <td>{{ key }}</td>
@@ -38,6 +42,8 @@
             <td>{{ usersQty.lt }}</td>
             <td>{{ usersQty.pm }}</td>
             <td>{{ usersQty.vp }}</td>
+            <td>{{ usersQty.mk }}</td>
+            <td>{{ usersQty.ar }}</td>
             <td>{{ usersQty.lamoda }}</td>
         </tr>
     {% endfor %}
@@ -51,6 +57,8 @@
         <td>{{ totalLt }}</td>
         <td>{{ totalPm }}</td>
         <td>{{ totalVp }}</td>
+        <td>{{ totalMk }}</td>
+        <td>{{ totalAr }}</td>
         <td>{{ totalLamoda }}</td>
     </tr>
     </tbody>
