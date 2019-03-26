@@ -27,7 +27,6 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('shift', $shift)
             ->setParameter('role', '%ROLE_ADMIN%')
             ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
             ;
