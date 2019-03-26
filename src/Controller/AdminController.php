@@ -64,14 +64,16 @@ class AdminController extends AbstractController
                     $usersInSectorQty[$attendance->getSector()]['total']++;
                 }
 
-                if (substr($attendance->getLogin(), 2, 1) == '_') {
+                if (substr($attendance->getLogin(), 2, 1) == '-') {
                     $providerPerfix = substr($attendance->getLogin(), 0, 2);
                     if(isset($usersInSectorQty[$attendance->getSector()][$providerPerfix])){
                         $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
                     }
 
                 } else {
-                    $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                    if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
+                        $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                    }
                 }
             }
             $lastLogin = $attendance->getLogin();

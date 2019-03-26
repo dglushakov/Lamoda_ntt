@@ -49,15 +49,19 @@ class PeepController extends AbstractController
 
 //        dd($usersInSectorQty);
         //dump($attendances);
-        foreach ($attendances as $attendance ) {
+        foreach ($attendances as $attendance ) {  //TODO дублируется в админконтроллере, нужно вынести в 1 место
             if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
                 $attendancesOutput[]=$attendance;
-                $usersInSectorQty[$attendance->getSector()]['total']++;
-                if(substr($attendance->getLogin(),2,1)=='_'){
+                if(isset($usersInSectorQty[$attendance->getSector()]['total'])){
+                    $usersInSectorQty[$attendance->getSector()]['total']++;
+                }
+                if(substr($attendance->getLogin(),2,1)=='-'){
                     $providerPerfix= substr($attendance->getLogin(),0,2);
                     $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
                 } else {
-                    $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                    if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
+                        $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                    }
                 }
             }
             $lastLogin=$attendance->getLogin();
