@@ -31,6 +31,7 @@ class AttendanceController extends AbstractController
 
         if ($lastLoginAttendance && $lastLoginAttendance->getDirection() != 'exit') {
             $attendance->setDirection('exit');
+            $attendance->setShift($lastLoginAttendance->getShift());
 
         } else {
             $attendance->setDirection('entrance');

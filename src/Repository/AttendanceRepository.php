@@ -78,6 +78,20 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findUsersOnSector($sector)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->andWhere('a.sector = :sector')
+            ->setParameter('dateTime', new \DateTime('-48 hours'))
+            ->setParameter('sector',$sector)
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function findUsersOnAllSectorsInShift($shift)
     {
         return $this->createQueryBuilder('a')

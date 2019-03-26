@@ -60,10 +60,16 @@ class AdminController extends AbstractController
         foreach ($attendances as $attendance) {
             if ($attendance->getLogin() != $lastLogin && $attendance->getDirection() == 'entrance') {
                 $attendancesOutput[] = $attendance;
-                $usersInSectorQty[$attendance->getSector()]['total']++;
+                if(isset($usersInSectorQty[$attendance->getSector()]['total'])){
+                    $usersInSectorQty[$attendance->getSector()]['total']++;
+                }
+
                 if (substr($attendance->getLogin(), 2, 1) == '_') {
                     $providerPerfix = substr($attendance->getLogin(), 0, 2);
+                    if(isset($usersInSectorQty[$attendance->getSector()][$providerPerfix])){
                         $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
+                    }
+
                 } else {
                     $usersInSectorQty[$attendance->getSector()]['lamoda']++;
                 }
@@ -82,53 +88,5 @@ class AdminController extends AbstractController
 
         ]);
     }
-
-
-//    /**
-//     * @Route ("userlist/delete/{id}", name="deleteUser")
-//     */
-//    public function deleteUser(EntityManagerInterface $em, $id)
-//    {
-//        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-//        $usersRepo = $this->getDoctrine()->getRepository(User::class);
-//        $userToDelete = $usersRepo->find($id);
-//
-//        if ($userToDelete) {
-//            $em->remove($userToDelete);
-//            $em->flush();
-//        }
-//        return $this->redirectToRoute('userlist');
-//    }
-
-//    /**
-//     * @Route ("userlist/edit/{id}", name="editUser")
-//     */
-//    public function editUser(EntityManagerInterface $em, Request $request, UserPasswordEncoderInterface $encoder, $id)
-//    {
-//        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-//        $usersRepo = $this->getDoctrine()->getRepository(User::class);
-//        $userToEdit = $usersRepo->find($id);
-//
-//        $EditUserForm = $this->createForm(AddUserForm::class, $userToEdit);
-//
-//        $EditUserForm->handleRequest($request);
-//        if ($EditUserForm->isSubmitted() && $EditUserForm->isValid()) {
-//            $userToEdit = $EditUserForm->getData();
-//
-//            $plainPassword = $userToEdit->getPassword();
-//            $encoded = $encoder->encodePassword($userToEdit, $plainPassword);
-//            $userToEdit->setPassword($encoded);
-//
-//            $em->persist($userToEdit);
-//            $em->flush();
-//            return $this->redirectToRoute('userlist');
-//        }
-//
-//
-//        return $this->render('Admin/editUser.html.twig',[
-//            'editUserForm'=>$EditUserForm->createView(),
-//        ]);
-//    }
-
 
 }
