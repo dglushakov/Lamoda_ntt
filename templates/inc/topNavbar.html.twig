@@ -1,5 +1,14 @@
 <div class="row border-bottom m-1 bg-light text-center">
-    <div class="col-4"></div>
+    <div class="col-4">
+        {% for role in app.user.roles %}
+            {% if role=='ROLE_PEEP' %}
+                {% if attendancesForApproval|length > 0 %}
+                    <div class="bg-danger">Штрафы</div>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+    </div>
     <div class="col text-lg-center">Вы зашли как: {{ app.user.username }}</div>
     <div class="col text-lg-center">Ваш участок: {{ app.user.sector }}</div>
     <div class="col text-lg-center">Ваша смена:
