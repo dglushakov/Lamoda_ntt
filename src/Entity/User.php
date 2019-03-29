@@ -39,6 +39,8 @@ class User implements UserInterface
         'QUALITY'=>'QUALITY',
         'OPS_M'=>'OPS_M',
         'INDITEX'=>'INDITEX',
+        'MAIN'=>'MAIN',
+        'JEWELRY'=>'JEWELRY',
         'manually deleted'=>'manually deleted',
     ];
     const PROVIDERS_LIST=[
