@@ -48,7 +48,7 @@ class User implements UserInterface
         'sm'=>'SMG',
         'rc'=>'Realnaya Cifra',
         'lt'=>'Leader Team',
-        'pm'=>'Premer-M',
+        'pr'=>'Premer-M',
         'vp'=>'Vremya Pervih',
         'mk'=>'MK Expert',
         'ar'=>'Arcada',

@@ -57,7 +57,7 @@ class PeepController extends AbstractController
                 }
                 if(substr($attendance->getLogin(),2,1)=='-'){
                     $providerPerfix= substr($attendance->getLogin(),0,2);
-                    $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
+                    $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;  //TODO если неизвестный перфикс то крах, надо переделать
                 } else {
                     if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
                         $usersInSectorQty[$attendance->getSector()]['lamoda']++;
