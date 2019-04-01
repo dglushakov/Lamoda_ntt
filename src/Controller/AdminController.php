@@ -66,8 +66,12 @@ class AdminController extends AbstractController
 
                 if (substr($attendance->getLogin(), 2, 1) == '-') {
                     $providerPerfix = substr($attendance->getLogin(), 0, 2);
-                    if(isset($usersInSectorQty[$attendance->getSector()][$providerPerfix])){
+                    if(array_key_exists($providerPerfix, USER::PROVIDERS_LIST)) {
                         $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
+                    }else {
+                        if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
+                            $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                        }
                     }
 
                 } else {

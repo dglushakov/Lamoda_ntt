@@ -47,7 +47,8 @@ class PeepController extends AbstractController
             $usersInSectorQty[$sector]['lamoda']=0;
         }
 
-//        dd($usersInSectorQty);
+        //$usersInSectorQty(1);
+      //dd($usersInSectorQty);
         //dump($attendances);
         foreach ($attendances as $attendance ) {  //TODO дублируется в админконтроллере, нужно вынести в 1 место
             if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
@@ -57,7 +58,13 @@ class PeepController extends AbstractController
                 }
                 if(substr($attendance->getLogin(),2,1)=='-'){
                     $providerPerfix= substr($attendance->getLogin(),0,2);
-                    $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;  //TODO если неизвестный перфикс то крах, надо переделать
+                    if(array_key_exists($providerPerfix, USER::PROVIDERS_LIST)) {
+                        $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;  //TODO если неизвестный перфикс то крах, надо переделать. Пофиксил но вообще каша, надо переделать.
+                    } else {
+                        if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
+                            $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                        }
+                    }
                 } else {
                     if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
                         $usersInSectorQty[$attendance->getSector()]['lamoda']++;
