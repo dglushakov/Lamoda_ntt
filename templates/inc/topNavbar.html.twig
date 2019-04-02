@@ -3,7 +3,7 @@
         {% for role in app.user.roles %}
             {% if role=='ROLE_PEEP' %}
                 {% if attendancesForApproval|length > 0 %}
-                    <div class="bg-danger">Штрафы</div>
+                    <div class="bg-danger"><a class="badge badge-pill badge-danger" href="#finesTable">Штрафы({{ attendancesForApproval|length }})</a></div>
                 {% endif %}
 
             {% endif %}

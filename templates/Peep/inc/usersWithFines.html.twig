@@ -1,75 +1,188 @@
-<table class="table table-striped">
-    <thead>
-    <th>
-        Логин
-    </th>
-    <th>
-        Дата и время
-    </th>
-    <th>
-        Компания
-    </th>
-    <th>
-        Участок
-    </th>
-    <th>
-        Штраф
-    </th>
-    <th>
-        Комментарий
-    </th>
-    <th>
-        Подтвердить
-    </th>
-    </thead>
-    <tbody>
-    {% for fine in attendancesForApproval %}
-        <tr>
-            <td>
-                {{ fine.login }}
-            </td>
-            <td>
-                {{ fine.dateTime|date('Y-m-d H:i:s') }}
-            </td>
-            <td>
-                {% if fine.login|trim|slice(2,1)=='-' %}
-                    {% set companyPerfix = fine.login|trim|slice(0,2) %}
+{% set simpleFinesCount = 0 %}
+{% set manuallyDeletedFinesCount = 0 %}
+{% for fine in attendancesForApproval %}
+    {% if  fine.fine != "manually deleted" %}
+        {% set simpleFinesCount=simpleFinesCount+1 %}
+    {% endif %}
+{% endfor %}
+{% for fine in attendancesForApproval %}
+    {% if  fine.fine == "manually deleted" %}
+        {% set manuallyDeletedFinesCount=manuallyDeletedFinesCount+1 %}
+    {% endif %}
+{% endfor %}
+<div class="row">
+    <div class="clickable m-2 col-11 text-left" data-toggle="collapse" data-target=".usersWithFinesTable"
+         aria-expanded="false" aria-controls="group-of-rows-1">
+        <h3>Штрафы({{ simpleFinesCount }})<img src="{{ asset('img/arow_down.png') }}" width="30px"></h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col usersWithFinesTable collapse">
+        <table class="table table-striped">
+            <thead>
+            <th>
+                Логин
+            </th>
+            <th>
+                Дата и время
+            </th>
+            <th>
+                Компания
+            </th>
+            <th>
+                Участок
+            </th>
+            <th>
+                Штраф
+            </th>
+            <th>
+                Комментарий
+            </th>
+            <th>
+                Подтвердить
+            </th>
+            </thead>
+            <tbody>
+            {% for fine in attendancesForApproval %}
+                {% if  fine.fine != "manually deleted" %}
+                    <tr>
+                        <td>
+                            {{ fine.login }}
+                        </td>
+                        <td>
+                            {{ fine.dateTime|date('Y-m-d H:i:s') }}
+                        </td>
+                        <td>
+                            {% if fine.login|trim|slice(2,1)=='-' %}
+                                {% set companyPerfix = fine.login|trim|slice(0,2) %}
 
-                    {% if companyPerfix =='gs' %}
-                        GSR
-                    {% endif %}
-                    {% if companyPerfix =='sm' %}
-                        SMG
-                    {% endif %}
-                    {% if companyPerfix =='rc' %}
-                        Realnaya Cifra
-                    {% endif %}
-                    {% if companyPerfix =='lt' %}
-                        Leader Team
-                    {% endif %}
-                    {% if companyPerfix =='pm' %}
-                        Premer-M
-                    {% endif %}
-                    {% if companyPerfix =='vp' %}
-                        Vremya Pervih
-                    {% endif %}
+                                {% if companyPerfix =='gs' %}
+                                    GSR
+                                {% endif %}
+                                {% if companyPerfix =='sm' %}
+                                    SMG
+                                {% endif %}
+                                {% if companyPerfix =='rc' %}
+                                    Realnaya Cifra
+                                {% endif %}
+                                {% if companyPerfix =='lt' %}
+                                    Leader Team
+                                {% endif %}
+                                {% if companyPerfix =='pm' %}
+                                    Premer-M
+                                {% endif %}
+                                {% if companyPerfix =='vp' %}
+                                    Vremya Pervih
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ fine.sector }}
+                        </td>
+                        <td>
+                            {{ fine.fine }}
+                        </td>
+                        <td>
+                            {{ fine.comment }}
+                        </td>
+                        <td>
+                            <a href="/approveFine/{{ fine.id }}" class="btn btn-sm btn-primary">+</a>
+                            <a href="/declineFine/{{ fine.id }}" class="btn btn-sm btn-primary">-</a>
+                        </td>
+                    </tr>
                 {% endif %}
-            </td>
-            <td>
-                {{ fine.sector }}
-            </td>
-            <td>
-                {{ fine.fine }}
-            </td>
-            <td>
-                {{ fine.comment }}
-            </td>
-            <td>
-                <a href="/approveFine/{{ fine.id }}" class="btn btn-sm btn-primary">+</a>
-                <a href="/declineFine/{{ fine.id }}" class="btn btn-sm btn-primary">-</a>
-            </td>
-        </tr>
-    {% endfor %}
+            {% endfor %}
 
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="row">
+    <div  class="clickable m-2 col-11 text-left" data-toggle="collapse" data-target=".usersManuallyDeletedTable"
+          aria-expanded="false" aria-controls="group-of-rows-1">
+        <h3>Удалены с участка({{ manuallyDeletedFinesCount }})<img src="{{ asset('img/arow_down.png') }}" width="30px"></h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col usersManuallyDeletedTable collapse">
+        <table class="table table-striped">
+            <thead>
+            <th>
+                Логин
+            </th>
+            <th>
+                Дата и время
+            </th>
+            <th>
+                Компания
+            </th>
+            <th>
+                Участок
+            </th>
+            <th>
+                Штраф
+            </th>
+            <th>
+                Комментарий
+            </th>
+            <th>
+                Подтвердить
+            </th>
+            </thead>
+            <tbody>
+            {% for fine in attendancesForApproval %}
+                {% if  fine.fine == "manually deleted" %}
+                    <tr>
+                        <td>
+                            {{ fine.login }}
+                        </td>
+                        <td>
+                            {{ fine.dateTime|date('Y-m-d H:i:s') }}
+                        </td>
+                        <td>
+                            {% if fine.login|trim|slice(2,1)=='-' %}
+                                {% set companyPerfix = fine.login|trim|slice(0,2) %}
+
+                                {% if companyPerfix =='gs' %}
+                                    GSR
+                                {% endif %}
+                                {% if companyPerfix =='sm' %}
+                                    SMG
+                                {% endif %}
+                                {% if companyPerfix =='rc' %}
+                                    Realnaya Cifra
+                                {% endif %}
+                                {% if companyPerfix =='lt' %}
+                                    Leader Team
+                                {% endif %}
+                                {% if companyPerfix =='pm' %}
+                                    Premer-M
+                                {% endif %}
+                                {% if companyPerfix =='vp' %}
+                                    Vremya Pervih
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ fine.sector }}
+                        </td>
+                        <td>
+                            {{ fine.fine }}
+                        </td>
+                        <td>
+                            {{ fine.comment }}
+                        </td>
+                        <td>
+                            <a href="/approveFine/{{ fine.id }}" class="btn btn-sm btn-primary">+</a>
+                            <a href="/declineFine/{{ fine.id }}" class="btn btn-sm btn-primary">-</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
