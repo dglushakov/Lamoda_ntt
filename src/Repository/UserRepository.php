@@ -26,6 +26,7 @@ class UserRepository extends ServiceEntityRepository
             ->orWhere('u.roles LIKE :role')
             ->setParameter('shift', $shift)
             ->setParameter('role', '%ROLE_ADMIN%')
+            ->orderBy('u.username', 'ASC')
             ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->getResult()
