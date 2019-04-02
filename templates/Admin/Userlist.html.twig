@@ -11,84 +11,88 @@
             <div class="col-6">
                 <div class="h1 text-center">На участках</div>
             </div>
-            <div class="col-5">
+            <div class="col-6">
                 <div class="h1 text-center">Пользователи</div>
             </div>
         </div>
         <div class="row">
-
             <div class="col-6">
                 {% include 'inc/activeUsersTable.html.twig' %}
             </div>
-
-            <div class="col-6">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Пользователь</th>
-                        <th scope="col">Роль</th>
-                        <th scope="col">Участок</th>
-                        <th scope="col">Смена</th>
-                        <th scope="col">Ред.</th>
-                        <th scope="col">Удалить</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <div class="col-6 ">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-3 font-weight-bold">Пользователь</div>
+                        <div class="col-3 font-weight-bold">Роль</div>
+                        <div class="col-2 font-weight-bold">Участок</div>
+                        <div class="col-1 font-weight-bold">Смена</div>
+                        <div class="col-1 font-weight-bold">Ред.</div>
+                        <div class="col-1 font-weight-bold">Удалить</div>
+                    </div>
+                </div>
+                {% for key, role in constant('App\\Entity\\USER::USER_ROLES') %}
+                    <div class="row">
+                        <div class="clickable m-2 col-11 shadow-sm" data-toggle="collapse" data-target=".{{ role }}"
+                             aria-expanded="false" aria-controls="group-of-rows-1">
+                            <h3>{{ key }} <img src="{{ asset('img/arow_down.png') }}" width="30px"></h3>
+                        </div>
+                    </div>
                     {% for user in users %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>
-                                {{ user.username }}
-                            </td>
-                            <td>
-                                {% for role in user.roles %}
-                                    {% if role == 'ROLE_ADMIN' %}
-                                        Admin
-                                    {% elseif role =='ROLE_SECTOR_MANAGER'%}
-                                        Sector manager
-                                    {% elseif role =='ROLE_PEEP' %}
-                                        Peep
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {{ user.sector }}
-                            </td>
-                            <td>
-                                {{ user.shift }}
-                            </td>
-                            <td>
-                                <a href="/userlist/edit/{{ user.id }}" class="btn btn-info btn-sm"><img alt="edit" width="20px" src="{{ asset('img/edit.png') }}"></a>
-                            </td>
-                            <td>
-                                <a href="#" data-href="/userlist/delete/{{ user.id }}" data-toggle="modal"
-                                   data-target="#confirm-delete" class="btn btn-sm delete-type">
-                                    <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
-                                </a>
-                                {% include 'inc/deleteConfirmationModal.html.twig' %}
-                            </td>
+                        {% if user.roles[0]==role %}
+                            <div class="row {{ role }} collapse bg-light">
 
-                        </tr>
+                                <div class="col-3">
+                                    {{ user.username }}
+                                </div>
+                                <div class="col-3 font-weight-bold">{{ key }}</div>
+                                <div class="col-2 font-weight-bold">{{ user.sector }}</div>
+                                <div class="col-1 font-weight-bold">{{ user.shift }}</div>
+                                <div class="col-1 font-weight-bold">
+                                    <a href="/userlist/edit/{{ user.id }}" class="btn btn-info btn-sm"><img
+                                                alt="edit"
+                                                width="20px"
+                                                src="{{ asset('img/edit.png') }}"></a>
+                                </div>
+                                <div class="col-1 font-weight-bold">
+                                    <a href="#" data-href="/userlist/delete/{{ user.id }}" data-toggle="modal"
+                                       data-target="#confirm-delete" class="btn btn-sm delete-type">
+                                        <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        {% endif %}
                     {% endfor %}
+                {% endfor %}
+                {% include 'inc/deleteConfirmationModal.html.twig' %}
 
-                    <tr>
-                        <td colspan="8">
+                <div class="row">
+                    <div class="col mb-5">
+
+                    </div>
+                </div>
+                <div class="container bg-light">
+                <div class="row">
+                    <div class="col">
+                        <h4>Добавление нового пользователя</h4>
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div class="col">
                             {% form_theme addUserForm 'bootstrap_4_horizontal_layout.html.twig' %}
                             {{ form_start(addUserForm) }}
                             {{ form_widget(addUserForm) }}
                             <input type="submit" class="btn btn-success" value="Add new"/>
                             {{ form_end(addUserForm) }}
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
 
-                    </tbody>
-                </table>
+                </div>
+
             </div>
-
         </div>
-
-
     </div>
 
 {% endblock %}

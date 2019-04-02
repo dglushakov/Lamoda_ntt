@@ -57,6 +57,7 @@ class User implements UserInterface
     const USER_ROLES=[
         'Admin'=>'ROLE_ADMIN',
         'Peep'=>'ROLE_PEEP',
+        'Sector manager'=>'ROLE_SECTOR_MANAGER',
     ];
 
     /**
