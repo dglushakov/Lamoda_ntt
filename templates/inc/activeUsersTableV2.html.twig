@@ -1,0 +1,318 @@
+<div class="container">
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col border-right">
+            OPS PERSONAL
+        </div>
+        <div class="col border-right">
+            TOTAL
+        </div>
+        <div class="col">
+            72
+        </div>
+    </div>
+    <div class="row bg-dark text-white">
+        <div class="col bg-white border-right">
+        </div>
+        <div class="col border-right">
+            INBOUND
+        </div>
+        <div class="col">
+            {% set inboundTotal = usersInSectors['UNPACK']['total']+
+                                    usersInSectors['IN']['total']+
+                                    usersInSectors['RET']['total']+
+                                    usersInSectors['PUT_M1']['total']+
+                                    usersInSectors['PUT_M2']['total'] %}
+            {{ inboundTotal }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            UNPACK
+        </div>
+        <div class="col">
+            {{ usersInSectors['UNPACK']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            IN
+        </div>
+        <div class="col">
+            {{ usersInSectors['IN']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            RET
+        </div>
+        <div class="col">
+            {{ usersInSectors['RET']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            PUT_M1
+        </div>
+        <div class="col">
+            {{ usersInSectors['PUT_M1']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            PUT_M2
+        </div>
+        <div class="col">
+            {{ usersInSectors['PUT_M2']['total'] }}
+        </div>
+    </div>
+
+    <div class="row bg-dark text-white">
+        <div class="col bg-white border-right">
+        </div>
+        <div class="col border-right">
+            OUTBOUND
+        </div>
+        <div class="col">
+            {% set outboundTotal = usersInSectors['PICK_M1']['total']+
+                usersInSectors['PICK_M2']['total']+
+                usersInSectors['PACK_MB']['total']+
+                usersInSectors['SORT']['total']+
+                usersInSectors['LOAD']['total'] %}
+            {{ outboundTotal }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            PICK_M1
+        </div>
+        <div class="col">
+            {{ usersInSectors['PICK_M1']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            PICK_M2
+        </div>
+        <div class="col">
+            {{ usersInSectors['PICK_M2']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            PACK_MB
+        </div>
+        <div class="col">
+            {{ usersInSectors['PACK_MB']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            PACK_IS
+        </div>
+        <div class="col">
+            {{ usersInSectors['PACK_IS']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            SORT
+        </div>
+        <div class="col">
+            {{ usersInSectors['SORT']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            LOAD
+        </div>
+        <div class="col">
+            {{ usersInSectors['LOAD']['total'] }}
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col border-right">
+            PUP PORTERS
+        </div>
+        <div class="col border-right">
+            TOTAL
+        </div>
+        <div class="col">
+            {{ usersInSectors['PUP_porter']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            PUP porter
+        </div>
+        <div class="col">
+            {{ usersInSectors['PUP_porter']['total'] }}
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col border-right">
+            SPECIAL ARIAS
+        </div>
+        <div class="col border-right">
+            TOTAL
+        </div>
+        <div class="col">
+            {{ usersInSectors['CAD_IN']['total']+usersInSectors['QUALITY']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            CAD_IN
+        </div>
+        <div class="col">
+            {{ usersInSectors['CAD_IN']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            QUALITY
+        </div>
+        <div class="col">
+            {{ usersInSectors['QUALITY']['total'] }}
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col border-right">
+            INDITEX
+        </div>
+        <div class="col border-right">
+            TOTAL
+        </div>
+        <div class="col">
+            {{ usersInSectors['INDITEX']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            INDITEX
+        </div>
+        <div class="col">
+            {{ usersInSectors['INDITEX']['total'] }}
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col border-right">
+            JEWELRY
+        </div>
+        <div class="col border-right">
+            TOTAL
+        </div>
+        <div class="col">
+            {{ usersInSectors['JEWELRY']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            JEWELRY
+        </div>
+        <div class="col">
+            {{ usersInSectors['JEWELRY']['total'] }}
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col border-right">
+            MAIN
+        </div>
+        <div class="col border-right">
+            TOTAL
+        </div>
+        <div class="col">
+            {{ usersInSectors['MAIN']['total'] }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col">
+            MAIN
+        </div>
+        <div class="col">
+            {{ usersInSectors['MAIN']['total'] }}
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered mb-4">
+        <div class="col border-right">
+            NTT PERSONAL
+        </div>
+        <div class="col border-right">
+            GRAND TOTAL
+        </div>
+        <div class="col">
+            {% set grandTotal = inboundTotal+outboundTotal+usersInSectors['PUP_porter']['total']
+             +usersInSectors['CAD_IN']['total']+usersInSectors['QUALITY']['total']
+                +usersInSectors['INDITEX']['total']+usersInSectors['JEWELRY']['total']+usersInSectors['MAIN']['total']%}
+            {{ grandTotal }}
+        </div>
+    </div>
+</div>
