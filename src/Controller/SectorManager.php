@@ -21,7 +21,8 @@ class SectorManager extends AbstractController
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 //        $attendances = $attendanceRepo->findAll();
         //$attendances = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
-        $attendances = $attendanceRepo->findUsersOnSector($this->getUser()->getSector());
+        //$attendances = $attendanceRepo->findUsersOnSector($this->getUser()->getSector());
+        $attendances = $attendanceRepo->findUsersOnSectorExceptManuallyDeleted($this->getUser()->getSector());
         //TODO использовать другую выборку
 
         $attendancesOutput=[];

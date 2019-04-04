@@ -1,3 +1,13 @@
+{% set outboundTotal = usersInSectors['PICK_M1']['total']+
+    usersInSectors['PICK_M2']['total']+
+    usersInSectors['PACK_MB']['total']+
+    usersInSectors['SORT']['total']+
+    usersInSectors['LOAD']['total'] %}
+{% set inboundTotal = usersInSectors['UNPACK']['total']+
+    usersInSectors['IN']['total']+
+    usersInSectors['RET']['total']+
+    usersInSectors['PUT_M1']['total']+
+    usersInSectors['PUT_M2']['total'] %}
 <div class="container">
     <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
         <div class="col border-right">
@@ -7,7 +17,7 @@
             TOTAL
         </div>
         <div class="col">
-            72
+            {{ inboundTotal+outboundTotal }}
         </div>
     </div>
     <div class="row bg-dark text-white">
@@ -17,11 +27,7 @@
             INBOUND
         </div>
         <div class="col">
-            {% set inboundTotal = usersInSectors['UNPACK']['total']+
-                                    usersInSectors['IN']['total']+
-                                    usersInSectors['RET']['total']+
-                                    usersInSectors['PUT_M1']['total']+
-                                    usersInSectors['PUT_M2']['total'] %}
+
             {{ inboundTotal }}
         </div>
     </div>
@@ -88,11 +94,7 @@
             OUTBOUND
         </div>
         <div class="col">
-            {% set outboundTotal = usersInSectors['PICK_M1']['total']+
-                usersInSectors['PICK_M2']['total']+
-                usersInSectors['PACK_MB']['total']+
-                usersInSectors['SORT']['total']+
-                usersInSectors['LOAD']['total'] %}
+
             {{ outboundTotal }}
         </div>
     </div>
@@ -310,8 +312,8 @@
         </div>
         <div class="col">
             {% set grandTotal = inboundTotal+outboundTotal+usersInSectors['PUP_porter']['total']
-             +usersInSectors['CAD_IN']['total']+usersInSectors['QUALITY']['total']
-                +usersInSectors['INDITEX']['total']+usersInSectors['JEWELRY']['total']+usersInSectors['MAIN']['total']%}
+                +usersInSectors['CAD_IN']['total']+usersInSectors['QUALITY']['total']
+                +usersInSectors['INDITEX']['total']+usersInSectors['JEWELRY']['total']+usersInSectors['MAIN']['total'] %}
             {{ grandTotal }}
         </div>
     </div>
