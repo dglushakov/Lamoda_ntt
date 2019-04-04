@@ -100,7 +100,6 @@ class AttendanceRepository extends ServiceEntityRepository
             ->setParameter('dateTime', new \DateTime('-48 hours'))
             ->setParameter('sector',$sector)
             ->setParameter('deletedFine',"manually deleted")
-            ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
             ->getQuery()
             ->getResult();
