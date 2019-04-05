@@ -118,7 +118,7 @@ class AttendanceController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $attendanceWitFine = $attendanceRepo->find($fineId);
-        $attendanceWitFine->setFine(NULL);
+        $attendanceWitFine->setFineApproved(false);
 
         $entityManager->persist($attendanceWitFine);
         $entityManager->flush();
@@ -136,10 +136,17 @@ class AttendanceController extends AbstractController
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $attendance = $attendanceRepo->find($attendanceId);
-        $attendance->setFine("manually deleted");
 
-        $entityManager->persist($attendance);
+
+        $simulatedExit = clone $attendance;
+        $simulatedExit->setDateTime(new \DateTime());
+        $simulatedExit->setDirection('exit');
+        $simulatedExit->setFine('manually deleted');
+        $simulatedExit->setComment(NULL);
+        $simulatedExit->setFineApproved(NULL);
+        $entityManager->persist($simulatedExit);
         $entityManager->flush();
+
 
         $user = $this->getUser();
         $userRoles=$user->getRoles();
@@ -163,14 +170,10 @@ class AttendanceController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
-//        $attendancestoExit = $attendanceRepo->findActiveUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
         $attendancestoExit = $attendanceRepo->findActiveUsersOnSector($this->getUser()->getSector());
 
-
         foreach ($attendancestoExit as $forceExit){
-//            $this->AddAttendance($forceExit->getLogin());
             $attendance = clone $forceExit;
-
             $attendance->setDateTime(new \DateTime());
             $attendance->setDirection('exit');
             $attendance->setFine(NULL);
@@ -179,17 +182,7 @@ class AttendanceController extends AbstractController
             $entityManager->persist($attendance);
         }
 
-
-
         $entityManager->flush();
-
-
-
-
-
-
-
-
         return $this->redirectToRoute('SMworkInterface');
     }
 

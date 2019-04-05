@@ -118,19 +118,19 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findUsersOnSectorExceptManuallyDeleted($sector)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.dateTime > :dateTime')
-            ->andWhere('a.sector = :sector')
-            ->andWhere('a.fine != :deletedFine OR a.fine IS NULL')
-            ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('sector',$sector)
-            ->setParameter('deletedFine',"manually deleted")
-            ->addOrderBy('a.dateTime', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
+//    public function findUsersOnSectorExceptManuallyDeleted($sector)
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->andWhere('a.sector = :sector')
+//            ->andWhere('a.fine != :deletedFine OR a.fine IS NULL')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->setParameter('sector',$sector)
+//            ->setParameter('deletedFine',"manually deleted")
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//    }
 
 
     public function findUsersOnAllSectorsInShift($shift)
