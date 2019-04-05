@@ -173,6 +173,9 @@ class AttendanceController extends AbstractController
 
             $attendance->setDateTime(new \DateTime());
             $attendance->setDirection('exit');
+            $attendance->setFine(NULL);
+            $attendance->setComment(NULL);
+            $attendance->setFineApproved(NULL);
             $entityManager->persist($attendance);
         }
 
