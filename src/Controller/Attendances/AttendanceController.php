@@ -160,6 +160,7 @@ class AttendanceController extends AbstractController
     public function finishShift()
     {
         $this->denyAccessUnlessGranted('ROLE_ATTENDANCE_DELETE');
+        $entityManager = $this->getDoctrine()->getManager();
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
 //        $attendancestoExit = $attendanceRepo->findActiveUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
@@ -167,8 +168,23 @@ class AttendanceController extends AbstractController
 
 
         foreach ($attendancestoExit as $forceExit){
-            $this->AddAttendance($forceExit->getLogin());
+//            $this->AddAttendance($forceExit->getLogin());
+            $attendance = clone $forceExit;
+
+            $attendance->setDateTime(new \DateTime());
+            $attendance->setDirection('exit');
+            $entityManager->persist($attendance);
         }
+
+
+
+        $entityManager->flush();
+
+
+
+
+
+
 
 
         return $this->redirectToRoute('SMworkInterface');
