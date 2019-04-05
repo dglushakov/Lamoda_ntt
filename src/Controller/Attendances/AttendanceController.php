@@ -162,7 +162,8 @@ class AttendanceController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ATTENDANCE_DELETE');
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
-        $attendancestoExit = $attendanceRepo->findActiveUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
+//        $attendancestoExit = $attendanceRepo->findActiveUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
+        $attendancestoExit = $attendanceRepo->findActiveUsersOnSector($this->getUser()->getSector());
 
 
         foreach ($attendancestoExit as $forceExit){

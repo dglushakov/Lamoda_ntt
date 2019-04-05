@@ -63,6 +63,33 @@ class AttendanceRepository extends ServiceEntityRepository
     }
 
 
+    public function findActiveUsersOnSector($sector)
+    {
+
+        $attendances=$this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->andWhere('a.sector = :sector')
+            ->setParameter('dateTime', new \DateTime('-48 hours'))
+            ->setParameter('sector',$sector)
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        $attendancesOutput=[];
+        $lastLogin ="";
+        foreach ($attendances as $attendance ) {
+            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
+                $attendancesOutput[]=$attendance;
+            }
+            $lastLogin=$attendance->getLogin();
+        }
+
+
+        $result = $attendancesOutput;
+        return $result;
+    }
+
     public function findUsersOnSectorInShift($sector, $shift)
     {
         return $this->createQueryBuilder('a')
