@@ -52,6 +52,7 @@ class User implements UserInterface
         'vp'=>'Vremya Pervih',
         'mk'=>'MK Expert',
         'ar'=>'Arcada',
+        'lamoda'=>'Lamoda',
 
     ];
     const USER_ROLES=[

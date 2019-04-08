@@ -8,313 +8,292 @@
     usersInSectors['RET']['total']+
     usersInSectors['PUT_M1']['total']+
     usersInSectors['PUT_M2']['total'] %}
+{{ dump(usersInSectors) }}
 <div class="container">
-    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
-        <div class="col border-right">
-            OPS PERSONAL
-        </div>
-        <div class="col border-right">
-            TOTAL
-        </div>
-        <div class="col">
-            {{ inboundTotal+outboundTotal }}
-        </div>
-    </div>
-    <div class="row bg-dark text-white">
-        <div class="col bg-white border-right">
-        </div>
-        <div class="col border-right">
-            INBOUND
-        </div>
-        <div class="col">
-
-            {{ inboundTotal }}
-        </div>
-    </div>
     <div class="row">
-        <div class="col">
-
+        <div class="col-4">
         </div>
-        <div class="col bg-light">
-            UNPACK
-        </div>
-        <div class="col bg-light">
-            {{ usersInSectors['UNPACK']['total'] }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-
-        </div>
-        <div class="col">
-            IN
-        </div>
-        <div class="col">
-            {{ usersInSectors['IN']['total'] }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-
-        </div>
-        <div class="col bg-light">
-            RET
-        </div>
-        <div class="col bg-light">
-            {{ usersInSectors['RET']['total'] }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-
-        </div>
-        <div class="col">
-            PUT_M1
-        </div>
-        <div class="col">
-            {{ usersInSectors['PUT_M1']['total'] }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-
-        </div>
-        <div class="col bg-light">
-            PUT_M2
-        </div>
-        <div class="col bg-light">
-            {{ usersInSectors['PUT_M2']['total'] }}
-        </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
+                {% if key != "lamoda" %}
+                    {{ key|upper }}
+                {% else %}
+                    {{ 'LMD' }}
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
 
-    <div class="row bg-dark text-white">
-        <div class="col bg-white border-right">
-        </div>
-        <div class="col border-right">
-            OUTBOUND
-        </div>
-        <div class="col">
 
-            {{ outboundTotal }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
+    <div class="row bg-dark text-white font-weight-bold">
+        <div class="col-2  border-right border-white border-bottom">OPS PERSONAL</div>
+        <div class="col-1  border-right border-white border-bottom">TOTAL</div>
+        <div class="col-1  border-right border-white border-bottom">{{ inboundTotal + outboundTotal }}</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
 
-        </div>
-        <div class="col bg-light">
-            PICK_M1
-        </div>
-        <div class="col bg-light">
-            {{ usersInSectors['PICK_M1']['total'] }}
-        </div>
+                1
+            </div>
+        {% endfor %}
     </div>
-    <div class="row">
-        <div class="col">
+    <div class="row text-white  border-right border-white border-bottom">
+        <div class="col-2"></div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom text-center">INBOUND</div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom">{{ inboundTotal }}</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
+                {{ usersInSectors['UNPACK'][key]+ usersInSectors['IN'][key] +usersInSectors['RET'][key]+ usersInSectors['PUT_M1'][key] +usersInSectors['PUT_M2'][key] }}
+            </div>
+        {% endfor %}
+    </div>
 
+    {% for opsArea in ['UNPACK', 'IN', 'RET', 'PUT_M1', 'PUT_M2'] %}
+        <div class="row border-white">
+            <div class="col-2"></div>
+            <div class="col-1">{{ opsArea }}</div>
+            <div class="col-1">{{ usersInSectors[opsArea]['total'] }}</div>
+            {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+                <div class="col ">
+                    {{ usersInSectors[opsArea][key] }}
+                </div>
+            {% endfor %}
         </div>
-        <div class="col">
-            PICK_M2
-        </div>
-        <div class="col">
-            {{ usersInSectors['PICK_M2']['total'] }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
+    {% endfor %}
 
-        </div>
-        <div class="col bg-light">
-            PACK_MB
-        </div>
-        <div class="col bg-light">
-            {{ usersInSectors['PACK_MB']['total'] }}
-        </div>
+    <div class="row text-white">
+        <div class="col-2  border-right border-white border-bottom"></div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom">OUTBOUND</div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom">{{ outboundTotal }}</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-white table-bordered">
+                {{ loop.index }}
+            </div>
+        {% endfor %}
     </div>
-    <div class="row">
-        <div class="col">
-
+    {% for opsArea in ['PICK_M1', 'PICK_M2', 'PACK_MB', 'SORT', 'LOAD'] %}
+        <div class="row border-white">
+            <div class="col-2"></div>
+            <div class="col-1">{{ opsArea }}</div>
+            <div class="col-1">{{ usersInSectors[opsArea]['total'] }}</div>
+            {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+                <div class="col ">
+                    {{ usersInSectors[opsArea][key] }}
+                </div>
+            {% endfor %}
         </div>
-        <div class="col">
-            PACK_IS
-        </div>
-        <div class="col">
-            {{ usersInSectors['PACK_IS']['total'] }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-
-        </div>
-        <div class="col bg-light">
-            SORT
-        </div>
-        <div class="col bg-light">
-            {{ usersInSectors['SORT']['total'] }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-
-        </div>
-        <div class="col">
-            LOAD
-        </div>
-        <div class="col">
-            {{ usersInSectors['LOAD']['total'] }}
-        </div>
-    </div>
-    <div class="row mb-2">
+    {% endfor %}
+    <div class="row mb-3">
         <div class="col"></div>
     </div>
+
     <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
-        <div class="col border-right">
+        <div class="col-2 border-right">
             PUP PORTERS
         </div>
-        <div class="col border-right">
+        <div class="col-1 border-right">
             TOTAL
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['PUP_porter']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ loop.index }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-2">
 
         </div>
-        <div class="col">
+        <div class="col-1">
             PUP porter
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['PUP_porter']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ loop.index }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row mb-2">
         <div class="col"></div>
     </div>
+
+
     <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
-        <div class="col border-right">
+        <div class="col-2 border-right">
             SPECIAL ARIAS
         </div>
-        <div class="col border-right">
+        <div class="col-1 border-right">
             TOTAL
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['CAD_IN']['total']+usersInSectors['QUALITY']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['CAD_IN'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-2">
 
         </div>
-        <div class="col bg-light">
+        <div class="col-1">
             CAD_IN
         </div>
-        <div class="col bg-light">
+        <div class="col-1">
             {{ usersInSectors['CAD_IN']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['CAD_IN'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-2">
 
         </div>
-        <div class="col">
+        <div class="col-1">
             QUALITY
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['QUALITY']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['QUALITY'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row mb-2">
         <div class="col"></div>
     </div>
+
     <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
-        <div class="col border-right">
+        <div class="col-2 border-right">
             INDITEX
         </div>
-        <div class="col border-right">
+        <div class="col-1 border-right">
             TOTAL
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['INDITEX']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['INDITEX'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-2">
 
         </div>
-        <div class="col">
+        <div class="col-1">
             INDITEX
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['INDITEX']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['INDITEX'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row mb-2">
         <div class="col"></div>
     </div>
+
     <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
-        <div class="col border-right">
+        <div class="col-2 border-right">
             JEWELRY
         </div>
-        <div class="col border-right">
+        <div class="col-1 border-right">
             TOTAL
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['JEWELRY']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['JEWELRY'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-2">
 
         </div>
-        <div class="col">
+        <div class="col-1">
             JEWELRY
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['JEWELRY']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['JEWELRY'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row mb-2">
         <div class="col"></div>
     </div>
+
     <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
-        <div class="col border-right">
+        <div class="col-2 border-right">
             MAIN
         </div>
-        <div class="col border-right">
+        <div class="col-1 border-right">
             TOTAL
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['MAIN']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['MAIN'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-2">
 
         </div>
-        <div class="col">
+        <div class="col-1">
             MAIN
         </div>
-        <div class="col">
+        <div class="col-1">
             {{ usersInSectors['MAIN']['total'] }}
         </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ usersInSectors['MAIN'][key] }}
+            </div>
+        {% endfor %}
     </div>
     <div class="row mb-2">
         <div class="col"></div>
     </div>
-    <div class="row bg-dark text-white font-weight-bold border-white table-bordered mb-4">
-        <div class="col border-right">
-            NTT PERSONAL
-        </div>
-        <div class="col border-right">
-            GRAND TOTAL
-        </div>
-        <div class="col">
-            {% set grandTotal = inboundTotal+outboundTotal+usersInSectors['PUP_porter']['total']
-                +usersInSectors['CAD_IN']['total']+usersInSectors['QUALITY']['total']
-                +usersInSectors['INDITEX']['total']+usersInSectors['JEWELRY']['total']+usersInSectors['MAIN']['total'] %}
-            {{ grandTotal }}
-        </div>
+
+
+
+    <div class="row  bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2">NTT PERSONAL</div>
+        <div class="col-1">GRAND TOTAL</div>
+        <div class="col">999</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col ">
+                {{ loop.index }}
+            </div>
+        {% endfor %}
     </div>
+
 </div>
