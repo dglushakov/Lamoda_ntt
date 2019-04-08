@@ -9,6 +9,7 @@
     usersInSectors['PUT_M1']['total']+
     usersInSectors['PUT_M2']['total'] %}
 {{ dump(usersInSectors) }}
+
 <div class="container">
     <div class="row">
         <div class="col-4">
@@ -31,8 +32,16 @@
         <div class="col-1  border-right border-white border-bottom">{{ inboundTotal + outboundTotal }}</div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
             <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
-
-                1
+                {{ usersInSectors['UNPACK'][key]+
+                usersInSectors['IN'][key]+
+                usersInSectors['RET'][key]+
+                usersInSectors['PUT_M1'][key]+
+                usersInSectors['PUT_M2'][key]+
+                usersInSectors['PICK_M1'][key]+
+                usersInSectors['PICK_M2'][key]+
+                usersInSectors['PACK_MB'][key]+
+                usersInSectors['SORT'][key]+
+                usersInSectors['LOAD'][key] }}
             </div>
         {% endfor %}
     </div>
@@ -42,7 +51,11 @@
         <div class="col-1 bg-dark  border-right border-white border-bottom">{{ inboundTotal }}</div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
             <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
-                {{ usersInSectors['UNPACK'][key]+ usersInSectors['IN'][key] +usersInSectors['RET'][key]+ usersInSectors['PUT_M1'][key] +usersInSectors['PUT_M2'][key] }}
+                {{ usersInSectors['UNPACK'][key]+
+                usersInSectors['IN'][key]+
+                usersInSectors['RET'][key]+
+                usersInSectors['PUT_M1'][key]+
+                usersInSectors['PUT_M2'][key] }}
             </div>
         {% endfor %}
     </div>
@@ -66,7 +79,11 @@
         <div class="col-1 bg-dark  border-right border-white border-bottom">{{ outboundTotal }}</div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
             <div class="col bg-dark text-white font-weight-bold border-white table-bordered">
-                {{ loop.index }}
+                {{ usersInSectors['PICK_M1'][key]+
+                usersInSectors['PICK_M2'][key]+
+                usersInSectors['PACK_MB'][key]+
+                usersInSectors['SORT'][key]+
+                usersInSectors['LOAD'][key] }}
             </div>
         {% endfor %}
     </div>
@@ -98,7 +115,7 @@
         </div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
             <div class="col ">
-                {{ loop.index }}
+                {{ usersInSectors['PUP_porter'][key] }}
             </div>
         {% endfor %}
     </div>
@@ -114,7 +131,7 @@
         </div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
             <div class="col ">
-                {{ loop.index }}
+                {{ usersInSectors['PUP_porter'][key] }}
             </div>
         {% endfor %}
     </div>
@@ -135,7 +152,7 @@
         </div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
             <div class="col ">
-                {{ usersInSectors['CAD_IN'][key] }}
+                {{ usersInSectors['CAD_IN'][key]+usersInSectors['QUALITY'][key] }}
             </div>
         {% endfor %}
     </div>
@@ -284,14 +301,23 @@
     </div>
 
 
+    {% set grandTotal=0 %}
+    {% for sector in constant('APP\\Entity\\USER::SECTORS_LIST') %}
+        {% set grandTotal=grandTotal+ usersInSectors[sector]['total'] %}
+
+    {% endfor %}
 
     <div class="row  bg-dark text-white font-weight-bold border-white table-bordered">
         <div class="col-2">NTT PERSONAL</div>
         <div class="col-1">GRAND TOTAL</div>
-        <div class="col">999</div>
+        <div class="col">{{ grandTotal }}</div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            {% set curProvTotal=0 %}
+            {% for sector in constant('APP\\Entity\\USER::SECTORS_LIST') %}
+                {% set curProvTotal=curProvTotal+usersInSectors[sector][key] %}
+            {% endfor %}
             <div class="col ">
-                {{ loop.index }}
+                {{ curProvTotal }}
             </div>
         {% endfor %}
     </div>
