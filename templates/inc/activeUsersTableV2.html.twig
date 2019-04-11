@@ -8,7 +8,6 @@
     usersInSectors['RET']['total']+
     usersInSectors['PUT_M1']['total']+
     usersInSectors['PUT_M2']['total'] %}
-{{ dump(usersInSectors) }}
 
 <div class="container">
     <div class="row">
@@ -88,12 +87,12 @@
         {% endfor %}
     </div>
     {% for opsArea in ['PICK_M1', 'PICK_M2', 'PACK_MB', 'SORT', 'LOAD'] %}
-        <div class="row border-white">
+        <div class="row border-white ">
             <div class="col-2"></div>
             <div class="col-1">{{ opsArea }}</div>
             <div class="col-1">{{ usersInSectors[opsArea]['total'] }}</div>
             {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
-                <div class="col ">
+                <div class="col">
                     {{ usersInSectors[opsArea][key] }}
                 </div>
             {% endfor %}
