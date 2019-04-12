@@ -1,6 +1,7 @@
 {% set outboundTotal = usersInSectors['PICK_M1']['total']+
     usersInSectors['PICK_M2']['total']+
     usersInSectors['PACK_MB']['total']+
+    usersInSectors['PACK_IS']['total']+
     usersInSectors['SORT']['total']+
     usersInSectors['LOAD']['total'] %}
 {% set inboundTotal = usersInSectors['UNPACK']['total']+
@@ -39,6 +40,7 @@
                 usersInSectors['PICK_M1'][key]+
                 usersInSectors['PICK_M2'][key]+
                 usersInSectors['PACK_MB'][key]+
+                usersInSectors['PACK_IS'][key]+
                 usersInSectors['SORT'][key]+
                 usersInSectors['LOAD'][key] }}
             </div>
@@ -81,12 +83,13 @@
                 {{ usersInSectors['PICK_M1'][key]+
                 usersInSectors['PICK_M2'][key]+
                 usersInSectors['PACK_MB'][key]+
+                usersInSectors['PACK_IS'][key]+
                 usersInSectors['SORT'][key]+
                 usersInSectors['LOAD'][key] }}
             </div>
         {% endfor %}
     </div>
-    {% for opsArea in ['PICK_M1', 'PICK_M2', 'PACK_MB', 'SORT', 'LOAD'] %}
+    {% for opsArea in ['PICK_M1', 'PICK_M2', 'PACK_MB', 'PACK_IS', 'SORT', 'LOAD'] %}
         <div class="row border-white ">
             <div class="col-2"></div>
             <div class="col-1">{{ opsArea }}</div>
