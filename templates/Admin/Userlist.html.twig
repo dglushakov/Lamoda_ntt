@@ -3,6 +3,18 @@
 {% block title %}
     Admin Interface
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#confirm-delete').on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+    </script>
+    <script src="{{ asset('js/inc/usersInsectorsInteractive.js') }}">
+    </script>
+{% endblock %}
+
 {% block body %}
 
     <div class="container-fluid">
@@ -17,7 +29,7 @@
         </div>
         <div class="row">
             <div class="col-7">
-                {% include 'inc/activeUsersTableV2.html.twig' %}
+                {% include 'inc/activeUsersTableV3.html.twig' %}
             </div>
 
             <div class="col-5 ">
@@ -98,11 +110,3 @@
 
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        $('#confirm-delete').on('show.bs.modal', function (e) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-        });
-    </script>
-{% endblock %}

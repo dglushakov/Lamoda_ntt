@@ -5,7 +5,10 @@ namespace App\Controller\Attendances;
 
 
 use App\Entity\Attendance;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AttendanceController extends AbstractController
@@ -184,6 +187,52 @@ class AttendanceController extends AbstractController
 
         $entityManager->flush();
         return $this->redirectToRoute('SMworkInterface');
+    }
+
+
+    /**
+     * @Route("/getUsersInSectorsQty", name="getUsersInSectorsQty")
+     */
+    public function getUsersInSectorsQty(){
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
+        $attendancesOutput = [];
+        $lastLogin = "";
+
+        $usersInSectorQty = [];
+        foreach (USER::SECTORS_LIST as $sector) {
+            $usersInSectorQty[$sector]['total'] = 0;
+            foreach (USER::PROVIDERS_LIST as $key => $value) {
+                $usersInSectorQty[$sector][$key] = 0;
+            }
+            $usersInSectorQty[$sector]['lamoda'] = 0;
+        }
+
+        foreach ($attendances as $attendance) {
+            if ($attendance->getLogin() != $lastLogin && $attendance->getDirection() == 'entrance') {
+                $attendancesOutput[] = $attendance;
+                if(isset($usersInSectorQty[$attendance->getSector()]['total'])){
+                    $usersInSectorQty[$attendance->getSector()]['total']++;
+                }
+                if (substr($attendance->getLogin(), 2, 1) == '-') {
+                    $providerPerfix = substr($attendance->getLogin(), 0, 2);
+                    if(array_key_exists($providerPerfix, USER::PROVIDERS_LIST)) {
+                        $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
+                    }else {
+                        if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
+                            $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                        }
+                    }
+                } else {
+                    if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
+                        $usersInSectorQty[$attendance->getSector()]['lamoda']++;
+                    }
+                }
+            }
+            $lastLogin = $attendance->getLogin();
+        }
+
+        return new JsonResponse($usersInSectorQty);
     }
 
 }

@@ -1,0 +1,95 @@
+{% set InboundArray = ['UNPACK', 'IN', 'RET', 'PUT_M1', 'PUT_M2'] %}
+{% set OutBoundArray = ['PICK_M1', 'PICK_M2', 'PACK_MB', 'PACK_IS', 'SORT', 'LOAD'] %}
+
+{{ dump(InboundArray) }}
+{{ dump(OutBoundArray) }}
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+        </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
+                {% if key != "lamoda" %}
+                    {{ key|upper }}
+                {% else %}
+                    {{ 'LMD' }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row bg-dark text-white font-weight-bold">
+        <div class="col-2  border-right border-white border-bottom">OPS PERSONAL</div>
+        <div class="col-1  border-right border-white border-bottom">TOTAL</div>
+        <div class="col-1  border-right border-white border-bottom" id="OpsPersonalTotal">{{ 'x' }}</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom" id="InboundOutbound{{ key }}Total">
+                {{ 'x' }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row text-white  border-right border-white border-bottom">
+        <div class="col-2"></div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom text-center">INBOUND</div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom">{{ 0 }}</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
+                {{ 'x' }}
+            </div>
+        {% endfor %}
+    </div>
+
+    {% for opsArea in InboundArray %}
+        <div class="row border-white">
+            <div class="col-2"></div>
+            <div class="col-1">{{ opsArea }}</div>
+            <div class="col-1" id="{{ opsArea~'total' }}"></div>
+            {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+                <div class="col" id = "{{ opsArea~key }}"></div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <div class="row text-white">
+        <div class="col-2  border-right border-white border-bottom"></div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom">OUTBOUND</div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom">{{ 'x' }}</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-white table-bordered">
+                {{ 'x' }}
+            </div>
+        {% endfor %}
+    </div>
+    {% for opsArea in OutBoundArray %}
+        <div class="row border-white ">
+            <div class="col-2"></div>
+            <div class="col-1">{{ opsArea }}</div>
+            <div class="col-1" id="{{ opsArea~'total' }}"></div>
+            {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+                <div class="col" id = "{{ opsArea~key }}"></div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <div class="row mb-3">
+        <div class="col"></div>
+    </div>
+
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2 border-right">
+            PUP PORTERS
+        </div>
+        <div class="col-1 border-right">
+            TOTAL
+        </div>
+        <div class="col-1" id="{{ 'PUP_porter'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col" id = "{{ 'PUP_porter'~key }}"></div>
+        {% endfor %}
+    </div>
+
+
+
+
+</div>
