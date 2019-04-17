@@ -22,7 +22,7 @@ class AttendanceController extends AbstractController
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $lastLoginAttendance = $attendanceRepo->findOneBy(['login' => $login, 'sector'=>$this->getUser()->getSector(),], ['dateTime' => 'DESC']);
 
-        $login = trim($login);
+        $login = trim(strtolower($login));
         $attendance = new Attendance();
         $attendance->setLogin($login);
         $attendance->setDateTime(new \DateTime());
