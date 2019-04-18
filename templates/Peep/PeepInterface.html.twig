@@ -3,12 +3,50 @@
 {% block title %}
     PeepInterface
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+            $("#inputLogin").focus();
+            $("#inputLogin").keydown(function (event) {
+
+                if (event.keyCode == 9) {
+                    $(this).prop('disabled', true);
+                    window.location.href = '/attendance/new/' + $('#inputLogin').val();
+                    event.preventDefault();
+                }
+                if (event.keyCode == 13) {
+                    $(this).val('');
+                }
+
+            });
+
+            $("#inputLogin").keyup(function (event) {
+                if (/[а-я]/i.test($(this).val())) {
+
+                    $(this).val('');
+                    alert('Ввод кириллицы запрещен!');
+                }
+            });
+
+
+            $('#confirm-delete').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            });
+
+        });
+    </script>
+    <script src="{{ asset('js/inc/usersInsectorsInteractive.js') }}">
+    </script>
+{% endblock %}
 {% block body %}
     <div class="container-fluid">
         {% include 'inc/topNavbar.html.twig' %}
         <div class="row">
             <div class="col-6">
-                {% include 'inc/activeUsersTable.html.twig' %}
+                {% include 'inc/activeUsersTableV3.html.twig' %}
             </div>
             <div class="col">
                 <div class="col">
@@ -89,38 +127,3 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-
-    <script>
-        $(document).ready(function () {
-            $("#inputLogin").focus();
-            $("#inputLogin").keydown(function (event) {
-
-                if (event.keyCode == 9) {
-                    $(this).prop('disabled', true);
-                    window.location.href = '/attendance/new/' + $('#inputLogin').val();
-                    event.preventDefault();
-                }
-                if (event.keyCode == 13) {
-                    $(this).val('');
-                }
-
-            });
-
-            $("#inputLogin").keyup(function (event) {
-                if (/[а-я]/i.test($(this).val())) {
-
-                    $(this).val('');
-                    alert('Ввод кириллицы запрещен!');
-                }
-            });
-
-
-            $('#confirm-delete').on('show.bs.modal', function (e) {
-                $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-            });
-
-        });
-    </script>
-{% endblock %}
