@@ -1,9 +1,6 @@
 {% set InboundArray = ['UNPACK', 'IN', 'RET', 'PUT_M1', 'PUT_M2'] %}
 {% set OutBoundArray = ['PICK_M1', 'PICK_M2', 'PACK_MB', 'PACK_IS', 'SORT', 'LOAD'] %}
 
-{{ dump(InboundArray) }}
-{{ dump(OutBoundArray) }}
-
 <div class="container">
     <div class="row">
         <div class="col-4">
@@ -22,10 +19,10 @@
     <div class="row bg-dark text-white font-weight-bold">
         <div class="col-2  border-right border-white border-bottom">OPS PERSONAL</div>
         <div class="col-1  border-right border-white border-bottom">TOTAL</div>
-        <div class="col-1  border-right border-white border-bottom" id="OpsPersonalTotal">{{ 'x' }}</div>
+        <div class="col-1  border-right border-white border-bottom" id="{{ 'OPS_PERSONAL'~'total' }}"></div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
-            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom" id="InboundOutbound{{ key }}Total">
-                {{ 'x' }}
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom" id="{{ 'OPS_PERSONAL'~key }}">
+
             </div>
         {% endfor %}
     </div>
@@ -33,9 +30,9 @@
     <div class="row text-white  border-right border-white border-bottom">
         <div class="col-2"></div>
         <div class="col-1 bg-dark  border-right border-white border-bottom text-center">INBOUND</div>
-        <div class="col-1 bg-dark  border-right border-white border-bottom">{{ 0 }}</div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom" id="{{ 'INBOUND'~'total' }}">{{ 0 }}</div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
-            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom">
+            <div class="col bg-dark text-white font-weight-bold border-right border-white border-bottom" id="{{ 'INBOUND'~key }}">
                 {{ 'x' }}
             </div>
         {% endfor %}
@@ -55,9 +52,9 @@
     <div class="row text-white">
         <div class="col-2  border-right border-white border-bottom"></div>
         <div class="col-1 bg-dark  border-right border-white border-bottom">OUTBOUND</div>
-        <div class="col-1 bg-dark  border-right border-white border-bottom">{{ 'x' }}</div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom" id="{{ 'OUTBOUND'~'total' }}">{{ 'x' }}</div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
-            <div class="col bg-dark text-white font-weight-bold border-white table-bordered">
+            <div class="col bg-dark text-white font-weight-bold border-white table-bordered" id="{{ 'OUTBOUND'~key }}">
                 {{ 'x' }}
             </div>
         {% endfor %}
@@ -83,13 +80,167 @@
         <div class="col-1 border-right">
             TOTAL
         </div>
-        <div class="col-1" id="{{ 'PUP_porter'~'total' }}"></div>
+        <div class="col-1 {{ 'PUP_porter'~'total' }}"></div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
-            <div class="col" id = "{{ 'PUP_porter'~key }}"></div>
+            <div class="col {{ 'PUP_porter'~key }}"></div>
         {% endfor %}
     </div>
+    <div class="row">
+        <div class="col-2 border-right">
 
+        </div>
+        <div class="col-1 border-right">
+            PUP Porter
+        </div>
+        <div class="col-1 {{ 'PUP_porter'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'PUP_porter'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
 
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2 border-right">
+            SPECIAL ARIAS
+        </div>
+        <div class="col-1 border-right">
+            TOTAL
+        </div>
+        <div class="col-1" id="{{ 'SPECIAL_ARIAS'~'total' }}">
+            {{ 'x' }}
+        </div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col" id="{{ 'SPECIAL_ARIAS'~key }}">
+                {{ 'x' }}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-2">
+
+        </div>
+        <div class="col-1">
+            CAD_IN
+        </div>
+        <div class="col-1" id="{{ 'CAD_IN'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col" id="{{ 'CAD_IN'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-2">
+
+        </div>
+        <div class="col-1">
+            QUALITY
+        </div>
+        <div class="col-1" id="{{ 'QUALITY'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col " id="{{ 'QUALITY'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2 border-right">
+            INDITEX
+        </div>
+        <div class="col-1 border-right">
+            TOTAL
+        </div>
+        <div class="col-1 {{ 'INDITEX'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'INDITEX'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-2 border-right">
+
+        </div>
+        <div class="col-1 border-right">
+            INDITEX
+        </div>
+        <div class="col-1 {{ 'INDITEX'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'INDITEX'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2 border-right">
+            JEWELRY
+        </div>
+        <div class="col-1 border-right">
+            TOTAL
+        </div>
+        <div class="col-1 {{ 'JEWELRY'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'JEWELRY'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-2 border-right">
+
+        </div>
+        <div class="col-1 border-right">
+            JEWELRY
+        </div>
+        <div class="col-1 {{ 'JEWELRY'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'JEWELRY'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2 border-right">
+            MAIN
+        </div>
+        <div class="col-1 border-right">
+            TOTAL
+        </div>
+        <div class="col-1 {{ 'MAIN'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'MAIN'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-2 border-right">
+
+        </div>
+        <div class="col-1 border-right">
+            MAIN
+        </div>
+        <div class="col-1 {{ 'MAIN'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'MAIN'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2 border-right">
+            NTT PERSONAL
+        </div>
+        <div class="col-1 border-right">
+            GRAND TOTAL
+        </div>
+        <div class="col-1 {{ 'NTT_PERSONAL'~'total' }}">x</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'NTT_PERSONAL'~key }}">x</div>
+        {% endfor %}
+    </div>
 
 
 </div>

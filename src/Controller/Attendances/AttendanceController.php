@@ -232,6 +232,62 @@ class AttendanceController extends AbstractController
             $lastLogin = $attendance->getLogin();
         }
 
+        $usersInSectorQty['SPECIAL_ARIAS']['total']=$usersInSectorQty['CAD_IN']['total']+$usersInSectorQty['QUALITY']['total'];
+        $usersInSectorQty['OUTBOUND']['total']=
+            $usersInSectorQty['PICK_M1']['total']+
+            $usersInSectorQty['PICK_M2']['total']+
+            $usersInSectorQty['PACK_MB']['total']+
+            $usersInSectorQty['PACK_IS']['total']+
+            $usersInSectorQty['SORT']['total']+
+            $usersInSectorQty['LOAD']['total'];
+        $usersInSectorQty['INBOUND']['total']=
+            $usersInSectorQty['UNPACK']['total']+
+            $usersInSectorQty['IN']['total']+
+            $usersInSectorQty['RET']['total']+
+            $usersInSectorQty['PUT_M1']['total']+
+            $usersInSectorQty['PUT_M2']['total'];
+
+        $usersInSectorQty['OPS_PERSONAL']['total']=$usersInSectorQty['OUTBOUND']['total']+$usersInSectorQty['INBOUND']['total'];
+        $usersInSectorQty['NTT_PERSONAL']['total']=
+            $usersInSectorQty['OPS_PERSONAL']['total']+
+            $usersInSectorQty['PUP_porter']['total']+
+            $usersInSectorQty['SPECIAL_ARIAS']['total']+
+            $usersInSectorQty['INDITEX']['total']+
+            $usersInSectorQty['JEWELRY']['total']+
+            $usersInSectorQty['MAIN']['total'];
+
+        foreach (USER::PROVIDERS_LIST as $key => $value) {
+            $usersInSectorQty['SPECIAL_ARIAS'][$key]=$usersInSectorQty['CAD_IN'][$key]+$usersInSectorQty['QUALITY'][$key];
+
+            $usersInSectorQty['OUTBOUND'][$key]=
+                $usersInSectorQty['PICK_M1'][$key]+
+                $usersInSectorQty['PICK_M2'][$key]+
+                $usersInSectorQty['PACK_MB'][$key]+
+                $usersInSectorQty['PACK_IS'][$key]+
+                $usersInSectorQty['SORT'][$key]+
+                $usersInSectorQty['LOAD'][$key];
+
+            $usersInSectorQty['INBOUND'][$key]=
+                $usersInSectorQty['UNPACK'][$key]+
+                $usersInSectorQty['IN'][$key]+
+                $usersInSectorQty['RET'][$key]+
+                $usersInSectorQty['PUT_M1'][$key]+
+                $usersInSectorQty['PUT_M2'][$key];
+
+            $usersInSectorQty['OPS_PERSONAL'][$key]=
+                $usersInSectorQty['OUTBOUND'][$key]+
+                $usersInSectorQty['INBOUND'][$key];
+
+            $usersInSectorQty['NTT_PERSONAL'][$key]=
+                $usersInSectorQty['OPS_PERSONAL'][$key]+
+                $usersInSectorQty['PUP_porter'][$key]+
+                $usersInSectorQty['SPECIAL_ARIAS'][$key]+
+                $usersInSectorQty['INDITEX'][$key]+
+                $usersInSectorQty['JEWELRY'][$key]+
+                $usersInSectorQty['MAIN'][$key];
+        }
+
+
         return new JsonResponse($usersInSectorQty);
     }
 

@@ -20,6 +20,10 @@ $(document).ready(function () {
                         console.log(index+company, value[company])
                         $('#'+index+company).html(value[company]);
                     }
+                    for (company in value) {
+                        console.log(index+company, value[company])
+                        $('.'+index+company).html(value[company]);
+                    }
 
                     // console.log(value['gs']);
                     // console.log(data['PACK_IS']['lamoda']);
@@ -30,7 +34,7 @@ $(document).ready(function () {
             });
 
             if (i) myLoop(i); // decrement i and call myLoop again if i > 0
-        }, 3000)
+        }, 5000)
     })(10); // pass the number of iterations as an argument
 
 });
