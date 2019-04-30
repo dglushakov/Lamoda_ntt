@@ -53,7 +53,6 @@ class User implements UserInterface
         'mk'=>'MK Expert',
         'ar'=>'Arcada',
         'lamoda'=>'Lamoda',
-
     ];
     const USER_ROLES=[
         'Admin'=>'ROLE_ADMIN',

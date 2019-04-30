@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {{ dump(depth) }}
     <div class="container-fluid">
         <div class="row">
             <div class="col">
@@ -9,13 +10,61 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-7">
             {% include 'Reports/inc/filtersForm.html.twig' %}
         </div>
     </div>
-    <div class="ro">
+    <div class="row">
         <div class="col">
             {{ 'reports' }}
+            <table class="table table-bordered">
+                <thead>
+                <th>
+                    login
+                </th>
+                <th>
+                    company
+                </th>
+                <th>
+                    sector
+                </th>
+                {% for day in 1..depth %}
+                    <th>
+                        {{ 'day '~ loop.index ~ '1' }}
+                    </th>
+                    <th>
+                        {{ 'day '~ loop.index ~ '2' }}
+                    </th>
+                {% endfor %}
+
+                </thead>
+                <tbody>
+                {% for attencance in attendances %}
+                    <tr>
+                        <td>
+                            {{ attencance.login }}
+                        </td>
+                        <td>
+                            {{ attencance.login }}
+                        </td>
+                        <td>
+                            {{ attencance.sector }}
+
+                        </td>
+                        {% for day in 1..depth %}
+                            <td>
+                                    1
+                            </td>
+                            <td>
+                                2
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
         </div>
     </div>
 

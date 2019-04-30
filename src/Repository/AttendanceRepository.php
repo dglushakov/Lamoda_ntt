@@ -30,7 +30,21 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
-        
+
+    }
+
+    public function findAllforLastDays($days)
+    {
+        $dateForQuery = (new \DateTime())->modify("-$days day");
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->setParameter('dateTime', $dateForQuery)
+            ->addOrderBy('a.login','ASC')
+            ->addOrderBy('a.sector','ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     public function findActiveUsersOnSectorInShift($sector, $shift)
