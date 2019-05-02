@@ -18,13 +18,10 @@ class ReportsController extends AbstractController
      *
      */
     public function mainReport(Request $request){
-    $reportDepthInDays=365;
+    $reportDepthInDays=32;
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        $attendances = $attendanceRepo->findAll();
         $attendances = $attendanceRepo->findAllforLastDays($reportDepthInDays);
-        dd($attendances);
-
 
         $filtersForm = $this->createForm(FiltersForm::class, NULL);
         $filtersForm->handleRequest($request);
@@ -39,16 +36,61 @@ class ReportsController extends AbstractController
                 //$criteria['provider'] = $formData['Provider'];
             }
 
-
-
             $attendances = $attendanceRepo->findBy($criteria);
+        }
+
+        $workTime=[];
+        for($i=0; $i<count($attendances); $i++) {
+            if
+            (
+                ($attendances[$i]->getDirection()=='exit' && $attendances[$i-1]->getDirection()=='entrance')
+                && ($attendances[$i]->getLogin()===$attendances[$i-1]->getLogin())
+                && ($attendances[$i]->getSector()===$attendances[$i-1]->getSector())
+            )
+
+            {
+                $entrance = $attendances[$i-1];
+                $exit = $attendances[$i];
+
+                $day = $entrance->getDateTime()->format('d.M');
+                $shift = 1;
+
+                if($entrance->getDateTime()->format('H') >= 20)
+                {
+                    $shift = 2;
+                } elseif ($entrance->getDateTime()->format('H') < 8)
+                {
+
+                    $shift = 2;
+                    $day1 = clone $entrance->getDateTime();
+                    $day1 ->sub(new \DateInterval('P1D'));
+                    //$day1->sub(new \DateInterval('P1D'));
+                    $day = $day1->format('d.M');
+                    $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $entrance->getDateTime()->getTimestamp();
+
+                }
+
+                $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $entrance->getDateTime()->getTimestamp();
+
+
+                if (isset($workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift])){
+                    $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift] =
+                        $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift]
+                        + $currentWorkPeriod;
+                } else {
+                    $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift] = $currentWorkPeriod;
+                }
+
+            }
+
+
 
         }
 
-//        return new Response("REPORTS!");
         return $this->render('/Reports/reports.html.twig',[
             'filtersForm'=>$filtersForm->createView(),
             'attendances'=>$attendances,
+            'worktime'=>$workTime,
             'depth'=>$reportDepthInDays,
         ]);
     }
