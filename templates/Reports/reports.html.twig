@@ -70,7 +70,7 @@
                                 <td>
 
                                     {% if loginKey|trim|slice(2,1)=='-' %}
-                                        {% set companyPerfix = attendance.login|trim|slice(0,2) %}
+                                        {% set companyPerfix = loginKey|trim|slice(0,2) %}
 
                                         {% if companyPerfix =='gs' %}
                                             GSR

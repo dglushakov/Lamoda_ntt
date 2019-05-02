@@ -36,12 +36,12 @@ class ReportsController extends AbstractController
                 //$criteria['provider'] = $formData['Provider'];
             }
 
-            $attendances = $attendanceRepo->findBy($criteria);
+            $attendances = $attendanceRepo->findBy($criteria); //TODO тут ошибка какая,то. Сортировки по времени кажется нет нужной
         }
 
         //dump($attendances);
         $workTime=[];
-        for($i=0; $i<count($attendances); $i++) {
+        for($i=0; $i<count($attendances)-1; $i++) {
             if
             (
                 ($attendances[$i]->getDirection()=='exit' && $attendances[$i+1]->getDirection()=='entrance')
@@ -52,8 +52,8 @@ class ReportsController extends AbstractController
             {
                 $entrance = $attendances[$i+1];
                 $exit = $attendances[$i];
-                    //dump($entrance);
-                   // dd($exit);
+//                    dump($entrance);
+//                    dd($exit);
                 $day = $entrance->getDateTime()->format('d.m.Y');
                 $shift = 1;
 
