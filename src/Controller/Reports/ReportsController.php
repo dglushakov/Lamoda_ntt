@@ -39,21 +39,21 @@ class ReportsController extends AbstractController
             $attendances = $attendanceRepo->findBy($criteria);
         }
 
-        dump($attendances);
+        //dump($attendances);
         $workTime=[];
         for($i=0; $i<count($attendances); $i++) {
             if
             (
-                ($attendances[$i]->getDirection()=='exit' && $attendances[$i-1]->getDirection()=='entrance')
-                && ($attendances[$i]->getLogin()===$attendances[$i-1]->getLogin())
-                && ($attendances[$i]->getSector()===$attendances[$i-1]->getSector())
+                ($attendances[$i]->getDirection()=='exit' && $attendances[$i+1]->getDirection()=='entrance')
+                && ($attendances[$i]->getLogin()===$attendances[$i+1]->getLogin())
+                && ($attendances[$i]->getSector()===$attendances[$i+1]->getSector())
             )
 
             {
-                $entrance = $attendances[$i-1];
+                $entrance = $attendances[$i+1];
                 $exit = $attendances[$i];
-                    dump($entrance);
-                    dd($exit);
+                    //dump($entrance);
+                   // dd($exit);
                 $day = $entrance->getDateTime()->format('d.m.Y');
                 $shift = 1;
 
