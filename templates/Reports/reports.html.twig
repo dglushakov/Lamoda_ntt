@@ -2,6 +2,7 @@
 
 {% block body %}
     {{ dump(depth) }}
+    {{ dump(attendances) }}
     {{ dump(worktime) }}
     <div class="container-fluid">
         <div class="row">
@@ -21,48 +22,92 @@
                 {{ 'reports' }}
                 <table class="table table-bordered">
                     <thead>
-                    <th>
-                        login
-                    </th>
-                    <th>
-                        company
-                    </th>
-                    <th>
-                        sector
-                    </th>
-                    {% for day in 1..depth %}
+                    <tr>
                         <th>
-                            {{ 'day '~ loop.index ~ '1' }}
-                        </th>
-                        <th>
-                            {{ 'day '~ loop.index ~ '2' }}
-                        </th>
-                    {% endfor %}
 
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        {% for day in depth..0 %}
+                            <th colspan="2">
+                                {#                                {{ date('-'~day~'days')|date("M d") }}#}
+                                {{ date('-'~day~'days')|date("d.m.Y") }}
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>
+                            login
+                        </th>
+                        <th>
+                            company
+                        </th>
+                        <th>
+                            sector
+                        </th>
+                        {% for day in depth..0 %}
+                            <th>
+                                {{ '1' }}
+                            </th>
+
+                            <th>
+                                {{ '2' }}
+                            </th>
+                        {% endfor %}
+                    </tr>
                     </thead>
                     <tbody>
-                    {% for attencance in attendances %}
-                        <tr>
-                            <td>
-                                {{ attencance.login }}
-                            </td>
-                            <td>
-                                {{ attencance.login }}
-                            </td>
-                            <td>
-                                {{ attencance.sector }}
+                    {% for loginKey, workLogin in worktime %}
+                        {% for sectorKey, workSector in  workLogin %}
+                            <tr>
+                                <td>
+                                    {{ loginKey }}
+                                </td>
+                                <td>
 
-                            </td>
-                            {% for day in 1..depth %}
-                                <td>
-                                    1
+                                    {% if loginKey|trim|slice(2,1)=='-' %}
+                                        {% set companyPerfix = attendance.login|trim|slice(0,2) %}
+
+                                        {% if companyPerfix =='gs' %}
+                                            GSR
+                                        {% elseif companyPerfix =='sm' %}
+                                            SMG
+                                        {% elseif companyPerfix =='rc' %}
+                                            Realnaya Cifra
+                                        {% elseif companyPerfix =='lt' %}
+                                            Leader Team
+                                        {% elseif companyPerfix =='pm' %}
+                                            Premer-M
+                                        {% elseif companyPerfix =='vp' %}
+                                            Vremya Pervih
+                                        {% endif %}
+
+                                    {% endif %}
                                 </td>
                                 <td>
-                                    2
+                                    {{ sectorKey }}
                                 </td>
-                            {% endfor %}
-                        </tr>
+                                {% for day in depth..0 %}
+                                    <td>
+                                        {% set day = date('-'~day~'days') %}
+                                        {% if workSector[day|date("d.m.Y")]['1'] is defined %}
+                                            {{ workSector[day|date("d.m.Y")]['1'] }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if workSector[day|date("d.m.Y")]['2'] is defined %}
+                                            {{ workSector[day|date("d.m.Y")]['2'] }}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
+
                     </tbody>
 
                 </table>

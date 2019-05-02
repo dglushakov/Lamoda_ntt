@@ -18,7 +18,7 @@ class ReportsController extends AbstractController
      *
      */
     public function mainReport(Request $request){
-    $reportDepthInDays=32;
+    $reportDepthInDays=7;
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $attendances = $attendanceRepo->findAllforLastDays($reportDepthInDays);
@@ -39,6 +39,7 @@ class ReportsController extends AbstractController
             $attendances = $attendanceRepo->findBy($criteria);
         }
 
+        dump($attendances);
         $workTime=[];
         for($i=0; $i<count($attendances); $i++) {
             if
@@ -51,8 +52,9 @@ class ReportsController extends AbstractController
             {
                 $entrance = $attendances[$i-1];
                 $exit = $attendances[$i];
-
-                $day = $entrance->getDateTime()->format('d.M');
+                    dump($entrance);
+                    dd($exit);
+                $day = $entrance->getDateTime()->format('d.m.Y');
                 $shift = 1;
 
                 if($entrance->getDateTime()->format('H') >= 20)
@@ -65,7 +67,7 @@ class ReportsController extends AbstractController
                     $day1 = clone $entrance->getDateTime();
                     $day1 ->sub(new \DateInterval('P1D'));
                     //$day1->sub(new \DateInterval('P1D'));
-                    $day = $day1->format('d.M');
+                    $day = $day1->format('d.m.Y');
                     $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $entrance->getDateTime()->getTimestamp();
 
                 }
