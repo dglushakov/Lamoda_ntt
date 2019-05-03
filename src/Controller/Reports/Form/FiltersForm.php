@@ -15,6 +15,10 @@ class FiltersForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $depthFilter = [];
+        for ($i=1; $i<31; $i++) {
+            $depthFilter[$i]=$i;
+        }
         $builder
             ->add('Provider', ChoiceType::class, [
                 'choices' => USER::PROVIDERS_LIST,
@@ -23,6 +27,10 @@ class FiltersForm extends AbstractType
             ])
             ->add('Sector', ChoiceType::class, [
                 'choices' => USER::SECTORS_LIST,
+                'required' => false,
+            ])
+            ->add('Depth', ChoiceType::class, [
+                'choices' => $depthFilter,
                 'required' => false,
             ])
 

@@ -47,6 +47,44 @@ class AttendanceRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findAllforLastDaysFilteredBySectorOrCompany($days,$sector='',$company='')
+    {
+
+        $dateForQuery = (new \DateTime())->modify("-$days day");
+//        dump($dateForQuery);
+//        dd($days);
+        if($company=='lamoda') {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.dateTime > :dateTime')
+                ->andWhere('a.sector LIKE :sector')
+                ->andWhere('a.login NOT LIKE :company')
+                ->setParameter('dateTime', $dateForQuery)
+                ->setParameter('sector', '%'.$sector.'%')
+                ->setParameter('company', '__-'.'%')
+                ->addOrderBy('a.login','ASC')
+                ->addOrderBy('a.sector','ASC')
+                ->addOrderBy('a.dateTime', 'DESC')
+                ->getQuery()
+                ->getResult()
+                ;
+        }
+
+
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->andWhere('a.sector LIKE :sector')
+            ->andWhere('a.login LIKE :company')
+            ->setParameter('dateTime', $dateForQuery)
+            ->setParameter('sector', '%'.$sector.'%')
+            ->setParameter('company', $company.'%')
+            ->addOrderBy('a.login','ASC')
+            ->addOrderBy('a.sector','ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findActiveUsersOnSectorInShift($sector, $shift)
     {
 

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ dump(depth) }}
-    {{ dump(attendances) }}
-    {{ dump(worktime) }}
+{#    {{ dump(depth) }}#}
+{#    {{ dump(attendances) }}#}
+{#    {{ dump(worktime) }}#}
     <div class="container-fluid">
         <div class="row">
             <div class="col">
@@ -19,37 +19,30 @@
     <div class="container-fluid m-2">
         <div class="row">
             <div class="col">
-                {{ 'reports' }}
-                <table class="table table-bordered">
+                <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>
+                        <th colspan="3">
 
                         </th>
-                        <th>
 
-                        </th>
-                        <th>
-
-                        </th>
-                        {% for day in depth..0 %}
+                        {% for day in depth-1..0 %}
                             <th colspan="2">
-                                {#                                {{ date('-'~day~'days')|date("M d") }}#}
                                 {{ date('-'~day~'days')|date("d.m.Y") }}
                             </th>
                         {% endfor %}
                     </tr>
                     <tr>
                         <th>
-                            login
+                            Login
                         </th>
                         <th>
-                            company
+                            Company
                         </th>
                         <th>
-                            sector
+                            Sector
                         </th>
-                        {% for day in depth..0 %}
+                        {% for day in depth-1..0 %}
                             <th>
                                 {{ '1' }}
                             </th>
@@ -85,22 +78,35 @@
                                         {% elseif companyPerfix =='vp' %}
                                             Vremya Pervih
                                         {% endif %}
-
+                                    {% else %}
+                                        Lamoda
                                     {% endif %}
                                 </td>
                                 <td>
                                     {{ sectorKey }}
                                 </td>
-                                {% for day in depth..0 %}
+                                {% for day in depth-1..0 %}
                                     <td>
                                         {% set day = date('-'~day~'days') %}
                                         {% if workSector[day|date("d.m.Y")]['1'] is defined %}
-                                            {{ workSector[day|date("d.m.Y")]['1'] }}
+                                            {% set time = workSector[day|date("d.m.Y")]['1'] %}
+                                            {% set hours = time//3600 %}
+                                            {% set minutes = time//60 %}
+                                            {% set seconds = time %}
+
+                                            {{ hours~':'~minutes~':'~seconds }}
+
+
                                         {% endif %}
                                     </td>
                                     <td>
                                         {% if workSector[day|date("d.m.Y")]['2'] is defined %}
-                                            {{ workSector[day|date("d.m.Y")]['2'] }}
+                                            {% set time = workSector[day|date("d.m.Y")]['2'] %}
+                                            {% set hours = time//3600 %}
+                                            {% set minutes = (time-hours*3600)//60 %}
+                                            {% set seconds = time-hours*3600-minutes*60 %}
+
+                                            {{ hours~':'~minutes~':'~seconds }}
                                         {% endif %}
                                     </td>
                                 {% endfor %}

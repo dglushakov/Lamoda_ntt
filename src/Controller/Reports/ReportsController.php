@@ -3,6 +3,7 @@
 
 namespace App\Controller\Reports;
 
+use App\Entity\User;
 use App\Controller\Reports\Form\FiltersForm;
 use App\Entity\Attendance;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,27 +19,31 @@ class ReportsController extends AbstractController
      *
      */
     public function mainReport(Request $request){
-    $reportDepthInDays=7;
+    $reportDepthInDays=14;
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        $attendances = $attendanceRepo->findAllforLastDays($reportDepthInDays);
 
         $filtersForm = $this->createForm(FiltersForm::class, NULL);
         $filtersForm->handleRequest($request);
         if ($filtersForm->isSubmitted() && $filtersForm->isValid()) {
-            //dd($filtersForm->getData());
+
             $formData = $filtersForm->getData();
-            $criteria = [];
-            if ($formData['Sector']) {
-                $criteria['sector'] = $formData['Sector'];
+            $provider = array_search($formData['Provider'], USER::PROVIDERS_LIST );
+            if($formData['Depth']) {
+                $reportDepthInDays=$formData['Depth'];
             }
-            if ($formData['Provider']) {
-                //$criteria['provider'] = $formData['Provider'];
+            if($formData['Depth']=='' || !$formData['Depth']) {
+                $formData['Depth']=$reportDepthInDays;
             }
 
-            $attendances = $attendanceRepo->findBy($criteria); //TODO тут ошибка какая,то. Сортировки по времени кажется нет нужной
+            $attendances = $attendanceRepo->findAllforLastDaysFilteredBySectorOrCompany($formData['Depth'],$formData['Sector'],$provider);
+
+        } else {
+
+            $attendances = $attendanceRepo->findAllforLastDaysFilteredBySectorOrCompany($reportDepthInDays);
         }
 
+        //dd($reportDepthInDays);
         //dump($attendances);
         $workTime=[];
         for($i=0; $i<count($attendances)-1; $i++) {
@@ -85,9 +90,8 @@ class ReportsController extends AbstractController
 
             }
 
-
-
         }
+
 
         return $this->render('/Reports/reports.html.twig',[
             'filtersForm'=>$filtersForm->createView(),
