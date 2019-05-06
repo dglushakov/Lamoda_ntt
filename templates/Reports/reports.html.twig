@@ -91,8 +91,8 @@
                                         {% if workSector[day|date("d.m.Y")]['1'] is defined %}
                                             {% set time = workSector[day|date("d.m.Y")]['1'] %}
                                             {% set hours = time//3600 %}
-                                            {% set minutes = time//60 %}
-                                            {% set seconds = time %}
+                                            {% set minutes = (time-hours*3600)//60 %}
+                                            {% set seconds = time-hours*3600-minutes*60 %}
 
                                             {{ hours~':'~minutes~':'~seconds }}
 
