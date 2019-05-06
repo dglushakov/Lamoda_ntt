@@ -48,9 +48,24 @@
             <div class="col-6">
                 {% include 'inc/activeUsersTableV3.html.twig' %}
             </div>
-            <div class="col">
-                <div class="col">
-                    <input class="form-control form-control-lg" type="text" placeholder="login" id="inputLogin">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-10">
+                        <input class="form-control form-control-lg" type="text" placeholder="login" id="inputLogin">
+                    </div>
+                    {% set peopleCounter = 0 %}
+                    {% for attendance in attendances %}
+                        {% if attendance.direction == "entrance" %}
+                            {% set peopleCounter=peopleCounter+1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <div class="col-1 text-center">
+                        <span id="peopleCounter">Людей на участке: </span>
+                    </div>
+                    <div class="col-1">
+                        <h1>{% if peopleCounter %}{{ peopleCounter }}</h1>
+                        <h1>{% else %} 0 {% endif %}</h1>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col">
@@ -118,6 +133,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="row text-center">
             <div class="col" id="finesTable">
