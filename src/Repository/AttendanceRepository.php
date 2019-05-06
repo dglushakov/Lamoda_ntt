@@ -69,6 +69,12 @@ class AttendanceRepository extends ServiceEntityRepository
                 ;
         }
 
+        if ($company=='') {
+            $company = '%';
+        } else {
+            $company = $company.'\-'.'%';
+
+        }
 
         return $this->createQueryBuilder('a')
             ->andWhere('a.dateTime > :dateTime')
@@ -76,7 +82,7 @@ class AttendanceRepository extends ServiceEntityRepository
             ->andWhere('a.login LIKE :company')
             ->setParameter('dateTime', $dateForQuery)
             ->setParameter('sector', '%'.$sector.'%')
-            ->setParameter('company', $company.'%')
+            ->setParameter('company', $company)
             ->addOrderBy('a.login','ASC')
             ->addOrderBy('a.sector','ASC')
             ->addOrderBy('a.dateTime', 'DESC')
