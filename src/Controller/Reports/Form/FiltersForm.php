@@ -16,7 +16,7 @@ class FiltersForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $depthFilter = [];
-        for ($i=1; $i<31; $i++) {
+        for ($i=1; $i<46; $i++) {
             $depthFilter[$i]=$i;
         }
         $builder
