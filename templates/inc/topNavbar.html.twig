@@ -9,17 +9,14 @@
         {% endif %}
     {% endfor %}
 <nav class="navbar navbar-full navbar-light bg-faded" style="background-color: #e3f2fd;">
-    <div class="col-2 border border-1">
-        <h3>Ntt Tracker</h3>
-    </div>
     <div class="col-2">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+            <button class="btn btn-secondary dropdown-toggle btn-block" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Menu
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <p class="mx-3 bg-info">Interfaces</p>
+            <div class="dropdown-menu bg-secondary  " aria-labelledby="dropdownMenuButton">
+                <p class="mx-3 bg-secondary text-white">Interfaces</p>
                 {% if userIsAdmin %}
                     <a class="dropdown-item" href="{{ path('userlist') }}">Admin</a>
                 {% endif %}
@@ -28,7 +25,7 @@
                 {% endif %}
                 <div class="dropdown-divider"></div>
 
-                <p class="mx-3 bg-info">Reports</p>
+                <p class="mx-3 bg-secondary text-white">Reports</p>
                 {% if userIsAdmin or userIsPeep %}
                     <a class="dropdown-item" href="{{ path('reports') }}">Work time report</a>
                 {% endif %}
@@ -45,18 +42,14 @@
             {% endif %}
         {% endif %}
     </div>
-    <div class="col-3">
-        <div class="row text-left">
-            <div class="col text-lg-center">Login:  {{ app.user.username }}</div>
-        </div>
-        <div class="row">
-            <div class="col text-lg-center">Sector:  {{ app.user.sector }}</div>
-        </div>
+    <div class="col-2"> </div>
+    <div class="col-2">
+        <div class="col text-lg-center">Login:  {{ app.user.username }}</div>
     </div>
-
-    <div class="col-1 text-lg-center">Ваша смена:
-
-
+    <div class="col-2">
+        <div class="col text-lg-center">Sector:  {{ app.user.sector }}</div>
+    </div>
+    <div class="col-1 text-lg-center">Shift:
         {% if userIsPeep %}
             <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button"
                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
@@ -69,13 +62,9 @@
                     <a class="dropdown-item" href="/setShift/{{ shift }}">{{ shift }}</a>
                 {% endfor %}
             </div>
-        {% endif %}
-
-
-        {% if not userIsPeep %}
+        {% else %}
             {{ app.user.shift }}
         {% endif %}
-
     </div>
-    <div class="col"><a href="{{ path('app_logout') }}" class="btn btn-primary">Выйти</a></div>
+    <div class="col"><a href="{{ path('app_logout') }}" class="btn btn-primary btn-block">Выйти</a></div>
 </nav>
