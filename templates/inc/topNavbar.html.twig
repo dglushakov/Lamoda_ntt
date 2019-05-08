@@ -1,11 +1,37 @@
+{% set userIsAdmin = false %}
+    {% for role in app.user.roles %}
+        {% if role=='ROLE_ADMIN' %}
+            {% set userIsAdmin = true %}
+        {% endif %}
+    {% endfor %}
 <div class="row border-bottom m-1 bg-light text-center">
+    <div class="col">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Menu
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <p class="mx-3 bg-info">Interfaces</p>
+                {% if userIsAdmin %}
+                    <a class="dropdown-item" href="{{ path('userlist') }}">Admin</a>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+
+                <p class="mx-3 bg-info">Reports</p>
+                {% if userIsAdmin %}
+                    <a class="dropdown-item" href="{{ path('reports') }}">Work time report</a>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+
+            </div>
+        </div>
+    </div>
     <div class="col-4">
         {% for role in app.user.roles %}
             {% if role=='ROLE_PEEP' %}
                 {% if attendancesForApproval|length > 0 %}
                     <div class="bg-danger"><a class="badge badge-pill badge-danger" href="#finesTable">Штрафы({{ attendancesForApproval|length }})</a></div>
                 {% endif %}
-
             {% endif %}
         {% endfor %}
     </div>
