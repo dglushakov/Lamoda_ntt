@@ -1,7 +1,11 @@
 {% set userIsAdmin = false %}
+{% set userIsPeep = false %}
     {% for role in app.user.roles %}
         {% if role=='ROLE_ADMIN' %}
             {% set userIsAdmin = true %}
+        {% endif %}
+        {% if role=='ROLE_PEEP' %}
+            {% set userIsPeep = true %}
         {% endif %}
     {% endfor %}
 <div class="row border-bottom m-1 bg-light text-center">
@@ -15,10 +19,13 @@
                 {% if userIsAdmin %}
                     <a class="dropdown-item" href="{{ path('userlist') }}">Admin</a>
                 {% endif %}
+                {% if userIsPeep %}
+                    <a class="dropdown-item" href="{{ path('peepInterface') }}">Peep</a>
+                {% endif %}
                 <div class="dropdown-divider"></div>
 
                 <p class="mx-3 bg-info">Reports</p>
-                {% if userIsAdmin %}
+                {% if userIsAdmin or userIsPeep %}
                     <a class="dropdown-item" href="{{ path('reports') }}">Work time report</a>
                 {% endif %}
                 <div class="dropdown-divider"></div>
@@ -27,34 +34,32 @@
         </div>
     </div>
     <div class="col-4">
-        {% for role in app.user.roles %}
-            {% if role=='ROLE_PEEP' %}
-                {% if attendancesForApproval|length > 0 %}
-                    <div class="bg-danger"><a class="badge badge-pill badge-danger" href="#finesTable">Штрафы({{ attendancesForApproval|length }})</a></div>
-                {% endif %}
+        {% if userIsPeep %}
+            {% if attendancesForApproval|length > 0 %}
+                <div class="bg-danger"><a class="badge badge-pill badge-danger" href="#finesTable">Штрафы({{ attendancesForApproval|length }})</a></div>
             {% endif %}
-        {% endfor %}
+        {% endif %}
     </div>
     <div class="col text-lg-center">Вы зашли как: {{ app.user.username }}</div>
     <div class="col text-lg-center">Ваш участок: {{ app.user.sector }}</div>
     <div class="col text-lg-center">Ваша смена:
-        {% set userIsPeep = false %}
-        {% for role in app.user.roles %}
-            {% if role=='ROLE_PEEP' %}
-                {% set userIsPeep = true %}
-                <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button"
-                   id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">
-                    {{ app.user.shift }}
-                </a>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    {% for shift in constant('App\\Entity\\USER::NUMBERS_OF_SHIFTS') %}
-                        <a class="dropdown-item" href="/setShift/{{ shift }}">{{ shift }}</a>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endfor %}
+
+        {% if userIsPeep %}
+            <a class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button"
+               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false">
+                {{ app.user.shift }}
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                {% for shift in constant('App\\Entity\\USER::NUMBERS_OF_SHIFTS') %}
+                    <a class="dropdown-item" href="/setShift/{{ shift }}">{{ shift }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
         {% if not userIsPeep %}
             {{ app.user.shift }}
         {% endif %}
