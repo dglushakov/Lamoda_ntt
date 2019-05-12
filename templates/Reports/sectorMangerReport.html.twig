@@ -110,10 +110,13 @@
 
 {#                        {% set x =divLength.i + divLength.h*60  %}#}
 {#                        {{ dump(minutesdiff) }}#}
-                        {% for i in 1..minutesdiff %}
+
+{#                        {% for i in 1..minutesdiff %}#}
                             <div class="{{ divStyle }}"
-                                 style="max-width: 0.5px;min-width: 0.5px; height: 20px ; font-size: 1em; float: left"></div>
-                        {% endfor %}
+                                 style="max-width: {{ minutesdiff/2 }}px;min-width: {{ minutesdiff/2 }}px; height: 20px ; font-size: 1em; float: left">
+
+                            </div>
+{#                        {% endfor %}#}
 
                         {% set currentTime = event.time %}
                         {% if event.direction == 'entrance' %}
@@ -127,10 +130,12 @@
 
                             {% set minutesdiffToEnd =diffToEnd.i + diffToEnd.h*60 %}
 
-                            {% for i in 1..minutesdiffToEnd %}
+
                             <div class="{{ divStyle }}"
-                                 style="max-width: 0.5px;min-width: 0.5px; height: 20px ; font-size: 1em; float: left"></div>
-                            {% endfor %}
+                                 style="max-width: {{ minutesdiffToEnd/2 }}px;min-width: {{ minutesdiffToEnd/2 }}px; height: 20px ; font-size: 1em; float: left">
+
+                            </div>
+                           
                         {% endif %}
                     {% endfor %}
 
