@@ -1,11 +1,15 @@
 {% set userIsAdmin = false %}
 {% set userIsPeep = false %}
+{% set userIsSectorManager = false %}
     {% for role in app.user.roles %}
         {% if role=='ROLE_ADMIN' %}
             {% set userIsAdmin = true %}
         {% endif %}
         {% if role=='ROLE_PEEP' %}
             {% set userIsPeep = true %}
+        {% endif %}
+        {% if role=='ROLE_SECTOR_MANAGER' %}
+            {% set userIsSectorManager = true %}
         {% endif %}
     {% endfor %}
 <nav class="navbar navbar-full navbar-light bg-faded" style="background-color: #e3f2fd;">
@@ -23,11 +27,17 @@
                 {% if userIsPeep %}
                     <a class="dropdown-item" href="{{ path('peepInterface') }}">Peep</a>
                 {% endif %}
+                {% if userIsSectorManager %}
+                    <a class="dropdown-item" href="{{ path('SMworkInterface') }}">Sector Manager</a>
+                {% endif %}
                 <div class="dropdown-divider"></div>
 
                 <p class="mx-3 bg-secondary text-white">Reports</p>
                 {% if userIsAdmin or userIsPeep %}
                     <a class="dropdown-item" href="{{ path('reports') }}">Work time report</a>
+                {% endif %}
+                {% if userIsSectorManager %}
+                    <a class="dropdown-item" href="{{ path('sectorManagerReport') }}">Sector hours report</a>
                 {% endif %}
                 <div class="dropdown-divider"></div>
 

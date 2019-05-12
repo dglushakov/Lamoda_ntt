@@ -100,4 +100,35 @@ class ReportsController extends AbstractController
             'depth'=>$reportDepthInDays,
         ]);
     }
+
+
+    /**
+     * @Route("/sectorManagerReport/", name="sectorManagerReport")
+     *
+     */
+    public function sectorManagerReport(){
+
+
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+
+
+        $attendances = $attendanceRepo->findAttendancesOnSectorInShift($this->getUser()->getSector(), $this->getUser()->getShift());
+
+        $attendancesOutput=[];
+        foreach ($attendances as $attendance){
+            /** @var Attendance $attendance */
+                $attendancesOutput[$attendance->getLogin()][] = [
+                    'direction'=>$attendance->getDirection(),
+                    'time'=>$attendance->getDateTime()
+                ];
+        }
+
+
+
+
+        return $this->render('/Reports/sectorMangerReport.html.twig', [
+            'attendances'=>$attendances,
+            'attendancesOutput'=>$attendancesOutput,
+        ]);
+    }
 }

@@ -1,0 +1,180 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'inc/topNavbar.html.twig' %}
+{#    {{ dump(attendances) }}#}
+{#    {{ dump(attendancesOutput) }}#}
+
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="col-2">Login</div>#}
+{#            <div class="col-10">#}
+{#                <div class="row">#}
+{#                    {% for hour i n 1..12 %}#}
+{#                        <div class="col border border-dark" style="max-width: 60px;min-width: 60px;"> {{ hour }}</div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        {% for login, attendance in attendancesOutput %}#}
+{#            <div class="row">#}
+{#                <div class="col-2">#}
+{#                    {{ login }}#}
+{#                </div>#}
+{#                <div class="col-10 m-0 p-0">#}
+{#                    {% if attendance[0]['direction']=='entrance' %}#}
+{#                        {% set divStyle='bg-danger' %}#}
+{#                    {% else %}#}
+{#                        {% set divStyle='bg-success' %}#}
+{#                    {% endif %}#}
+
+{#                    {% for number, event in attendance %}#}
+
+{#                        <div class="{{ divStyle }}"#}
+{#                             style="max-width: 1px;min-width: 1px; height: 20px ; font-size: 1em; float: left">#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+
+{#    </div>#}
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">&nbsp</div>
+        </div>
+{#        <div class="row">#}
+{#            <div class="col">#}
+{#                                {{ date('')|date("m/d/Y H:i:s") }}#}
+{#                                {{ date('')|date("H") }}#}
+{#                                {{ date('-24hours')|date("H") }}#}
+{#                {% set startdate = date('-24hours') %}#}
+{#                {{ startdate|date("d/m/Y H:i:s") }}#}
+{#            </div>#}
+{#        </div>#}
+        <div class="row">
+            <div class="col-2">Login</div>
+            <div class="col-10 text-nowrap">
+                <div class="row">
+                    <div class="col-12 m-0 p-0 text-nowrap">
+                        {% for hour in range(23,0,-1) %}
+                            <div class="text-center border border-dark"
+                                 style="max-width: 300px;min-width: 30px; float: left;">
+                                {% set curHour =  date('-'~hour~'hours') %}
+                                {{ curHour|date("H") }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+{#        {% for login, attendance in attendancesOutput %}#}
+{#            <div class="row">#}
+{#                <div class="col-2">#}
+{#                    {{ login }}#}
+{#                </div>#}
+{#                <div class="col-10 m-0 p-0">#}
+{#                    {% for i in 1..720 %}#}
+
+{#                        <div class="bg-danger"#}
+{#                             style="max-width: 1px;min-width: 1px; height: 20px ; font-size: 1em; float: left"></div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+
+
+
+        {% for login, attendance in attendancesOutput %}
+            {% set currentTime = date('-24hours') %}
+            {% if attendance[0]['direction']=='entrance' %}
+                {% set divStyle='bg-secondary' %}
+            {% else %}
+                {% set divStyle='bg-success' %}
+            {% endif %}
+{#            {{ dump (currentTime) }}#}
+{#            {{ dump (divStyle) }}#}
+            <div class="row">
+                <div class="col-2">
+                    {{ login }}
+                </div>
+                <div class="col-10 m-0 p-0">
+                    {% for number, event in attendance %}
+
+
+                        {% set datediff = date(currentTime).diff(event.time) %}
+                        {% set minutesdiff =datediff.i + datediff.h*60 %}
+
+{#                        {% set x =divLength.i + divLength.h*60  %}#}
+{#                        {{ dump(minutesdiff) }}#}
+                        {% for i in 1..minutesdiff %}
+                            <div class="{{ divStyle }}"
+                                 style="max-width: 0.5px;min-width: 0.5px; height: 20px ; font-size: 1em; float: left"></div>
+                        {% endfor %}
+
+                        {% set currentTime = event.time %}
+                        {% if event.direction == 'entrance' %}
+                            {% set divStyle='bg-success' %}
+                        {% else %}
+                            {% set divStyle='bg-secondary' %}
+                        {% endif %}
+
+                        {% if loop.last %}
+                            {% set diffToEnd =date(date()).diff(event.time)  %}
+
+                            {% set minutesdiffToEnd =diffToEnd.i + diffToEnd.h*60 %}
+
+                            {% for i in 1..minutesdiffToEnd %}
+                            <div class="{{ divStyle }}"
+                                 style="max-width: 0.5px;min-width: 0.5px; height: 20px ; font-size: 1em; float: left"></div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{#    <div class="container-fluid">#}
+
+
+{#        <div class="row">#}
+{#            <div class="col">#}
+{#                <table class="table table-striped">#}
+{#                    <tr>#}
+{#                        <td> Login</td>#}
+{#                        {% for hour in 1..12 %}#}
+{#                            <td>{{ hour }}</td>#}
+{#                        {% endfor %}#}
+{#                    </tr>#}
+{#                    {% for login, attendance in attendancesOutput %}#}
+{#                        <tr>#}
+
+{#                            <td> {{ login }} </td>#}
+
+{#                            {% for hour in 1..12 %}#}
+{#                                <td class="p-0 m-0">#}
+{#                                    <table class="border">#}
+{#                                        <tr>#}
+{#                                            {% for min in 1..60 %}#}
+{#                                                <td class="{% if min is even %}bg-danger{% else %}bg-warning {% endif %} p-0 border-0"#}
+{#                                                    style="width: 1px;min-width: 3px; height: 20px ; font-size: 1em"#}
+{#                                                ></td>#}
+{#                                            {% endfor %}#}
+{#                                        </tr>#}
+{#                                    </table>#}
+{#                                </td>#}
+{#                            {% endfor %}#}
+
+{#                        </tr>#}
+{#                    {% endfor %}#}
+{#                </table>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{% endblock %}
