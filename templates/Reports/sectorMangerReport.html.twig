@@ -55,7 +55,7 @@
 {#            </div>#}
 {#        </div>#}
         <div class="row">
-            <div class="col-2">Login</div>
+            <div class="col-2"> </div>
             <div class="col-10 text-nowrap">
                 <div class="row">
                     <div class="col-12 m-0 p-0 text-nowrap">
@@ -71,22 +71,6 @@
                 </div>
             </div>
         </div>
-{#        {% for login, attendance in attendancesOutput %}#}
-{#            <div class="row">#}
-{#                <div class="col-2">#}
-{#                    {{ login }}#}
-{#                </div>#}
-{#                <div class="col-10 m-0 p-0">#}
-{#                    {% for i in 1..720 %}#}
-
-{#                        <div class="bg-danger"#}
-{#                             style="max-width: 1px;min-width: 1px; height: 20px ; font-size: 1em; float: left"></div>#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-
-
 
         {% for login, attendance in attendancesOutput %}
             {% set currentTime = date('-24hours') %}
@@ -95,10 +79,9 @@
             {% else %}
                 {% set divStyle='bg-success' %}
             {% endif %}
-{#            {{ dump (currentTime) }}#}
-{#            {{ dump (divStyle) }}#}
+
             <div class="row">
-                <div class="col-2">
+                <div class="col-2  border-bottom">
                     {{ login }}
                 </div>
                 <div class="col-10 m-0 p-0">
@@ -112,8 +95,9 @@
 {#                        {{ dump(minutesdiff) }}#}
 
 {#                        {% for i in 1..minutesdiff %}#}
-                            <div class="{{ divStyle }}"
-                                 style="max-width: {{ minutesdiff/2 }}px;min-width: {{ minutesdiff/2 }}px; height: 20px ; font-size: 1em; float: left">
+                            <div class="{{ divStyle }} mt-1"
+                                 style="max-width: {{ minutesdiff/2 }}px;min-width: {{ minutesdiff/2 }}px; height: 20px ; font-size: 1em; float: left"
+                                 data-toggle="tooltip" data-placement="left" title="{{ login }}">
 
                             </div>
 {#                        {% endfor %}#}
@@ -131,7 +115,7 @@
                             {% set minutesdiffToEnd =diffToEnd.i + diffToEnd.h*60 %}
 
 
-                            <div class="{{ divStyle }}"
+                            <div class="{{ divStyle }} mt-1"
                                  style="max-width: {{ minutesdiffToEnd/2 }}px;min-width: {{ minutesdiffToEnd/2 }}px; height: 20px ; font-size: 1em; float: left">
 
                             </div>
@@ -182,4 +166,17 @@
 {#        </div>#}
 {#    </div>#}
 
+{% endblock %}
+{% block javascripts %}
+{{ parent()  }}
+
+    <script>
+        $(document).ready(function () {
+
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+
+        });
+    </script>
 {% endblock %}
