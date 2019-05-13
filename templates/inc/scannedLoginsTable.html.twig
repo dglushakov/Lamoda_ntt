@@ -35,23 +35,19 @@
 
                         {% if companyPerfix =='gs' %}
                             GSR
-                        {% endif %}
-                        {% if companyPerfix =='sm' %}
+                        {% elseif companyPerfix =='sm' %}
                             SMG
-                        {% endif %}
-                        {% if companyPerfix =='rc' %}
+                        {% elseif companyPerfix =='rc' %}
                             Realnaya Cifra
-                        {% endif %}
-                        {% if companyPerfix =='lt' %}
+                        {% elseif companyPerfix =='lt' %}
                             Leader Team
-                        {% endif %}
-                        {% if companyPerfix =='pm' %}
+                        {% elseif companyPerfix =='pm' %}
                             Premer-M
-                        {% endif %}
-                        {% if companyPerfix =='vp' %}
+                        {% elseif companyPerfix =='vp' %}
                             Vremya Pervih
                         {% endif %}
-
+                    {% else %}
+                        Lamoda
                     {% endif %}
                 <td>
                     {{ attendance.fine }}
