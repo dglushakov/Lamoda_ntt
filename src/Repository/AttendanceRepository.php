@@ -170,8 +170,8 @@ class AttendanceRepository extends ServiceEntityRepository
             ->andWhere('a.sector = :sector')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
             ->setParameter('sector',$sector)
-            ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
+            ->addOrderBy('a.login', 'ASC')
             ->getQuery()
             ->getResult();
     }

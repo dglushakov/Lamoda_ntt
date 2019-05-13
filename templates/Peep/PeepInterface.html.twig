@@ -69,67 +69,8 @@
                 </div>
                 <div class="row">
                     <div class="col">
-
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Delete</th>
-                                <th scope="col">Login</th>
-                                <th scope="col">DateTime</th>
-                                <th scope="col">Company</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for attendance in attendances %}
-                                <tr>
-                                    <th scope="row">{{ loop.index }}</th>
-                                    <td>
-                                        <a href="#" data-href="/attendance/delete/{{ attendance.id }}"
-                                           data-toggle="modal"
-                                           data-target="#confirm-delete" class="btn btn-sm delete-type">
-                                            <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
-                                        </a>
-                                        {% include 'inc/deleteConfirmationModal.html.twig' %}
-                                    </td>
-                                    <td> {{ attendance.login }}</td>
-                                    <td> {{ attendance.dateTime|date('Y-m-d H:i:s') }}</td>
-                                    <td>
-                                        {% if attendance.login|trim|slice(2,1)=='-' %}
-                                            {% set companyPerfix = attendance.login|trim|slice(0,2) %}
-
-                                            {% if companyPerfix =='gs' %}
-                                                GSR
-                                            {% endif %}
-                                            {% if companyPerfix =='sm' %}
-                                                SMG
-                                            {% endif %}
-                                            {% if companyPerfix =='rc' %}
-                                                Realnaya Cifra
-                                            {% endif %}
-                                            {% if companyPerfix =='lt' %}
-                                                Leader Team
-                                            {% endif %}
-                                            {% if companyPerfix =='pm' %}
-                                                Premer-M
-                                            {% endif %}
-                                            {% if companyPerfix =='vp' %}
-                                                Vremya Pervih
-                                            {% endif %}
-                                        {% else %}
-                                            Lamoda
-                                        {% endif %}
-                                    <td>
-                                        {{ attendance.fine }}
-                                    </td>
-
-
-                                </tr>
-                            {% endfor %}
-
-                            </tbody>
-                        </table>
+                        {{ dump(attendances) }}
+                        {% include 'inc/scannedLoginsTable.html.twig' %}
                     </div>
                 </div>
             </div>

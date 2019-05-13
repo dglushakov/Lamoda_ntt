@@ -1,0 +1,100 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Login</th>
+        <th scope="col">DateTime</th>
+        <th scope="col">Direction</th>
+        <th scope="col">Company</th>
+        <th scope="col" colspan="2">Fine</th>
+        <th scope="col" colspan="2">Comment</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set rowNumber = 0 %}
+    {% for attendance in attendances %}
+        {% if attendance.direction == "entrance" %}
+            {% set rowNumber = rowNumber + 1 %}
+            <tr>
+                <th scope="row">{{ rowNumber }}</th>
+                <td>
+                    <a href="#"
+                       data-href="/attendance/delete/{{ attendance.id }}" data-toggle="modal"
+                       data-target="#confirm-delete" class="btn btn-sm delete-type">
+                        <img alt="delete" width="20px" src="{{ asset('img/cancel.png') }}">
+                    </a>
+                    {% include 'inc/deleteConfirmationModal.html.twig' %}
+                </td>
+                <td> {{ attendance.login }}</td>
+                <td> {{ attendance.dateTime|date('Y-m-d H:i:s') }}</td>
+                <td> {{ attendance.direction }}</td>
+                <td>
+                    {% if attendance.login|trim|slice(2,1)=='-' %}
+                        {% set companyPerfix = attendance.login|trim|slice(0,2) %}
+
+                        {% if companyPerfix =='gs' %}
+                            GSR
+                        {% endif %}
+                        {% if companyPerfix =='sm' %}
+                            SMG
+                        {% endif %}
+                        {% if companyPerfix =='rc' %}
+                            Realnaya Cifra
+                        {% endif %}
+                        {% if companyPerfix =='lt' %}
+                            Leader Team
+                        {% endif %}
+                        {% if companyPerfix =='pm' %}
+                            Premer-M
+                        {% endif %}
+                        {% if companyPerfix =='vp' %}
+                            Vremya Pervih
+                        {% endif %}
+
+                    {% endif %}
+                <td>
+                    {{ attendance.fine }}
+                </td>
+                <td>
+                    <div class="dropdown show">
+                        <button class="btn btn-secondary dropdown-toggle btn-sm" href="#" role="button"
+                                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false"
+                                {% if attendance.comment is null %}
+                                    disabled="true"
+                                {% endif %}
+                        >
+                            Штраф
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item"
+                               href="/editfine/{{ attendance.id }}/late">Опоздание</a>
+                            <a class="dropdown-item" href="/editfine/{{ attendance.id }}/denial">Отказ
+                                от
+                                работы</a>
+                            <a class="dropdown-item"
+                               href="/editfine/{{ attendance.id }}/sabotage">Саботаж</a>
+                            <a class="dropdown-item" href="/editfine/{{ attendance.id }}/">Нет
+                                штрафа</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input class="form-control form-control-sm" type="text"
+                           value="{{ attendance.comment }}" id="comment_{{ attendance.id }}">
+                </td>
+                <td>
+                    <a href="/editcomment/{{ attendance.id }}/" class="btn btn-info btn-sm editComment"
+                       data-commentId="{{ attendance.id }}">
+                        <img alt="edit" width="20px" src="{{ asset('img/edit.png') }}">
+                    </a>
+                </td>
+
+            </tr>
+        {% endif %}
+    {% endfor %}
+
+    </tbody>
+</table>

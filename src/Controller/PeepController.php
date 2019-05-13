@@ -21,21 +21,27 @@ class PeepController extends AbstractController
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
         $attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
-        $attendancesInPeepSector = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
+        $attendancesInPeepSector = $attendanceRepo->findUsersOnSector($this->getUser()->getSector());
 
-        //dd($attendancesInPeepSector);
         $attendancesInPeepSectorOutput=[];
-        $lastLogin ="";
         foreach ($attendancesInPeepSector as $attendance ) {
-            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
-                $attendancesInPeepSectorOutput[]=$attendance;
+            if (!isset($attendancesInPeepSectorOutput[$attendance->getLogin()])){
+                $attendancesInPeepSectorOutput[$attendance->getLogin()]=$attendance;
             }
-            $lastLogin=$attendance->getLogin();
         }
-       //dd($attendancesOutput);
 
+//        $attendancesInPeepSector = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
+//
+//
+//        $attendancesInPeepSectorOutput=[];
+//        $lastLogin ="";
+//        foreach ($attendancesInPeepSector as $attendance ) {
+//            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
+//                $attendancesInPeepSectorOutput[]=$attendance;
+//            }
+//            $lastLogin=$attendance->getLogin();
+//        }
 
-        //dd($attendances);
         $attendancesOutput=[];
         $lastLogin ="";
         $usersInSectorQty=[];
@@ -47,9 +53,6 @@ class PeepController extends AbstractController
             $usersInSectorQty[$sector]['lamoda']=0;
         }
 
-        //$usersInSectorQty(1);
-      //dd($usersInSectorQty);
-        //dump($attendances);
         foreach ($attendances as $attendance ) {  //TODO дублируется в админконтроллере, нужно вынести в 1 место
             if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
                 $attendancesOutput[]=$attendance;
@@ -74,14 +77,11 @@ class PeepController extends AbstractController
             $lastLogin=$attendance->getLogin();
         }
 
-        //dump($attendancesOutput);
-        $attendancesWithFinesWithoutApproval=[];
         $attendancesWithFinesWithoutApproval=$attendanceRepo->findAllAttendancesWithFinesWithoutApproval();
 
 
         //dd($attendances);
         return $this->render('Peep/PeepInterface.html.twig', [
-            'sectors'=>USER::SECTORS_LIST,
             'attendances'=>$attendancesInPeepSectorOutput,
             'usersInSectors'=>$usersInSectorQty,
             'attendancesForApproval'=>$attendancesWithFinesWithoutApproval,
