@@ -2,44 +2,6 @@
 
 {% block body %}
     {% include 'inc/topNavbar.html.twig' %}
-{#    {{ dump(attendances) }}#}
-{#    {{ dump(attendancesOutput) }}#}
-
-{#    <div class="container">#}
-{#        <div class="row">#}
-{#            <div class="col-2">Login</div>#}
-{#            <div class="col-10">#}
-{#                <div class="row">#}
-{#                    {% for hour i n 1..12 %}#}
-{#                        <div class="col border border-dark" style="max-width: 60px;min-width: 60px;"> {{ hour }}</div>#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        {% for login, attendance in attendancesOutput %}#}
-{#            <div class="row">#}
-{#                <div class="col-2">#}
-{#                    {{ login }}#}
-{#                </div>#}
-{#                <div class="col-10 m-0 p-0">#}
-{#                    {% if attendance[0]['direction']=='entrance' %}#}
-{#                        {% set divStyle='bg-danger' %}#}
-{#                    {% else %}#}
-{#                        {% set divStyle='bg-success' %}#}
-{#                    {% endif %}#}
-
-{#                    {% for number, event in attendance %}#}
-
-{#                        <div class="{{ divStyle }}"#}
-{#                             style="max-width: 1px;min-width: 1px; height: 20px ; font-size: 1em; float: left">#}
-{#                        </div>#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-
-{#    </div>#}
-
 
     <div class="container-fluid">
         <div class="row">
@@ -116,7 +78,9 @@
 
 
                             <div class="{{ divStyle }} mt-1"
-                                 style="max-width: {{ minutesdiffToEnd/2 }}px;min-width: {{ minutesdiffToEnd/2 }}px; height: 20px ; font-size: 1em; float: left">
+                                 style="max-width: {{ minutesdiffToEnd/2 }}px;min-width: {{ minutesdiffToEnd/2 }}px; height: 20px ; font-size: 1em; float: left"
+                                 data-toggle="tooltip" data-placement="left" title="{{ login }}  {{ event.time|date("H:i:s") }}"
+                            >
 
                             </div>
                            
@@ -128,43 +92,6 @@
         {% endfor %}
 
     </div>
-{#    <div class="container-fluid">#}
-
-
-{#        <div class="row">#}
-{#            <div class="col">#}
-{#                <table class="table table-striped">#}
-{#                    <tr>#}
-{#                        <td> Login</td>#}
-{#                        {% for hour in 1..12 %}#}
-{#                            <td>{{ hour }}</td>#}
-{#                        {% endfor %}#}
-{#                    </tr>#}
-{#                    {% for login, attendance in attendancesOutput %}#}
-{#                        <tr>#}
-
-{#                            <td> {{ login }} </td>#}
-
-{#                            {% for hour in 1..12 %}#}
-{#                                <td class="p-0 m-0">#}
-{#                                    <table class="border">#}
-{#                                        <tr>#}
-{#                                            {% for min in 1..60 %}#}
-{#                                                <td class="{% if min is even %}bg-danger{% else %}bg-warning {% endif %} p-0 border-0"#}
-{#                                                    style="width: 1px;min-width: 3px; height: 20px ; font-size: 1em"#}
-{#                                                ></td>#}
-{#                                            {% endfor %}#}
-{#                                        </tr>#}
-{#                                    </table>#}
-{#                                </td>#}
-{#                            {% endfor %}#}
-
-{#                        </tr>#}
-{#                    {% endfor %}#}
-{#                </table>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
 
 {% endblock %}
 {% block javascripts %}
