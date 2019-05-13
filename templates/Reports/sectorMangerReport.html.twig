@@ -59,7 +59,7 @@
 {#                        {% for i in 1..minutesdiff %}#}
                             <div class="{{ divStyle }} mt-1"
                                  style="max-width: {{ minutesdiff/2 }}px;min-width: {{ minutesdiff/2 }}px; height: 20px ; font-size: 1em; float: left"
-                                 data-toggle="tooltip" data-placement="left" title="{{ login }}  {{ event.time|date("H:i:s") }}">
+                                 data-toggle="tooltip" data-placement="left" title="{{ login }}  {{ event.direction  }}{{event.time|date("H:i:s") }}">
 
                             </div>
 {#                        {% endfor %}#}
@@ -79,7 +79,7 @@
 
                             <div class="{{ divStyle }} mt-1"
                                  style="max-width: {{ minutesdiffToEnd/2 }}px;min-width: {{ minutesdiffToEnd/2 }}px; height: 20px ; font-size: 1em; float: left"
-                                 data-toggle="tooltip" data-placement="left" title="{{ login }}  {{ event.time|date("H:i:s") }}"
+                                 data-toggle="tooltip" data-placement="left" title="{{ login }}  {{ event.direction  }}{{ event.time|date("H:i:s") }}"
                             >
 
                             </div>
