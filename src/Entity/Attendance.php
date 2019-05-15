@@ -9,6 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Attendance
 {
+    const FINES=
+        [
+            'late'=>'Опоздание',
+            'sabotage'=>'Саботаж',
+            'denial'=>'Отказ от работы',
+            'manually deleted' => 'Удален вручную',
+            'no'=>'Нет Штрафа',
+        ];
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

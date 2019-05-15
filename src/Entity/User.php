@@ -41,7 +41,7 @@ class User implements UserInterface
         'INDITEX'=>'INDITEX',
         'MAIN'=>'MAIN',
         'JEWELRY'=>'JEWELRY',
-        'manually deleted'=>'manually deleted',
+        
     ];
     const PROVIDERS_LIST=[
         'gs'=>'GSR',

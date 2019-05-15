@@ -292,24 +292,5 @@ class AttendanceController extends AbstractController
     }
 
 
-    /**
-     * @Route("/finesReport", name="finesreport")
-     */
-    public function finesReport(){
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-
-        $usersRepo = $this->getDoctrine()->getRepository(User::class);
-        $sectorManagres= $usersRepo->findAllSectorManagers();
-
-        $days=14;
-        $fines = $attendanceRepo->findAllAttendancesWithFines($days);
-
-
-        return $this->render('/Reports/finesReport.html.twig',[
-            'fines'=> $fines,
-            'sectorManagers'=> $sectorManagres,
-        ]);
-    }
 
 }

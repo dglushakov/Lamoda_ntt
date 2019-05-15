@@ -232,16 +232,23 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllAttendancesWithFines($days)
+    public function findAllAttendancesWithFines($days, $sector, $fine)
     {
         $dateForQuery = (new \DateTime())->modify("-$days day");
         return $this->createQueryBuilder('a')
             ->andWhere('a.fine IS NOT NULL')
             ->andWhere('a.dateTime > :dateTime')
+            ->andWhere('a.sector LIKE :sector')
+            ->andWhere('a.fine LIKE :fine')
+
+            ->setParameter('dateTime', $dateForQuery)
+            ->setParameter('sector', '%'.$sector.'%')
+            ->setParameter('fine', '%'.$fine.'%')
+
             ->addOrderBy('a.sector', 'ASC')
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
-            ->setParameter('dateTime', $dateForQuery)
+
             ->getQuery()
             ->getResult();
 

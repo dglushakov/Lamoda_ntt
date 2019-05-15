@@ -1,30 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'inc/topNavbar.html.twig' %}
-
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                &nbsp
+                {% include 'inc/topNavbar.html.twig' %}
             </div>
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-7 m-2">
+                {% include 'Reports/inc/filtersForm.html.twig' %}
+            </div>
+        </div>
         <div class="row">
             <div class="col">
 
                 <table class="table table-striped">
                     <thead>
-                    <th>Login</th>
-                    <th>Time</th>
-                    <th>Fine</th>
-                    <th>Approved</th>
-                    <th>Comment</th>
-                    <th>Sector</th>
-                    <th>Shift</th>
-                    <th>Manager</th>
+                        <tr>
+                            <th>Login</th>
+                            <th>Time</th>
+                            <th>Fine</th>
+                            <th>Approved</th>
+                            <th>Comment</th>
+                            <th>Sector</th>
+                            <th>Shift</th>
+                            <th>Manager</th>
+                        </tr>
                     </thead>
 
                     <tbody>
@@ -65,5 +70,6 @@
             </div>
         </div>
     </div>
+
 
 {% endblock %}

@@ -3,6 +3,7 @@
 
 namespace App\Controller\Reports;
 
+use App\Controller\Reports\Form\finesReportFiltersForm;
 use App\Entity\User;
 use App\Controller\Reports\Form\FiltersForm;
 use App\Entity\Attendance;
@@ -111,7 +112,6 @@ class ReportsController extends AbstractController
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
-
         $attendances = $attendanceRepo->findAttendancesOnSectorInShift($this->getUser()->getSector(), $this->getUser()->getShift());
 
         $attendancesOutput=[];
@@ -129,6 +129,46 @@ class ReportsController extends AbstractController
         return $this->render('/Reports/sectorMangerReport.html.twig', [
             'attendances'=>$attendances,
             'attendancesOutput'=>$attendancesOutput,
+        ]);
+    }
+
+
+    /**
+     * @Route("/finesReport", name="finesreport")
+     */
+    public function finesReport(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+
+        $usersRepo = $this->getDoctrine()->getRepository(User::class);
+        $sectorManagres= $usersRepo->findAllSectorManagers();
+
+        $days=14;
+        $sector='';
+        $fine='';
+        //$fines = $attendanceRepo->findAllAttendancesWithFines($days);
+
+        $filtersForm = $this->createForm(finesReportFiltersForm::class, NULL);
+        $filtersForm->handleRequest($request);
+        if ($filtersForm->isSubmitted() && $filtersForm->isValid()) {
+
+            $formData = $filtersForm->getData();
+            if($formData['Depth']) {
+                $days=$formData['Depth'];
+            }
+            $sector = array_search($formData['Sector'], USER::SECTORS_LIST );
+            $fine = array_search($formData['Fine'], ATTENDANCE::FINES );
+
+        }
+
+
+        $fines = $attendanceRepo->findAllAttendancesWithFines($days, $sector, $fine);
+       // $fines = $attendanceRepo->findAllAttendancesWithFines($days);
+
+        return $this->render('/Reports/finesReport.html.twig',[
+            'fines'=> $fines,
+            'sectorManagers'=> $sectorManagres,
+            'filtersForm'=>$filtersForm->createView(),
         ]);
     }
 }
