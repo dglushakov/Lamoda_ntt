@@ -88,8 +88,19 @@
                                     {{ sectorKey }}
                                 </td>
                                 {% for day in depth-1..0 %}
-                                    <td>
-                                        {% set day = date('-'~day~'days') %}
+                                    {% set tomorrow = day-1 %}
+                                    {% set yesterday = day+1 %}
+
+                                    {% set day = date('-'~day~'days') %}
+
+                                    {% set tomorrowDay = date('-'~tomorrow~'days') %}
+                                    {% set yesterdayDay = date('-'~yesterday~'days') %}
+
+                                    <td
+                                            {% if (workSector[day|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined) or (workSector[yesterdayDay|date("d.m.Y")]['2'] is defined and workSector[day|date("d.m.Y")]['1'] is defined) %}
+                                                class="bg-warning"
+                                            {% endif %}
+                                    >
                                         {% if workSector[day|date("d.m.Y")]['1'] is defined %}
                                             {% set time = workSector[day|date("d.m.Y")]['1'] %}
                                             {% set hours = time//3600 %}
@@ -101,7 +112,11 @@
 
                                         {% endif %}
                                     </td>
-                                    <td>
+                                    <td
+                                            {% if (workSector[day|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined) or (workSector[tomorrowDay|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined) %}
+                                                class="bg-warning"
+                                            {% endif %}
+                                    >
                                         {% if workSector[day|date("d.m.Y")]['2'] is defined %}
                                             {% set time = workSector[day|date("d.m.Y")]['2'] %}
                                             {% set hours = time//3600 %}
