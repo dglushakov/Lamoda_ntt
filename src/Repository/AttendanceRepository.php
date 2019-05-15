@@ -245,8 +245,7 @@ class AttendanceRepository extends ServiceEntityRepository
             ->setParameter('sector', '%'.$sector.'%')
             ->setParameter('fine', '%'.$fine.'%')
 
-            ->addOrderBy('a.sector', 'ASC')
-            ->addOrderBy('a.login', 'ASC')
+
             ->addOrderBy('a.dateTime', 'DESC')
 
             ->getQuery()
