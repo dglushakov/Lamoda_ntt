@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'inc/topNavbar.html.twig' %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                &nbsp
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+
+                <table class="table table-striped">
+                    <thead>
+                    <th>Login</th>
+                    <th>Time</th>
+                    <th>Fine</th>
+                    <th>Approved</th>
+                    <th>Comment</th>
+                    <th>Sector</th>
+                    <th>Shift</th>
+                    <th>Manager</th>
+                    </thead>
+
+                    <tbody>
+                    {% for fine in fines %}
+                        <tr>
+                            <td>
+                                {{ fine.login }}
+                            </td>
+                            <td>
+                                {{ fine.dateTime|date('Y-m-d H:i:s') }}
+                            </td>
+                            <td>
+                                {{ fine.fine }}
+                            </td>
+                            <td>
+                                {{ fine.fineapproved }}
+                            </td>
+                            <td>
+                                {{ fine.comment }}
+                            </td>
+                            <td>
+                                {{ fine.sector }}
+                            </td>
+                            <td>
+                                {{ fine.shift }}
+                            </td>
+                            <td>
+                                {% for manager in sectorManagers %}
+                                    {% if manager.sector == fine.sector and manager.shift == fine.shift %}
+                                        {{ manager.username }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

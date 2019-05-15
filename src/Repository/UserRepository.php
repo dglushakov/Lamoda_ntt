@@ -32,6 +32,17 @@ class UserRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findAllSectorManagers()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('role', '%ROLE_SECTOR_MANAGER%')
+            ->orderBy('u.username', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

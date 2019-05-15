@@ -232,6 +232,20 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllAttendancesWithFines($days)
+    {
+        $dateForQuery = (new \DateTime())->modify("-$days day");
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.fine IS NOT NULL')
+            ->andWhere('a.dateTime > :dateTime')
+            ->addOrderBy('a.sector', 'ASC')
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
+            ->setParameter('dateTime', $dateForQuery)
+            ->getQuery()
+            ->getResult();
+
+    }
     // /**
     //  * @return Attendance[] Returns an array of Attendance objects
     //  */
