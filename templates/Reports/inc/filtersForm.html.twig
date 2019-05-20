@@ -3,6 +3,27 @@
         {% form_theme filtersForm 'bootstrap_4_horizontal_layout.html.twig' %}
 
         {{ form_start(filtersForm) }}
+
+        <div class="row">
+            <div class="col">
+                {{ form_row(filtersForm.Provider) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_row(filtersForm.Sector) }}
+            </div>
+        </div>
+        <div class="row text-nowrap" >
+            <div class="col">
+                {{ form_row(filtersForm.dateFrom) }}
+            </div>
+            <div class="col">
+                {{ form_row(filtersForm.dateTo) }}
+            </div>
+        </div>
+
+
         {{ form_widget(filtersForm) }}
         <input type="submit" class="btn btn-success" value="Build"/>
         {{ form_end(filtersForm) }}
