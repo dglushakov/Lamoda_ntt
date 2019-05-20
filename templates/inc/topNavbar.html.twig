@@ -46,8 +46,8 @@
         </div>
     </div>
     <div class="col-2">
-        {% if userIsPeep %}
-            {% if attendancesForApproval|length > 0 %}
+        {% if userIsPeep and attendancesForApproval is defined %}
+            {% if attendancesForApproval|length > 0  %}
                 <div class="bg-danger"><a class="badge badge-pill badge-danger"
                                           href="#finesTable">Штрафы({{ attendancesForApproval|length }})</a></div>
             {% endif %}
