@@ -4,11 +4,13 @@
 
         {{ form_start(filtersForm) }}
 
+        {% if filtersForm.Provider is defined %}
         <div class="row">
             <div class="col">
                 {{ form_row(filtersForm.Provider) }}
             </div>
         </div>
+
         <div class="row">
             <div class="col">
                 {{ form_row(filtersForm.Sector) }}
@@ -22,7 +24,7 @@
                 {{ form_row(filtersForm.dateTo) }}
             </div>
         </div>
-
+        {% endif %}
 
         {{ form_widget(filtersForm) }}
         <input type="submit" class="btn btn-success" value="Build"/>
