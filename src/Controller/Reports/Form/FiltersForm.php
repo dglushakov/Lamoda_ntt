@@ -30,12 +30,13 @@ class FiltersForm extends AbstractType
                 'required' => false,
             ])
             ->add('dateFrom', DateType::class, [
-                'widget' => 'choice',
+                'widget'=> 'single_text',
                 'required' => false,
                 'data'=> new \DateTime('-3 days'),
             ])
 
             ->add('dateTo', DateType::class, [
+                'widget'=> 'single_text',
                 'required' => false,
                 'data'=> new \DateTime(),
             ])
