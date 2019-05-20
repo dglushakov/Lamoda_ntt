@@ -29,9 +29,15 @@ class FiltersForm extends AbstractType
                 'choices' => USER::SECTORS_LIST,
                 'required' => false,
             ])
-            ->add('Depth', ChoiceType::class, [
-                'choices' => $depthFilter,
+            ->add('dateFrom', DateType::class, [
+                'widget' => 'choice',
                 'required' => false,
+                'data'=> new \DateTime('-3 days'),
+            ])
+
+            ->add('dateTo', DateType::class, [
+                'required' => false,
+                'data'=> new \DateTime(),
             ])
 
 //            ->add('dateFrom', DateType::class, [

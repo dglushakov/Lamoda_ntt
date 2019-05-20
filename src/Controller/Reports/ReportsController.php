@@ -19,59 +19,55 @@ class ReportsController extends AbstractController
      * @Route("/reports/", name="reports")
      *
      */
-    public function mainReport(Request $request){
-    $reportDepthInDays=14;
-
+    public function mainReport(Request $request)
+    {
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
         $filtersForm = $this->createForm(FiltersForm::class, NULL);
         $filtersForm->handleRequest($request);
+
+        $dateFrom = new \DateTime();
+        $dateTo =   new \DateTime();
+        $sector =  '';
+        $provider =  '';
         if ($filtersForm->isSubmitted() && $filtersForm->isValid()) {
-
             $formData = $filtersForm->getData();
-            $provider = array_search($formData['Provider'], USER::PROVIDERS_LIST );
-            if($formData['Depth']) {
-                $reportDepthInDays=$formData['Depth'];
+            $dateFrom = $formData['dateFrom'];
+            $dateTo = $formData['dateTo'];
+            $sector = $formData['Sector'];
+            if($formData['Provider']){
+                $provider = array_search($formData['Provider'], USER::PROVIDERS_LIST).'-';
             }
-            if($formData['Depth']=='' || !$formData['Depth']) {
-                $formData['Depth']=$reportDepthInDays;
-            }
 
-            $attendances = $attendanceRepo->findAllforLastDaysFilteredBySectorOrCompany($formData['Depth'],$formData['Sector'],$provider);
-
-        } else {
-
-            $attendances = $attendanceRepo->findAllforLastDaysFilteredBySectorOrCompany($reportDepthInDays);
         }
 
-        //dd($reportDepthInDays);
-        //dump($attendances);
-        $workTime=[];
-        for($i=0; $i<count($attendances)-1; $i++) {
+
+        $dateTo->add(new \DateInterval('PT23H59M59S'));
+
+        $attendances = $attendanceRepo->findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector, $provider);
+
+        $workTime = [];
+        for ($i = 0; $i < count($attendances) - 1; $i++) {
             if
             (
-                ($attendances[$i]->getDirection()=='exit' && $attendances[$i+1]->getDirection()=='entrance')
-                && ($attendances[$i]->getLogin()===$attendances[$i+1]->getLogin())
-                && ($attendances[$i]->getSector()===$attendances[$i+1]->getSector())
-            )
-
-            {
-                $entrance = $attendances[$i+1];
+                ($attendances[$i]->getDirection() == 'exit' && $attendances[$i + 1]->getDirection() == 'entrance')
+                && ($attendances[$i]->getLogin() === $attendances[$i + 1]->getLogin())
+                && ($attendances[$i]->getSector() === $attendances[$i + 1]->getSector())
+            ) {
+                $entrance = $attendances[$i + 1];
                 $exit = $attendances[$i];
 //                    dump($entrance);
 //                    dd($exit);
                 $day = $entrance->getDateTime()->format('d.m.Y');
                 $shift = 1;
 
-                if($entrance->getDateTime()->format('H') >= 20)
-                {
+                if ($entrance->getDateTime()->format('H') >= 20) {
                     $shift = 2;
-                } elseif ($entrance->getDateTime()->format('H') < 8)
-                {
+                } elseif ($entrance->getDateTime()->format('H') < 8) {
 
                     $shift = 2;
                     $day1 = clone $entrance->getDateTime();
-                    $day1 ->sub(new \DateInterval('P1D'));
+                    $day1->sub(new \DateInterval('P1D'));
                     //$day1->sub(new \DateInterval('P1D'));
                     $day = $day1->format('d.m.Y');
                     $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $entrance->getDateTime()->getTimestamp();
@@ -81,7 +77,7 @@ class ReportsController extends AbstractController
                 $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $entrance->getDateTime()->getTimestamp();
 
 
-                if (isset($workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift])){
+                if (isset($workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift])) {
                     $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift] =
                         $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift]
                         + $currentWorkPeriod;
@@ -94,11 +90,12 @@ class ReportsController extends AbstractController
         }
 
 
-        return $this->render('/Reports/reports.html.twig',[
-            'filtersForm'=>$filtersForm->createView(),
-            'attendances'=>$attendances,
-            'worktime'=>$workTime,
-            'depth'=>$reportDepthInDays,
+        return $this->render('/Reports/reports.html.twig', [
+            'filtersForm' => $filtersForm->createView(),
+            'attendances' => $attendances,
+            'worktime' => $workTime,
+            'dateFrom' => $dateFrom,
+            'dateTo'=>$dateTo,
         ]);
     }
 
@@ -107,28 +104,27 @@ class ReportsController extends AbstractController
      * @Route("/sectorManagerReport/", name="sectorManagerReport")
      *
      */
-    public function sectorManagerReport(){
+    public function sectorManagerReport()
+    {
 
 
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
         $attendances = $attendanceRepo->findAttendancesOnSectorInShift($this->getUser()->getSector(), $this->getUser()->getShift());
 
-        $attendancesOutput=[];
-        foreach ($attendances as $attendance){
+        $attendancesOutput = [];
+        foreach ($attendances as $attendance) {
             /** @var Attendance $attendance */
-                $attendancesOutput[$attendance->getLogin()][] = [
-                    'direction'=>$attendance->getDirection(),
-                    'time'=>$attendance->getDateTime()
-                ];
+            $attendancesOutput[$attendance->getLogin()][] = [
+                'direction' => $attendance->getDirection(),
+                'time' => $attendance->getDateTime()
+            ];
         }
 
 
-
-
         return $this->render('/Reports/sectorMangerReport.html.twig', [
-            'attendances'=>$attendances,
-            'attendancesOutput'=>$attendancesOutput,
+            'attendances' => $attendances,
+            'attendancesOutput' => $attendancesOutput,
         ]);
     }
 
@@ -136,16 +132,17 @@ class ReportsController extends AbstractController
     /**
      * @Route("/finesReport", name="finesreport")
      */
-    public function finesReport(Request $request){
+    public function finesReport(Request $request)
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
         $usersRepo = $this->getDoctrine()->getRepository(User::class);
-        $sectorManagres= $usersRepo->findAllSectorManagers();
+        $sectorManagres = $usersRepo->findAllSectorManagers();
 
-        $days=14;
-        $sector='';
-        $fine='';
+        $days = 14;
+        $sector = '';
+        $fine = '';
         //$fines = $attendanceRepo->findAllAttendancesWithFines($days);
 
         $filtersForm = $this->createForm(finesReportFiltersForm::class, NULL);
@@ -153,22 +150,22 @@ class ReportsController extends AbstractController
         if ($filtersForm->isSubmitted() && $filtersForm->isValid()) {
 
             $formData = $filtersForm->getData();
-            if($formData['Depth']) {
-                $days=$formData['Depth'];
+            if ($formData['Depth']) {
+                $days = $formData['Depth'];
             }
-            $sector = array_search($formData['Sector'], USER::SECTORS_LIST );
-            $fine = array_search($formData['Fine'], ATTENDANCE::FINES );
+            $sector = array_search($formData['Sector'], USER::SECTORS_LIST);
+            $fine = array_search($formData['Fine'], ATTENDANCE::FINES);
 
         }
 
 
         $fines = $attendanceRepo->findAllAttendancesWithFines($days, $sector, $fine);
-       // $fines = $attendanceRepo->findAllAttendancesWithFines($days);
+        // $fines = $attendanceRepo->findAllAttendancesWithFines($days);
 
-        return $this->render('/Reports/finesReport.html.twig',[
-            'fines'=> $fines,
-            'sectorManagers'=> $sectorManagres,
-            'filtersForm'=>$filtersForm->createView(),
+        return $this->render('/Reports/finesReport.html.twig', [
+            'fines' => $fines,
+            'sectorManagers' => $sectorManagres,
+            'filtersForm' => $filtersForm->createView(),
         ]);
     }
 }

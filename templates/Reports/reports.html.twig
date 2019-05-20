@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% set daysCount =  date(dateFrom).diff(date(dateTo)).days %}
+
 {% block body %}
-{#    {{ dump(depth) }}#}
-{#    {{ dump(attendances) }}#}
-{#    {{ dump(worktime) }}#}
     <div class="container-fluid">
         <div class="row">
             <div class="col">
@@ -26,9 +25,10 @@
 
                         </th>
 
-                        {% for day in depth-1..0 %}
+                        {% for day in 0..daysCount %}
                             <th colspan="2">
-                                {{ date('-'~day~'days')|date("d.m.Y") }}
+                                {{ dateFrom|date_modify('+'~day~'days')|date("d.m.Y") }}
+                                {#                                {{ date('+'~day~'days')|date("d.m.Y") }}#}
                             </th>
                         {% endfor %}
                     </tr>
@@ -42,7 +42,7 @@
                         <th>
                             Sector
                         </th>
-                        {% for day in depth-1..0 %}
+                        {% for day in 0..daysCount %}
                             <th>
                                 {{ '1' }}
                             </th>
@@ -87,11 +87,12 @@
                                 <td>
                                     {{ sectorKey }}
                                 </td>
-                                {% for day in depth-1..0 %}
+                                {% for day in 0..daysCount %}
                                     {% set tomorrow = day-1 %}
                                     {% set yesterday = day+1 %}
 
-                                    {% set day = date('-'~day~'days') %}
+{#                                    {% set day = date('-'~day~'days') %}#}
+                                    {% set day = dateFrom|date_modify('+'~day~'days') %}
 
                                     {% set tomorrowDay = date('-'~tomorrow~'days') %}
                                     {% set yesterdayDay = date('-'~yesterday~'days') %}
