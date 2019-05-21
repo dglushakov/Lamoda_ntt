@@ -9,6 +9,11 @@
 
     <script>
         $(document).ready(function () {
+
+            if(window.location.hash=='#finesTable'){
+                window.location.hash='';
+                window.location.hash='#finesTable';
+            }
             $("#inputLogin").focus();
             $("#inputLogin").keydown(function (event) {
 
@@ -81,5 +86,6 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 

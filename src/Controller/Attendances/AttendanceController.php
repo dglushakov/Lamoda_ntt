@@ -126,7 +126,9 @@ class AttendanceController extends AbstractController
         $entityManager->persist($attendanceWitFine);
         $entityManager->flush();
 
-        return $this->redirectToRoute('peepInterface');
+        return $this->redirectToRoute('peepInterface', [
+            '_fragment'=>'finesTable',
+        ]);
     }
 
     /**

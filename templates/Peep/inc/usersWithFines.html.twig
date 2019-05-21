@@ -10,14 +10,14 @@
         {% set manuallyDeletedFinesCount=manuallyDeletedFinesCount+1 %}
     {% endif %}
 {% endfor %}
+
 <div class="row">
-    <div class="clickable m-2 col-11 text-left" data-toggle="collapse" data-target=".usersWithFinesTable"
-         aria-expanded="false" aria-controls="group-of-rows-1">
-        <h3>Штрафы({{ simpleFinesCount }})<img src="{{ asset('img/arow_down.png') }}" width="30px"></h3>
+    <div class="col">
+        <h2>Fines</h2>
     </div>
 </div>
 <div class="row">
-    <div class="col usersWithFinesTable collapse">
+    <div class="col">
         <table class="table table-striped">
             <thead>
             <th>
@@ -100,13 +100,12 @@
 
 
 <div class="row">
-    <div  class="clickable m-2 col-11 text-left" data-toggle="collapse" data-target=".usersManuallyDeletedTable"
-          aria-expanded="false" aria-controls="group-of-rows-1">
-        <h3>Удалены с участка({{ manuallyDeletedFinesCount }})<img src="{{ asset('img/arow_down.png') }}" width="30px"></h3>
+    <div class="col">
+        <h3>Manually deleted</h3>
     </div>
 </div>
 <div class="row">
-    <div class="col usersManuallyDeletedTable collapse">
+    <div class="col">
         <table class="table table-striped">
             <thead>
             <th>
