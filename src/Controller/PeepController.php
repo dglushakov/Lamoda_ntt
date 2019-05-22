@@ -30,18 +30,6 @@ class PeepController extends AbstractController
             }
         }
 
-//        $attendancesInPeepSector = $attendanceRepo->findUsersOnSectorInShift($this->getUser()->getSector(),$this->getUser()->getShift());
-//
-//
-//        $attendancesInPeepSectorOutput=[];
-//        $lastLogin ="";
-//        foreach ($attendancesInPeepSector as $attendance ) {
-//            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
-//                $attendancesInPeepSectorOutput[]=$attendance;
-//            }
-//            $lastLogin=$attendance->getLogin();
-//        }
-
         $attendancesOutput=[];
         $lastLogin ="";
         $usersInSectorQty=[];
