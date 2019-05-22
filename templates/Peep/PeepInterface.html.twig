@@ -11,8 +11,11 @@
         $(document).ready(function () {
 
             if(window.location.hash=='#finesTable'){
-                window.location.hash='';
-                window.location.hash='#finesTable';
+                // window.location.hash='';
+                // alert('1');
+                // window.location.hash='#finesTable';
+                $('html, body').animate({scrollTop: $('#finesTable').offset().top }, 10);
+
             }
             $("#inputLogin").focus();
             $("#inputLogin").keydown(function (event) {
