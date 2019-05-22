@@ -88,14 +88,17 @@
                                     {{ sectorKey }}
                                 </td>
                                 {% for day in 0..daysCount %}
-                                    {% set tomorrow = day-1 %}
-                                    {% set yesterday = day+1 %}
+                                    {% set tomorrow = day+1 %}
+                                    {% set yesterday = day-1 %}
 
 {#                                    {% set day = date('-'~day~'days') %}#}
                                     {% set day = dateFrom|date_modify('+'~day~'days') %}
 
-                                    {% set tomorrowDay = date('-'~tomorrow~'days') %}
-                                    {% set yesterdayDay = date('-'~yesterday~'days') %}
+{#                                    {% set tomorrowDay = date('-'~tomorrow~'days') %}#}
+{#                                    {% set yesterdayDay = date('-'~yesterday~'days') %}#}
+
+                                    {% set tomorrowDay = dateFrom|date_modify('+'~tomorrow~'days') %}
+                                    {% set yesterdayDay = dateFrom|date_modify('+'~yesterday~'days') %}
 
                                     <td
                                             {% if (workSector[day|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined) or (workSector[yesterdayDay|date("d.m.Y")]['2'] is defined and workSector[day|date("d.m.Y")]['1'] is defined) %}
