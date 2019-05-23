@@ -134,7 +134,7 @@ class ReportsController extends AbstractController
      */
     public function finesReport(Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_FINES_REPORT');
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
 
         $usersRepo = $this->getDoctrine()->getRepository(User::class);
