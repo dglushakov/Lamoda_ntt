@@ -25,11 +25,10 @@ class AttendanceRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->andWhere('a.dateTime > :dateTime')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->addOrderBy('a.login','ASC')
-           ->addOrderBy('a.dateTime', 'DESC')
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'DESC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
 
     }
 
@@ -39,17 +38,20 @@ class AttendanceRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->andWhere('a.dateTime > :dateTime')
             ->setParameter('dateTime', $dateForQuery)
-            ->addOrderBy('a.login','ASC')
-            ->addOrderBy('a.sector','ASC')
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.sector', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
-    public function findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector='',$company='')
+    public function findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector = '', $company = '')
     {
 
+        if($company){
+            $company=$company.'-';
+        }
+        if ($company != 'lamoda-') {
             return $this->createQueryBuilder('a')
                 ->andWhere('a.dateTime > :dateFrom')
                 ->andWhere('a.dateTime <= :dateTo')
@@ -57,38 +59,54 @@ class AttendanceRepository extends ServiceEntityRepository
                 ->andWhere('a.login LIKE :company')
                 ->setParameter('dateFrom', $dateFrom)
                 ->setParameter('dateTo', $dateTo)
-                ->setParameter('sector', '%'.$sector.'%')
-                ->setParameter('company', '%'.$company.'%')
-                ->addOrderBy('a.login','ASC')
-                ->addOrderBy('a.sector','ASC')
+                ->setParameter('sector', '%' . $sector . '%')
+                ->setParameter('company', '%' . $company .'%')
+                ->addOrderBy('a.login', 'ASC')
+                ->addOrderBy('a.sector', 'ASC')
                 ->addOrderBy('a.dateTime', 'DESC')
                 ->getQuery()
-                ->getResult()
-                ;
+                ->getResult();
+        }
+        if ($company == 'lamoda-') {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.dateTime > :dateFrom')
+                ->andWhere('a.dateTime <= :dateTo')
+                ->andWhere('a.sector LIKE :sector')
+                ->andWhere('a.login NOT LIKE :company')
+                ->setParameter('dateFrom', $dateFrom)
+                ->setParameter('dateTo', $dateTo)
+                ->setParameter('sector', '%' . $sector . '%')
+                ->setParameter('company', '%' . '-' . '%')
+                ->addOrderBy('a.login', 'ASC')
+                ->addOrderBy('a.sector', 'ASC')
+                ->addOrderBy('a.dateTime', 'DESC')
+                ->getQuery()
+                ->getResult();
+        }
     }
 
     public function findActiveUsersOnSectorInShift($sector, $shift)
     {
 
-        $attendances=$this->createQueryBuilder('a')
+        $attendances = $this->createQueryBuilder('a')
             ->andWhere('a.dateTime > :dateTime')
             ->andWhere('a.sector = :sector')
             ->andWhere('a.shift = :shift')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('sector',$sector)
+            ->setParameter('sector', $sector)
             ->setParameter('shift', $shift)
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
             ->getQuery()
             ->getResult();
 
-        $attendancesOutput=[];
-        $lastLogin ="";
-        foreach ($attendances as $attendance ) {
-            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
-                $attendancesOutput[]=$attendance;
+        $attendancesOutput = [];
+        $lastLogin = "";
+        foreach ($attendances as $attendance) {
+            if ($attendance->getLogin() != $lastLogin && $attendance->getDirection() == 'entrance') {
+                $attendancesOutput[] = $attendance;
             }
-            $lastLogin=$attendance->getLogin();
+            $lastLogin = $attendance->getLogin();
         }
 
 
@@ -100,23 +118,23 @@ class AttendanceRepository extends ServiceEntityRepository
     public function findActiveUsersOnSector($sector)
     {
 
-        $attendances=$this->createQueryBuilder('a')
+        $attendances = $this->createQueryBuilder('a')
             ->andWhere('a.dateTime > :dateTime')
             ->andWhere('a.sector = :sector')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('sector',$sector)
+            ->setParameter('sector', $sector)
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
             ->getQuery()
             ->getResult();
 
-        $attendancesOutput=[];
-        $lastLogin ="";
-        foreach ($attendances as $attendance ) {
-            if ($attendance->getLogin()!=$lastLogin && $attendance->getDirection()=='entrance'){
-                $attendancesOutput[]=$attendance;
+        $attendancesOutput = [];
+        $lastLogin = "";
+        foreach ($attendances as $attendance) {
+            if ($attendance->getLogin() != $lastLogin && $attendance->getDirection() == 'entrance') {
+                $attendancesOutput[] = $attendance;
             }
-            $lastLogin=$attendance->getLogin();
+            $lastLogin = $attendance->getLogin();
         }
 
 
@@ -131,7 +149,7 @@ class AttendanceRepository extends ServiceEntityRepository
             ->andWhere('a.sector = :sector')
             ->andWhere('a.shift = :shift')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('sector',$sector)
+            ->setParameter('sector', $sector)
             ->setParameter('shift', $shift)
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
@@ -145,7 +163,7 @@ class AttendanceRepository extends ServiceEntityRepository
             ->andWhere('a.dateTime > :dateTime')
             ->andWhere('a.sector = :sector')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('sector',$sector)
+            ->setParameter('sector', $sector)
             ->addOrderBy('a.dateTime', 'DESC')
             ->addOrderBy('a.login', 'ASC')
             ->getQuery()
@@ -159,8 +177,8 @@ class AttendanceRepository extends ServiceEntityRepository
             ->andWhere('a.sector = :sector')
             ->andWhere('a.shift = :shift')
             ->setParameter('dateTime', new \DateTime('-14 hours'))
-            ->setParameter('sector',$sector)
-            ->setParameter('shift',$shift)
+            ->setParameter('sector', $sector)
+            ->setParameter('shift', $shift)
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'ASC')
             ->getQuery()
@@ -199,7 +217,7 @@ class AttendanceRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->andWhere('a.fine IS NOT NULL')
             ->andWhere('a.fine_approved IS NULL')
-            ->orWhere ('a.sector = :deleted_sector')
+            ->orWhere('a.sector = :deleted_sector')
             ->setParameter('deleted_sector', 'manually deleted')
             ->addOrderBy('a.dateTime', 'DESC')
             ->addOrderBy('a.sector', 'ASC')
@@ -216,14 +234,10 @@ class AttendanceRepository extends ServiceEntityRepository
             ->andWhere('a.dateTime > :dateTime')
             ->andWhere('a.sector LIKE :sector')
             ->andWhere('a.fine LIKE :fine')
-
             ->setParameter('dateTime', $dateForQuery)
-            ->setParameter('sector', '%'.$sector.'%')
-            ->setParameter('fine', '%'.$fine.'%')
-
-
+            ->setParameter('sector', '%' . $sector . '%')
+            ->setParameter('fine', '%' . $fine . '%')
             ->addOrderBy('a.dateTime', 'DESC')
-
             ->getQuery()
             ->getResult();
 

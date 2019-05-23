@@ -36,8 +36,9 @@ class ReportsController extends AbstractController
             $dateTo = $formData['dateTo'];
             $sector = $formData['Sector'];
             if($formData['Provider']){
-                $provider = array_search($formData['Provider'], USER::PROVIDERS_LIST).'-';
+                $provider = array_search($formData['Provider'], USER::PROVIDERS_LIST);
             }
+
 
         }
 
