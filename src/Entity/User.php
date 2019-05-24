@@ -44,15 +44,17 @@ class User implements UserInterface
         
     ];
     const PROVIDERS_LIST=[
-        'gs'=>'GSR',
-        'sm'=>'SMG',
-        'rc'=>'Realnaya Cifra',
-        'lt'=>'Leader Team',
-        'pr'=>'Premer-M',
-        'vp'=>'Vremya Pervih',
-        'mk'=>'MK Expert',
         'ar'=>'Arcada',
+        'gs'=>'GSR',
+        'lt'=>'Leader Team',
+        'mk'=>'MK Expert',
+        'pr'=>'Premer-M',
+        'rc'=>'Realnaya Cifra',
+        'sm'=>'SMG',
+        'st'=>'Stolica',
+        'vp'=>'Vremya Pervih',
         'lamoda'=>'Lamoda',
+
     ];
     const USER_ROLES=[
         'Admin'=>'ROLE_ADMIN',

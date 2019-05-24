@@ -13,6 +13,8 @@
     </thead>
     <tbody>
     {% set rowNumber = 0 %}
+    {% set providersList = constant('App\\Entity\\USER::PROVIDERS_LIST') %}
+
     {% for attendance in attendances %}
         {% if attendance.direction == "entrance" %}
             {% set rowNumber = rowNumber + 1 %}
@@ -32,20 +34,9 @@
                 <td>
                     {% if attendance.login|trim|slice(2,1)=='-' %}
                         {% set companyPerfix = attendance.login|trim|slice(0,2) %}
-
-                        {% if companyPerfix =='gs' %}
-                            GSR
-                        {% elseif companyPerfix =='sm' %}
-                            SMG
-                        {% elseif companyPerfix =='rc' %}
-                            Realnaya Cifra
-                        {% elseif companyPerfix =='lt' %}
-                            Leader Team
-                        {% elseif companyPerfix =='pm' %}
-                            Premer-M
-                        {% elseif companyPerfix =='vp' %}
-                            Vremya Pervih
-                        {% endif %}
+                            {% if providersList[companyPerfix] is defined %}
+                                {{ providersList[companyPerfix] }}
+                            {% endif %}
                     {% else %}
                         Lamoda
                     {% endif %}

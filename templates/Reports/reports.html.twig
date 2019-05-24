@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set daysCount =  date(dateFrom).diff(date(dateTo)).days %}
+{% set providersList = constant('App\\Entity\\USER::PROVIDERS_LIST') %}
 
 {% block body %}
     <div class="container-fluid">
@@ -65,20 +66,8 @@
                                     {% if loginKey|trim|slice(2,1)=='-' %}
                                         {% set companyPerfix = loginKey|trim|slice(0,2) %}
 
-                                        {% if companyPerfix =='gs' %}
-                                            GSR
-                                        {% elseif companyPerfix =='sm' %}
-                                            SMG
-                                        {% elseif companyPerfix =='rc' %}
-                                            Realnaya Cifra
-                                        {% elseif companyPerfix =='lt' %}
-                                            Leader Team
-                                        {% elseif companyPerfix =='pm' %}
-                                            Premer-M
-                                        {% elseif companyPerfix =='vp' %}
-                                            Vremya Pervih
-                                        {% elseif companyPerfix =='ar' %}
-                                            Arcada
+                                        {% if providersList[companyPerfix] is defined %}
+                                            {{ providersList[companyPerfix] }}
                                         {% endif %}
                                     {% else %}
                                         Lamoda
