@@ -199,7 +199,9 @@ class AttendanceController extends AbstractController
      */
     public function getUsersInSectorsQty(){
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-        $attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
+        //$attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
+
+        $attendances = $attendanceRepo->findAllActiveWorkers();
         $attendancesOutput = [];
         $lastLogin = "";
 

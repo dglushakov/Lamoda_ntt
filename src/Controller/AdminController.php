@@ -23,10 +23,8 @@ class AdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $usersRepo = $this->getDoctrine()->getRepository(User::class);
-        //$users = $usersRepo->findAll();
-        $users = $usersRepo->findAllAdminsButOnlyMyShiftSectorManagets($this->getUSer()->getShift());
 
-        //$NewUser = new User();
+        $users = $usersRepo->findAllAdminsButOnlyMyShiftSectorManagets($this->getUSer()->getShift());
         $AddUserForm = $this->createForm(AddUserForm::class, new User());
 
         $AddUserForm->handleRequest($request);
@@ -42,56 +40,10 @@ class AdminController extends AbstractController
         }
 
 
-        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-//        $attendances = $attendanceRepo->findUsersOnAllSectorsInAllShifts();
-        $attendances = $attendanceRepo->findUsersOnAllSectorsInShift($this->getUser()->getShift());
-        //dd($attendances);
-        $attendancesOutput = [];
-        $lastLogin = "";
-        $usersInSectorQty = [];
-        foreach (USER::SECTORS_LIST as $sector) {
-            $usersInSectorQty[$sector]['total'] = 0;
-            foreach (USER::PROVIDERS_LIST as $key => $value) {
-                $usersInSectorQty[$sector][$key] = 0;
-            }
-            $usersInSectorQty[$sector]['lamoda'] = 0;
-        }
-
-        foreach ($attendances as $attendance) {
-            if ($attendance->getLogin() != $lastLogin && $attendance->getDirection() == 'entrance') {
-                $attendancesOutput[] = $attendance;
-                if(isset($usersInSectorQty[$attendance->getSector()]['total'])){
-                    $usersInSectorQty[$attendance->getSector()]['total']++;
-                }
-
-                if (substr($attendance->getLogin(), 2, 1) == '-') {
-                    $providerPerfix = substr($attendance->getLogin(), 0, 2);
-                    if(array_key_exists($providerPerfix, USER::PROVIDERS_LIST)) {
-                        $usersInSectorQty[$attendance->getSector()][$providerPerfix]++;
-                    }else {
-                        if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
-                            $usersInSectorQty[$attendance->getSector()]['lamoda']++;
-                        }
-                    }
-
-                } else {
-                    if(isset($usersInSectorQty[$attendance->getSector()]['lamoda'])){
-                        $usersInSectorQty[$attendance->getSector()]['lamoda']++;
-                    }
-                }
-            }
-            $lastLogin = $attendance->getLogin();
-        }
-
-
-        //dd($sectors);
         return $this->render('Admin/Userlist.html.twig', [
             'users' => $users,
             'addUserForm' => $AddUserForm->createView(),
             'sectors' => USER::SECTORS_LIST,
-            'attendances' => $attendancesOutput,
-            'usersInSectors' => $usersInSectorQty,
-
         ]);
     }
 

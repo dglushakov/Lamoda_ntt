@@ -20,99 +20,99 @@ class AttendanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Attendance::class);
     }
 
-    public function findAllLastDay()
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.dateTime > :dateTime')
-            ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->addOrderBy('a.login', 'ASC')
-            ->addOrderBy('a.dateTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+//    public function findAllLastDay()
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->addOrderBy('a.login', 'ASC')
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//
+//    }
 
-    }
+//    public function findAllforLastDays($days)
+//    {
+//        $dateForQuery = (new \DateTime())->modify("-$days day");
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->setParameter('dateTime', $dateForQuery)
+//            ->addOrderBy('a.login', 'ASC')
+//            ->addOrderBy('a.sector', 'ASC')
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//    }
 
-    public function findAllforLastDays($days)
-    {
-        $dateForQuery = (new \DateTime())->modify("-$days day");
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.dateTime > :dateTime')
-            ->setParameter('dateTime', $dateForQuery)
-            ->addOrderBy('a.login', 'ASC')
-            ->addOrderBy('a.sector', 'ASC')
-            ->addOrderBy('a.dateTime', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
+//    public function findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector = '', $company = '')
+//    {
+//
+//        if($company){
+//            $company=$company.'-';
+//        }
+//        if ($company != 'lamoda-') {
+//            return $this->createQueryBuilder('a')
+//                ->andWhere('a.dateTime > :dateFrom')
+//                ->andWhere('a.dateTime <= :dateTo')
+//                ->andWhere('a.sector LIKE :sector')
+//                ->andWhere('a.login LIKE :company')
+//                ->setParameter('dateFrom', $dateFrom)
+//                ->setParameter('dateTo', $dateTo)
+//                ->setParameter('sector', '%' . $sector . '%')
+//                ->setParameter('company', '%' . $company .'%')
+//                ->addOrderBy('a.login', 'ASC')
+//                ->addOrderBy('a.sector', 'ASC')
+//                ->addOrderBy('a.dateTime', 'DESC')
+//                ->getQuery()
+//                ->getResult();
+//        }
+//        if ($company == 'lamoda-') {
+//            return $this->createQueryBuilder('a')
+//                ->andWhere('a.dateTime > :dateFrom')
+//                ->andWhere('a.dateTime <= :dateTo')
+//                ->andWhere('a.sector LIKE :sector')
+//                ->andWhere('a.login NOT LIKE :company')
+//                ->setParameter('dateFrom', $dateFrom)
+//                ->setParameter('dateTo', $dateTo)
+//                ->setParameter('sector', '%' . $sector . '%')
+//                ->setParameter('company', '%' . '-' . '%')
+//                ->addOrderBy('a.login', 'ASC')
+//                ->addOrderBy('a.sector', 'ASC')
+//                ->addOrderBy('a.dateTime', 'DESC')
+//                ->getQuery()
+//                ->getResult();
+//        }
+//    }
 
-    public function findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector = '', $company = '')
-    {
-
-        if($company){
-            $company=$company.'-';
-        }
-        if ($company != 'lamoda-') {
-            return $this->createQueryBuilder('a')
-                ->andWhere('a.dateTime > :dateFrom')
-                ->andWhere('a.dateTime <= :dateTo')
-                ->andWhere('a.sector LIKE :sector')
-                ->andWhere('a.login LIKE :company')
-                ->setParameter('dateFrom', $dateFrom)
-                ->setParameter('dateTo', $dateTo)
-                ->setParameter('sector', '%' . $sector . '%')
-                ->setParameter('company', '%' . $company .'%')
-                ->addOrderBy('a.login', 'ASC')
-                ->addOrderBy('a.sector', 'ASC')
-                ->addOrderBy('a.dateTime', 'DESC')
-                ->getQuery()
-                ->getResult();
-        }
-        if ($company == 'lamoda-') {
-            return $this->createQueryBuilder('a')
-                ->andWhere('a.dateTime > :dateFrom')
-                ->andWhere('a.dateTime <= :dateTo')
-                ->andWhere('a.sector LIKE :sector')
-                ->andWhere('a.login NOT LIKE :company')
-                ->setParameter('dateFrom', $dateFrom)
-                ->setParameter('dateTo', $dateTo)
-                ->setParameter('sector', '%' . $sector . '%')
-                ->setParameter('company', '%' . '-' . '%')
-                ->addOrderBy('a.login', 'ASC')
-                ->addOrderBy('a.sector', 'ASC')
-                ->addOrderBy('a.dateTime', 'DESC')
-                ->getQuery()
-                ->getResult();
-        }
-    }
-
-    public function findActiveUsersOnSectorInShift($sector, $shift)
-    {
-
-        $attendances = $this->createQueryBuilder('a')
-            ->andWhere('a.dateTime > :dateTime')
-            ->andWhere('a.sector = :sector')
-            ->andWhere('a.shift = :shift')
-            ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('sector', $sector)
-            ->setParameter('shift', $shift)
-            ->addOrderBy('a.login', 'ASC')
-            ->addOrderBy('a.dateTime', 'DESC')
-            ->getQuery()
-            ->getResult();
-
-        $attendancesOutput = [];
-        $lastLogin = "";
-        foreach ($attendances as $attendance) {
-            if ($attendance->getLogin() != $lastLogin && $attendance->getDirection() == 'entrance') {
-                $attendancesOutput[] = $attendance;
-            }
-            $lastLogin = $attendance->getLogin();
-        }
-
-
-        $result = $attendancesOutput;
-        return $result;
-    }
+//    public function findActiveUsersOnSectorInShift($sector, $shift)
+//    {
+//
+//        $attendances = $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->andWhere('a.sector = :sector')
+//            ->andWhere('a.shift = :shift')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->setParameter('sector', $sector)
+//            ->setParameter('shift', $shift)
+//            ->addOrderBy('a.login', 'ASC')
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//
+//        $attendancesOutput = [];
+//        $lastLogin = "";
+//        foreach ($attendances as $attendance) {
+//            if ($attendance->getLogin() != $lastLogin && $attendance->getDirection() == 'entrance') {
+//                $attendancesOutput[] = $attendance;
+//            }
+//            $lastLogin = $attendance->getLogin();
+//        }
+//
+//
+//        $result = $attendancesOutput;
+//        return $result;
+//    }
 
 
     public function findActiveUsersOnSector($sector)
@@ -142,20 +142,20 @@ class AttendanceRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findUsersOnSectorInShift($sector, $shift)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.dateTime > :dateTime')
-            ->andWhere('a.sector = :sector')
-            ->andWhere('a.shift = :shift')
-            ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('sector', $sector)
-            ->setParameter('shift', $shift)
-            ->addOrderBy('a.login', 'ASC')
-            ->addOrderBy('a.dateTime', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
+//    public function findUsersOnSectorInShift($sector, $shift)
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->andWhere('a.sector = :sector')
+//            ->andWhere('a.shift = :shift')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->setParameter('sector', $sector)
+//            ->setParameter('shift', $shift)
+//            ->addOrderBy('a.login', 'ASC')
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//    }
 
     public function findUsersOnSector($sector)
     {
@@ -170,29 +170,41 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAttendancesOnSectorInShift($sector, $shift)
+//    public function findAttendancesOnSectorInShift($sector, $shift)
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->andWhere('a.sector = :sector')
+//            ->andWhere('a.shift = :shift')
+//            ->setParameter('dateTime', new \DateTime('-14 hours'))
+//            ->setParameter('sector', $sector)
+//            ->setParameter('shift', $shift)
+//            ->addOrderBy('a.login', 'ASC')
+//            ->addOrderBy('a.dateTime', 'ASC')
+//            ->getQuery()
+//            ->getResult();
+//    }
+
+
+//    public function findUsersOnAllSectorsInShift($shift)
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->andWhere('a.shift = :shift')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->setParameter('shift', $shift)
+//            ->addOrderBy('a.sector', 'ASC')
+//            ->addOrderBy('a.login', 'ASC')
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//    }
+
+    public function findAllActiveWorkers()
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.dateTime > :dateTime')
-            ->andWhere('a.sector = :sector')
-            ->andWhere('a.shift = :shift')
-            ->setParameter('dateTime', new \DateTime('-14 hours'))
-            ->setParameter('sector', $sector)
-            ->setParameter('shift', $shift)
-            ->addOrderBy('a.login', 'ASC')
-            ->addOrderBy('a.dateTime', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-
-    public function findUsersOnAllSectorsInShift($shift)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.dateTime > :dateTime')
-            ->andWhere('a.shift = :shift')
             ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->setParameter('shift', $shift)
             ->addOrderBy('a.sector', 'ASC')
             ->addOrderBy('a.login', 'ASC')
             ->addOrderBy('a.dateTime', 'DESC')
@@ -200,17 +212,17 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findUsersOnAllSectorsInAllShifts()
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.dateTime > :dateTime')
-            ->setParameter('dateTime', new \DateTime('-48 hours'))
-            ->addOrderBy('a.sector', 'ASC')
-            ->addOrderBy('a.login', 'ASC')
-            ->addOrderBy('a.dateTime', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
+//    public function findUsersOnAllSectorsInAllShifts()
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->setParameter('dateTime', new \DateTime('-48 hours'))
+//            ->addOrderBy('a.sector', 'ASC')
+//            ->addOrderBy('a.login', 'ASC')
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//    }
 
     public function findAllAttendancesWithFinesWithoutApproval()
     {
@@ -226,48 +238,21 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllAttendancesWithFines($days, $sector, $fine)
-    {
-        $dateForQuery = (new \DateTime())->modify("-$days day");
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.fine IS NOT NULL')
-            ->andWhere('a.dateTime > :dateTime')
-            ->andWhere('a.sector LIKE :sector')
-            ->andWhere('a.fine LIKE :fine')
-            ->setParameter('dateTime', $dateForQuery)
-            ->setParameter('sector', '%' . $sector . '%')
-            ->setParameter('fine', '%' . $fine . '%')
-            ->addOrderBy('a.dateTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+//    public function findAllAttendancesWithFines($days, $sector, $fine)
+//    {
+//        $dateForQuery = (new \DateTime())->modify("-$days day");
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.fine IS NOT NULL')
+//            ->andWhere('a.dateTime > :dateTime')
+//            ->andWhere('a.sector LIKE :sector')
+//            ->andWhere('a.fine LIKE :fine')
+//            ->setParameter('dateTime', $dateForQuery)
+//            ->setParameter('sector', '%' . $sector . '%')
+//            ->setParameter('fine', '%' . $fine . '%')
+//            ->addOrderBy('a.dateTime', 'DESC')
+//            ->getQuery()
+//            ->getResult();
+//
+//    }
 
-    }
-    // /**
-    //  * @return Attendance[] Returns an array of Attendance objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Attendance
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
