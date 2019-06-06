@@ -170,20 +170,20 @@ class AttendanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    public function findAttendancesOnSectorInShift($sector, $shift)
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.dateTime > :dateTime')
-//            ->andWhere('a.sector = :sector')
-//            ->andWhere('a.shift = :shift')
-//            ->setParameter('dateTime', new \DateTime('-14 hours'))
-//            ->setParameter('sector', $sector)
-//            ->setParameter('shift', $shift)
-//            ->addOrderBy('a.login', 'ASC')
-//            ->addOrderBy('a.dateTime', 'ASC')
-//            ->getQuery()
-//            ->getResult();
-//    }
+    public function findAttendancesOnSectorInShift($sector, $shift)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.dateTime > :dateTime')
+            ->andWhere('a.sector = :sector')
+            ->andWhere('a.shift = :shift')
+            ->setParameter('dateTime', new \DateTime('-14 hours'))
+            ->setParameter('sector', $sector)
+            ->setParameter('shift', $shift)
+            ->addOrderBy('a.login', 'ASC')
+            ->addOrderBy('a.dateTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
 
 //    public function findUsersOnAllSectorsInShift($shift)
