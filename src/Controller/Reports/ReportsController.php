@@ -9,11 +9,117 @@ use App\Controller\Reports\Form\FiltersForm;
 use App\Entity\Attendance;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ReportsController extends AbstractController
 {
+
+    /**
+     * @Route("/workTimeReport/", name="workTimeReport")
+     *
+     */
+    public function workTimeReport(Request $request)
+    {
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+
+        $filtersForm = $this->createForm(FiltersForm::class, NULL);
+        $filtersForm->handleRequest($request);
+
+        $dateFrom = new \DateTime();
+        $dateTo = new \DateTime();
+        $sector = '';
+        $provider = '';
+        if ($filtersForm->isSubmitted() && $filtersForm->isValid()) {
+            $formData = $filtersForm->getData();
+            $dateFrom = $formData['dateFrom'];
+            $dateTo = $formData['dateTo'];
+            $sector = $formData['Sector'];
+            if ($formData['Provider']) {
+                $provider = array_search($formData['Provider'], USER::PROVIDERS_LIST);
+            }
+
+
+        }
+        $dateTo->add(new \DateInterval('PT23H59M59S'));
+
+        $attendances = $attendanceRepo->findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector, $provider);
+
+        dump($attendances);
+        $daysCount = $dateFrom->diff($dateTo)->d;
+        $workTime = [];
+        for ($i = 0; $i < count($attendances) - 1; $i++) {
+
+            if (!isset($workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()])) {
+                $adyForArray = clone $dateFrom;
+            for($day=0; $day<=$daysCount; $day++){
+
+                $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][1]=0;
+                $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][2]=0;
+                $adyForArray->modify("+1 Days");
+            }
+        }
+            if
+            (
+                ($attendances[$i]->getDirection() == 'exit' && $attendances[$i + 1]->getDirection() == 'entrance')
+                && ($attendances[$i]->getLogin() === $attendances[$i + 1]->getLogin())
+                && ($attendances[$i]->getSector() === $attendances[$i + 1]->getSector())
+            ) {
+
+                $entrance = $attendances[$i + 1];
+                $exit = $attendances[$i];
+                dump($entrance);
+                $currentDateTime = clone $entrance->getDateTime();
+
+                do{
+                    $shiftEnd= clone $currentDateTime;
+
+                    if($currentDateTime->format('H')>=0 && $currentDateTime->format('H')<8) {
+                        $shiftEnd->setTime(7,59,59);
+                        $shift = 1;
+                    }
+
+                    if($currentDateTime->format('H')>=8 && $currentDateTime->format('H')<20) {
+                        $shiftEnd->setTime(19,59,59);
+                        $shift = 1;
+                    }
+
+                    if($currentDateTime->format('H')>=20 && $currentDateTime->format('H')<=23) {
+                        $shiftEnd->setTime(7,59,59);
+                        $shiftEnd->modify('+1 Day');
+                        $shift = 2;
+                    }
+
+                    if($exit->getDateTime() < $shiftEnd) {
+                        $shiftEnd = clone $exit->getDateTime();
+                    }
+
+                    $day =$currentDateTime->format('d.m.Y');
+
+                    if ($shiftEnd < $exit->getDateTime()) {
+                        $currentWorkPeriod = $shiftEnd->getTimestamp() - $currentDateTime->getTimestamp()+1;
+                    } else {
+                        $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $currentDateTime->getTimestamp() ;
+                    }
+
+                    $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift]+=$currentWorkPeriod;
+                    $currentDateTime=clone $shiftEnd;
+                    $currentDateTime->modify('+1 sec');
+
+                }
+                    While($currentDateTime <= $exit->getDateTime());
+            }
+        }
+
+
+
+        return $this->render('/Reports/workTimeReport.html.twig', [
+            'filtersForm' => $filtersForm->createView(),
+            'attendances' => $attendances,
+            'worktime' => $workTime,
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo,
+        ]);
+    }
 
     /**
      * @Route("/reports/", name="reports")
@@ -27,15 +133,15 @@ class ReportsController extends AbstractController
         $filtersForm->handleRequest($request);
 
         $dateFrom = new \DateTime();
-        $dateTo =   new \DateTime();
-        $sector =  '';
-        $provider =  '';
+        $dateTo = new \DateTime();
+        $sector = '';
+        $provider = '';
         if ($filtersForm->isSubmitted() && $filtersForm->isValid()) {
             $formData = $filtersForm->getData();
             $dateFrom = $formData['dateFrom'];
             $dateTo = $formData['dateTo'];
             $sector = $formData['Sector'];
-            if($formData['Provider']){
+            if ($formData['Provider']) {
                 $provider = array_search($formData['Provider'], USER::PROVIDERS_LIST);
             }
 
@@ -96,7 +202,7 @@ class ReportsController extends AbstractController
             'attendances' => $attendances,
             'worktime' => $workTime,
             'dateFrom' => $dateFrom,
-            'dateTo'=>$dateTo,
+            'dateTo' => $dateTo,
         ]);
     }
 

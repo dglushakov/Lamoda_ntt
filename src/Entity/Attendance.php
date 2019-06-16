@@ -164,4 +164,5 @@ class Attendance
 
         return $this;
     }
+
 }

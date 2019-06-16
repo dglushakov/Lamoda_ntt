@@ -45,6 +45,10 @@ class AttendanceRepository extends ServiceEntityRepository
 //            ->getResult();
 //    }
 
+    /**
+     * *
+     * @return Attendance[]
+     */
     public function findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector = '', $company = '')
     {
 

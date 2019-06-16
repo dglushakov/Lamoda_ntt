@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% set daysCount =  date(dateFrom).diff(date(dateTo)).days %}
+{% set providersList = constant('App\\Entity\\USER::PROVIDERS_LIST') %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                {% include 'inc/topNavbar.html.twig' %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7 m-2">
+            {% include 'Reports/inc/filtersForm.html.twig' %}
+        </div>
+    </div>
+    <div class="container-fluid m-2">
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th colspan="3">
+
+                        </th>
+
+                        {% for day in 0..daysCount %}
+                            <th colspan="2">
+                                {{ dateFrom|date_modify('+'~day~'days')|date("d.m.Y") }}
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>
+                            Login
+                        </th>
+                        <th>
+                            Company
+                        </th>
+                        <th>
+                            Sector
+                        </th>
+                        {% for day in 0..daysCount %}
+                            <th>
+                                {{ '1' }}
+                            </th>
+
+                            <th>
+                                {{ '2' }}
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for loginKey, workLogin in worktime %}
+                        {% for sectorKey, workSector in  workLogin %}
+                            <tr>
+                                <td>
+                                    {{ loginKey }}
+                                </td>
+                                <td>
+
+                                    {% if loginKey|trim|slice(2,1)=='-' %}
+                                        {% set companyPerfix = loginKey|trim|slice(0,2) %}
+
+                                        {% if providersList[companyPerfix] is defined %}
+                                            {{ providersList[companyPerfix] }}
+                                        {% endif %}
+                                    {% else %}
+                                        Lamoda
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ sectorKey }}
+                                </td>
+                                {% for day in 0..daysCount %}
+                                    {% set tomorrow = day+1 %}
+                                    {% set yesterday = day-1 %}
+
+                                    {% set day = dateFrom|date_modify('+'~day~'days') %}
+
+                                    {% set tomorrowDay = dateFrom|date_modify('+'~tomorrow~'days') %}
+                                    {% set yesterdayDay = dateFrom|date_modify('+'~yesterday~'days') %}
+
+                                    <td class="workTimeValue
+                                            {% if (
+                                        workSector[day|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined
+                                        and workSector[day|date("d.m.Y")]['1'] > 0 and workSector[day|date("d.m.Y")]['2'] > 0
+                                        )
+                                        or
+                                        (workSector[yesterdayDay|date("d.m.Y")]['2'] is defined and workSector[day|date("d.m.Y")]['1'] is defined
+                                        and workSector[yesterdayDay|date("d.m.Y")]['2'] > 0 and workSector[day|date("d.m.Y")]['1'] > 0
+                                        )
+                                    %}
+                                                bg-warning
+                                            {% endif %}
+                                    "
+                                    >
+                                        {% if workSector[day|date("d.m.Y")]['1'] is defined %}
+                                            {% set time = workSector[day|date("d.m.Y")]['1'] %}
+                                            {% set hours = time//3600 %}
+                                            {% set minutes = (time-hours*3600)//60 %}
+                                            {% set seconds = time-hours*3600-minutes*60 %}
+
+                                            {{ hours~':'~minutes~':'~seconds }}
+
+
+                                        {% endif %}
+                                    </td>
+                                    <td class="workTimeValue
+                                            {% if (
+                                                workSector[day|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined
+                                                and workSector[day|date("d.m.Y")]['1'] > 0 and workSector[day|date("d.m.Y")]['2'] > 0
+                                                )
+                                                or
+                                                (workSector[yesterdayDay|date("d.m.Y")]['2'] is defined and workSector[day|date("d.m.Y")]['1'] is defined
+                                                and workSector[yesterdayDay|date("d.m.Y")]['2'] > 0 and workSector[day|date("d.m.Y")]['1'] > 0
+                                                )
+                                            %}
+                                                bg-warning
+                                            {% endif %}
+                                    "
+                                    >
+                                        {% if workSector[day|date("d.m.Y")]['2'] is defined %}
+                                            {% set time = workSector[day|date("d.m.Y")]['2'] %}
+                                            {% set hours = time//3600 %}
+                                            {% set minutes = (time-hours*3600)//60 %}
+                                            {% set seconds = time-hours*3600-minutes*60 %}
+
+                                            {{ hours~':'~minutes~':'~seconds }}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascriptsAfterBody %}
+    {{ parent() }}
+
+{% endblock %}

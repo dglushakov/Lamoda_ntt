@@ -34,7 +34,8 @@
 
                 <p class="mx-3 bg-secondary text-white">Reports</p>
                 {% if userIsAdmin or userIsPeep %}
-                    <a class="dropdown-item" href="{{ path('reports') }}">Work time report</a>
+                    <a class="dropdown-item" href="{{ path('reports') }}">Work time report_old</a>
+                    <a class="dropdown-item" href="{{ path('workTimeReport') }}">Work time report_new</a>
                     <a class="dropdown-item" href="{{ path('finesreport') }}">Fines report</a>
                 {% endif %}
                 {% if userIsSectorManager %}
