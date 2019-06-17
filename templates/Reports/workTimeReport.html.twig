@@ -111,7 +111,7 @@
                                             {% set minutes = (time-hours*3600)//60 %}
                                             {% set seconds = time-hours*3600-minutes*60 %}
 
-                                            {{ hours~':'~minutes~':'~seconds }}
+                                            <div class="value">  {{ hours~':'~minutes~':'~seconds }}</div>
 
                                         {% endif %}
 
@@ -140,7 +140,7 @@
                                             {% set minutes = (time-hours*3600)//60 %}
                                             {% set seconds = time-hours*3600-minutes*60 %}
 
-                                            {{ hours~':'~minutes~':'~seconds }}
+                                            <div class="value">  {{ hours~':'~minutes~':'~seconds }}</div>
                                         {% endif %}
                                     </td>
                                 {% endfor %}
@@ -162,9 +162,10 @@
     {{ parent() }}
 
     <script>
+        var flip = 1;
         $('#hideShortPeriodsBtn').click(function () {
-                $('.shortPeriod').html('');
-                $('.shortPeriod').removeClass('bg-warning');
+                $('.shortPeriod').find('.value').toggle( flip++ % 2 === 0 );
+
             }
         );
     </script>
