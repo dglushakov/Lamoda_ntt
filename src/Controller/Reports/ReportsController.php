@@ -111,7 +111,6 @@ class ReportsController extends AbstractController
         }
 
 
-
         return $this->render('/Reports/workTimeReport.html.twig', [
             'filtersForm' => $filtersForm->createView(),
             'attendances' => $attendances,

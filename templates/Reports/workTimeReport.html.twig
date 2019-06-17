@@ -96,8 +96,7 @@
                                         or
                                         (workSector[yesterdayDay|date("d.m.Y")]['2'] is defined and workSector[day|date("d.m.Y")]['1'] is defined
                                         and workSector[yesterdayDay|date("d.m.Y")]['2'] > 0 and workSector[day|date("d.m.Y")]['1'] > 0
-                                        )
-                                    %}
+                                        ) %}
                                                 bg-warning
                                             {% endif %}
 
@@ -119,14 +118,14 @@
 
                                     </td>
                                     <td class="workTimeValue
-                                            {% if (
-                                                workSector[day|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined
-                                                and workSector[day|date("d.m.Y")]['1'] > 0 and workSector[day|date("d.m.Y")]['2'] > 0
-                                                )
+                                            {% if
+                                                    ((workSector[day|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined)
+                                                    and (workSector[day|date("d.m.Y")]['1'] >0 and workSector[day|date("d.m.Y")]['2'] >0)
+                                                    )
                                                 or
-                                                (workSector[yesterdayDay|date("d.m.Y")]['2'] is defined and workSector[day|date("d.m.Y")]['1'] is defined
-                                                and workSector[yesterdayDay|date("d.m.Y")]['2'] > 0 and workSector[day|date("d.m.Y")]['1'] > 0
-                                                )
+                                                    ((workSector[tomorrowDay|date("d.m.Y")]['1'] is defined and workSector[day|date("d.m.Y")]['2'] is defined)
+                                                    and (workSector[tomorrowDay|date("d.m.Y")]['1'] >0 and workSector[day|date("d.m.Y")]['2'] >0)
+                                                    )
                                             %}
                                                 bg-warning
                                             {% endif %}
@@ -164,9 +163,8 @@
 
     <script>
         $('#hideShortPeriodsBtn').click(function () {
-            $('.shortPeriod').html('');
+                $('.shortPeriod').html('');
             }
-
         );
     </script>
 
