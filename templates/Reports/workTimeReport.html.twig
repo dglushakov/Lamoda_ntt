@@ -106,7 +106,7 @@
                                             {% endif %}
                                     "
                                     >
-                                        {% if workSector[day|date("d.m.Y")]['1'] is defined %}
+                                        {% if workSector[day|date("d.m.Y")]['1'] >0 %}
                                             {% set time = workSector[day|date("d.m.Y")]['1'] %}
                                             {% set hours = time//3600 %}
                                             {% set minutes = (time-hours*3600)//60 %}
@@ -114,8 +114,9 @@
 
                                             {{ hours~':'~minutes~':'~seconds }}
 
-
                                         {% endif %}
+
+
                                     </td>
                                     <td class="workTimeValue
                                             {% if (
@@ -134,7 +135,7 @@
                                             {% endif %}
                                     "
                                     >
-                                        {% if workSector[day|date("d.m.Y")]['2'] is defined %}
+                                        {% if workSector[day|date("d.m.Y")]['2'] >0 %}
                                             {% set time = workSector[day|date("d.m.Y")]['2'] %}
                                             {% set hours = time//3600 %}
                                             {% set minutes = (time-hours*3600)//60 %}
@@ -163,7 +164,7 @@
 
     <script>
         $('#hideShortPeriodsBtn').click(function () {
-            $('.shortPeriod').html('0:0:0');
+            $('.shortPeriod').html('');
             }
 
         );
