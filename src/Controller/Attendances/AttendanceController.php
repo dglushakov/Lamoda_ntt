@@ -190,7 +190,7 @@ class AttendanceController extends AbstractController
         }
 
         $entityManager->flush();
-        return $this->redirectToRoute('SMworkInterface');
+        return $this->redirectToRoute('app_logout');
     }
 
 
