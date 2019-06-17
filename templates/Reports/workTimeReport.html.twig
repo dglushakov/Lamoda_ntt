@@ -129,7 +129,7 @@
                                             %}
                                                 bg-warning
                                             {% endif %}
-                                            {% if workSector[day|date("d.m.Y")]['1'] <= 1800 %}
+                                            {% if workSector[day|date("d.m.Y")]['2'] <= 1800 %}
                                                 shortPeriod
                                             {% endif %}
                                     "
@@ -164,6 +164,7 @@
     <script>
         $('#hideShortPeriodsBtn').click(function () {
                 $('.shortPeriod').html('');
+                $('.shortPeriod').removeClass('shortPeriod');
             }
         );
     </script>
