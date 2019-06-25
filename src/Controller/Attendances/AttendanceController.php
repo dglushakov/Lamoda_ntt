@@ -238,7 +238,11 @@ class AttendanceController extends AbstractController
             $lastLogin = $attendance->getLogin();
         }
 
-        $usersInSectorQty['SPECIAL_ARIAS']['total']=$usersInSectorQty['CAD_IN']['total']+$usersInSectorQty['QUALITY']['total'];
+        $usersInSectorQty['MAINTENANCE']['total']=
+            $usersInSectorQty['CAD_IN']['total']
+            +$usersInSectorQty['QUALITY']['total']
+            +$usersInSectorQty['MAIN']['total'];
+
         $usersInSectorQty['OUTBOUND']['total']=
             $usersInSectorQty['PICK_M1']['total']+
             $usersInSectorQty['PICK_M2']['total']+
@@ -257,13 +261,16 @@ class AttendanceController extends AbstractController
         $usersInSectorQty['NTT_PERSONAL']['total']=
             $usersInSectorQty['OPS_PERSONAL']['total']+
             $usersInSectorQty['PUP_porter']['total']+
-            $usersInSectorQty['SPECIAL_ARIAS']['total']+
+            $usersInSectorQty['MAINTENANCE']['total']+
             $usersInSectorQty['INDITEX']['total']+
             $usersInSectorQty['JEWELRY']['total']+
             $usersInSectorQty['MAIN']['total'];
 
         foreach (USER::PROVIDERS_LIST as $key => $value) {
-            $usersInSectorQty['SPECIAL_ARIAS'][$key]=$usersInSectorQty['CAD_IN'][$key]+$usersInSectorQty['QUALITY'][$key];
+            $usersInSectorQty['MAINTENANCE'][$key]=
+                $usersInSectorQty['CAD_IN'][$key]
+                +$usersInSectorQty['QUALITY'][$key]
+                +$usersInSectorQty['MAIN'][$key];
 
             $usersInSectorQty['OUTBOUND'][$key]=
                 $usersInSectorQty['PICK_M1'][$key]+
@@ -287,7 +294,7 @@ class AttendanceController extends AbstractController
             $usersInSectorQty['NTT_PERSONAL'][$key]=
                 $usersInSectorQty['OPS_PERSONAL'][$key]+
                 $usersInSectorQty['PUP_porter'][$key]+
-                $usersInSectorQty['SPECIAL_ARIAS'][$key]+
+                $usersInSectorQty['MAINTENANCE'][$key]+
                 $usersInSectorQty['INDITEX'][$key]+
                 $usersInSectorQty['JEWELRY'][$key]+
                 $usersInSectorQty['MAIN'][$key];

@@ -17,11 +17,11 @@ $(document).ready(function () {
                     // console.log(value);
 
                     for (company in value) {
-                        console.log(index+company, value[company])
+                        //console.log(index+company, value[company])
                         $('#'+index+company).html(value[company]);
                     }
                     for (company in value) {
-                        console.log(index+company, value[company])
+                        //console.log(index+company, value[company])
                         $('.'+index+company).html(value[company]);
                     }
 
