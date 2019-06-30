@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+{% block body %}
+    {% include 'inc/topNavbar.html.twig' %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-10 text-nowrap">
+                <div class="row">
+                    <div class="col-12 m-0 p-0 text-nowrap">
+                        {% for hour in range(15,0,-1) %}
+                            <div class="text-center border border-dark"
+                                 style="max-width: 300px;min-width: 60px; float: left;">
+                                {% set curHour =  date('-'~hour~'hours') %}
+                                {{ curHour|date("H") }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                &nbsp
+            </div>
+        </div>
+
+
+
+        {% for login, sectorData in workTime %}
+            {% for sectorName, workTimeData in  sectorData %}
+                {% if app.user.sector == sectorName %}
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="row">
+                                <div class="col">
+                                    {{ login }}
+                                </div>
+                                <div class="col text-right">
+                                    {{ sectorName }}
+                                    {% if sectorData|length > 1 %}
+                                        <a class="btn btn-sm btn-primary"
+                                           data-toggle="collapse"
+                                           href="#{{ login }}_other_sectors_time"
+                                           role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            +
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-10 m-0 p-0 text-nowrap">
+                            {% for time in workTimeData %}
+                                <div class="text-center border border-dark"
+                                     style="max-width: 300px;min-width: 60px; float: left;">
+
+                                    {% set minutes = time/60 %}
+                                    <div class="value">{{ minutes|round(0,'ceil') }}</div>
+
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% for sectorName, workTimeData in  sectorData %}
+                {% if app.user.sector != sectorName %}
+                    <div class="row collapse" id="{{ login }}_other_sectors_time">
+                        <div class="col-2">
+                            <div class="row">
+                                <div class="col">
+
+                                </div>
+                                <div class="col text-right">
+                                    {{ sectorName }}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-10 m-0 p-0 text-nowrap">
+                            {% for time in workTimeData %}
+                                <div class="text-center border border-dark"
+                                     style="max-width: 300px;min-width: 60px; float: left;">
+
+                                    {% set minutes = time/60 %}
+                                    <div class="value">{{ minutes|round(0,'ceil') }}</div>
+
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
+{% block javascriptsAfterBody %}
+    {{ parent() }}
+
+{% endblock %}

@@ -10,6 +10,7 @@ use App\Entity\Attendance;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 
 class ReportsController extends AbstractController
 {
@@ -51,13 +52,13 @@ class ReportsController extends AbstractController
 
             if (!isset($workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()])) {
                 $adyForArray = clone $dateFrom;
-            for($day=0; $day<=$daysCount; $day++){
+                for ($day = 0; $day <= $daysCount; $day++) {
 
-                $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][1]=0;
-                $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][2]=0;
-                $adyForArray->modify("+1 Days");
+                    $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][1] = 0;
+                    $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][2] = 0;
+                    $adyForArray->modify("+1 Days");
+                }
             }
-        }
             if
             (
                 ($attendances[$i]->getDirection() == 'exit' && $attendances[$i + 1]->getDirection() == 'entrance')
@@ -70,43 +71,42 @@ class ReportsController extends AbstractController
                 dump($entrance);
                 $currentDateTime = clone $entrance->getDateTime();
 
-                do{
-                    $shiftEnd= clone $currentDateTime;
+                do {
+                    $shiftEnd = clone $currentDateTime;
 
-                    if($currentDateTime->format('H')>=0 && $currentDateTime->format('H')<8) {
-                        $shiftEnd->setTime(7,59,59);
+                    if ($currentDateTime->format('H') >= 0 && $currentDateTime->format('H') < 8) {
+                        $shiftEnd->setTime(7, 59, 59);
                         $shift = 1;
                     }
 
-                    if($currentDateTime->format('H')>=8 && $currentDateTime->format('H')<20) {
-                        $shiftEnd->setTime(19,59,59);
+                    if ($currentDateTime->format('H') >= 8 && $currentDateTime->format('H') < 20) {
+                        $shiftEnd->setTime(19, 59, 59);
                         $shift = 1;
                     }
 
-                    if($currentDateTime->format('H')>=20 && $currentDateTime->format('H')<=23) {
-                        $shiftEnd->setTime(7,59,59);
+                    if ($currentDateTime->format('H') >= 20 && $currentDateTime->format('H') <= 23) {
+                        $shiftEnd->setTime(7, 59, 59);
                         $shiftEnd->modify('+1 Day');
                         $shift = 2;
                     }
 
-                    if($exit->getDateTime() < $shiftEnd) {
+                    if ($exit->getDateTime() < $shiftEnd) {
                         $shiftEnd = clone $exit->getDateTime();
                     }
 
-                    $day =$currentDateTime->format('d.m.Y');
+                    $day = $currentDateTime->format('d.m.Y');
 
                     if ($shiftEnd < $exit->getDateTime()) {
-                        $currentWorkPeriod = $shiftEnd->getTimestamp() - $currentDateTime->getTimestamp()+1;
+                        $currentWorkPeriod = $shiftEnd->getTimestamp() - $currentDateTime->getTimestamp() + 1;
                     } else {
-                        $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $currentDateTime->getTimestamp() ;
+                        $currentWorkPeriod = $exit->getDateTime()->getTimestamp() - $currentDateTime->getTimestamp();
                     }
 
-                    $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift]+=$currentWorkPeriod;
-                    $currentDateTime=clone $shiftEnd;
+                    $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$day][$shift] += $currentWorkPeriod;
+                    $currentDateTime = clone $shiftEnd;
                     $currentDateTime->modify('+1 sec');
 
-                }
-                    While($currentDateTime <= $exit->getDateTime());
+                } While ($currentDateTime <= $exit->getDateTime());
             }
         }
 
@@ -212,12 +212,8 @@ class ReportsController extends AbstractController
      */
     public function sectorManagerReport()
     {
-
-
         $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
-
         $attendances = $attendanceRepo->findAttendancesOnSectorInShift($this->getUser()->getSector(), $this->getUser()->getShift());
-
         $attendancesOutput = [];
         foreach ($attendances as $attendance) {
             /** @var Attendance $attendance */
@@ -227,10 +223,85 @@ class ReportsController extends AbstractController
             ];
         }
 
-
         return $this->render('/Reports/sectorMangerReport.html.twig', [
             'attendances' => $attendances,
             'attendancesOutput' => $attendancesOutput,
+        ]);
+    }
+
+    /**
+     * @Route("/sectorManagerReportNew/", name="sectorManagerReportNew")
+     *
+     */
+    public function sectorManagerReportNew()
+    {
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $attendances = $attendanceRepo->findAttendancesInShift($this->getUser()->getShift());
+        $attendancesOutput = [];
+        foreach ($attendances as $attendance) {
+            /** @var Attendance $attendance */
+            $attendancesOutput[$attendance->getLogin()][$attendance->getSector()][] = [
+                'direction' => $attendance->getDirection(),
+                'time' => $attendance->getDateTime()
+            ];
+        }
+
+        $workTime = [];
+        $startTime = new \DateTime();
+        $endTime = new \DateTime();
+        $startTime->modify('-15 hours');
+        $startTime->setTime($startTime->format('H'), 00, 00);
+
+        foreach ($attendancesOutput as $login => $sectors) {
+            if (array_key_exists($this->getUser()->getSector(), $sectors)) {
+
+
+                foreach ($sectors as $sectorName => $sector) {
+                    $virtualEntrance =
+                        [
+                            'direction' => 'entrance',
+                            'time' => $startTime,
+                        ];
+                    $virtualExit =
+                        [
+                            'direction' => 'exit',
+                            'time' => $endTime,
+                        ];
+                    array_unshift($sector, $virtualEntrance);
+                    array_push($sector, $virtualExit);
+
+                    $timeForArrayInitiate = clone $startTime;
+                    for ($hour = $startTime->format('H'); $hour <= $endTime->format('H'); $hour++) {
+                        $workTime[$login][$sectorName][$timeForArrayInitiate->format('H')] = 0;
+                        $timeForArrayInitiate->modify('+1 hour');
+                    }
+
+                    for ($eventNumber = 0; $eventNumber < count($sector); $eventNumber++) {
+                        if ($sector[$eventNumber]['direction'] == 'exit' && $sector[$eventNumber - 1]['direction'] == 'entrance') {
+                            $entranceTime = $sector[$eventNumber - 1]['time'];
+                            $exitTime = $sector[$eventNumber]['time'];
+                            $braker = clone $entranceTime;
+                            $braker->setTime($braker->format("H"), 59, 59);
+
+                            while ($braker < $exitTime) {
+                                $diff = $braker->getTimestamp() - $entranceTime->getTimestamp();
+                                $workTime[$login][$sectorName][$entranceTime->format('H')] += $diff;
+                                $entranceTime = clone $braker;
+                                $entranceTime->modify('+1 second');
+                                $braker->modify('+1 hour');
+                            }
+                            $diff = $exitTime->getTimestamp() - $entranceTime->getTimestamp();
+                            $workTime[$login][$sectorName][$exitTime->format('H')] += $diff;
+
+                        }
+                    }
+                }
+            }
+        }
+        return $this->render('/Reports/sectorManagerReportNew.html.twig', [
+            'attendances' => $attendances,
+            'attendancesOutput' => $attendancesOutput,
+            'workTime' => $workTime,
         ]);
     }
 
