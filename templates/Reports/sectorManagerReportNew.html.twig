@@ -46,8 +46,8 @@
                                     {% if sectorData|length > 1 %}
                                         <a class="btn btn-sm btn-primary"
                                            data-toggle="collapse"
-                                           href="#{{ login }}_other_sectors_time"
-                                           role="button" aria-expanded="false" aria-controls="#{{ login }}_other_sectors_time">
+                                           href="#{{ login|replace({'-': '_','.': '_'}) }}_other_sectors_time"
+                                           role="button" aria-expanded="false" aria-controls="">
                                             +
                                         </a>
                                     {% endif %}
@@ -71,7 +71,7 @@
             {% endfor %}
             {% for sectorName, workTimeData in  sectorData %}
                 {% if app.user.sector != sectorName %}
-                    <div class="row collapse" id="{{ login }}_other_sectors_time">
+                    <div class="row collapse" id="{{ login|replace({'-': '_','.': '_'}) }}_other_sectors_time">
                         <div class="col-2">
                             <div class="row">
                                 <div class="col">
