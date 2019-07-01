@@ -19,7 +19,6 @@
                             </div>
                         {% endfor %}
                     </div>
-
                 </div>
             </div>
         </div>
@@ -30,12 +29,10 @@
             </div>
         </div>
 
-
-
         {% for login, sectorData in workTime %}
             {% for sectorName, workTimeData in  sectorData %}
                 {% if app.user.sector == sectorName %}
-                    <div class="row">
+                    <div class="row  text-nowrap mt-2">
                         <div class="col-2">
                             <div class="row">
                                 <div class="col">
@@ -53,7 +50,6 @@
                                     {% endif %}
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-10 m-0 p-0 text-nowrap">
                             {% for time in workTimeData %}
@@ -85,7 +81,7 @@
                         </div>
                         <div class="col-10 m-0 p-0 text-nowrap">
                             {% for time in workTimeData %}
-                                <div class="text-center border border-dark"
+                                <div class="text-center border border-dark bg-secondary"
                                      style="max-width: 300px;min-width: 60px; float: left;">
 
                                     {% set minutes = time/60 %}
