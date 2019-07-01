@@ -271,8 +271,8 @@ class ReportsController extends AbstractController
                     array_push($sector, $virtualExit);
 
                     $timeForArrayInitiate = clone $startTime;
-                    for ($hour = $startTime->format('H'); $hour <= $endTime->format('H'); $hour++) {
-                        $workTime[$login][$sectorName][$timeForArrayInitiate->format('H')] = 0;
+                    while ($timeForArrayInitiate<= $endTime) {
+                        $workTime[$login][$sectorName][$timeForArrayInitiate->format('d.m.Y.H')] = 0;
                         $timeForArrayInitiate->modify('+1 hour');
                     }
 
@@ -285,13 +285,13 @@ class ReportsController extends AbstractController
 
                             while ($braker < $exitTime) {
                                 $diff = $braker->getTimestamp() - $entranceTime->getTimestamp();
-                                $workTime[$login][$sectorName][$entranceTime->format('H')] += $diff;
+                                $workTime[$login][$sectorName][$entranceTime->format('d.m.Y.H')] += $diff;
                                 $entranceTime = clone $braker;
                                 $entranceTime->modify('+1 second');
                                 $braker->modify('+1 hour');
                             }
                             $diff = $exitTime->getTimestamp() - $entranceTime->getTimestamp();
-                            $workTime[$login][$sectorName][$exitTime->format('H')] += $diff;
+                            $workTime[$login][$sectorName][$exitTime->format('d.m.Y.H')] += $diff;
 
                         }
                     }
