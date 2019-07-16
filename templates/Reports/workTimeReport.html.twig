@@ -97,10 +97,10 @@
                                         (workSector[yesterdayDay|date("d.m.Y")]['2'] is defined and workSector[day|date("d.m.Y")]['1'] is defined
                                         and workSector[yesterdayDay|date("d.m.Y")]['2'] > 0 and workSector[day|date("d.m.Y")]['1'] > 0
                                         ) %}
-                                                bg-warning
+                                                bg-warning warning
                                             {% endif %}
 
-                                            {% if workSector[day|date("d.m.Y")]['1'] <= 1800 %}
+                                            {% if workSector[day|date("d.m.Y")]['1'] <= 1800 and workSector[day|date("d.m.Y")]['1'] >0 %}
                                                 shortPeriod
                                             {% endif %}
                                     "
@@ -127,9 +127,9 @@
                                                     and (workSector[tomorrowDay|date("d.m.Y")]['1'] >0 and workSector[day|date("d.m.Y")]['2'] >0)
                                                     )
                                             %}
-                                                bg-warning
+                                                bg-warning warning
                                             {% endif %}
-                                            {% if workSector[day|date("d.m.Y")]['2'] <= 1800 %}
+                                            {% if workSector[day|date("d.m.Y")]['2'] <= 1800 and workSector[day|date("d.m.Y")]['2'] >0 %}
                                                 shortPeriod
                                             {% endif %}
                                     "
@@ -165,7 +165,7 @@
         var flip = 1;
         $('#hideShortPeriodsBtn').click(function () {
                 $('.shortPeriod').find('.value').toggle( flip++ % 2 === 0 );
-
+                $('.shortPeriod.warning').toggleClass('bg-warning');
             }
         );
     </script>
