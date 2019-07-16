@@ -13,6 +13,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AttendanceController extends AbstractController
 {
+
+    /**
+     * @Route("/checkonanothersector/{loginToCheck}", name = "checkLoginOnAnotherSector")
+     */
+    public function checkLoginOnAnotherSector($loginToCheck){
+        $result = false;
+        $entityManager = $this->getDoctrine()->getManager();
+        $attendanceRepo = $this->getDoctrine()->getRepository(Attendance::class);
+        $lastLoginOnAnySectorAttendance = $attendanceRepo->findOneBy(['login' => $loginToCheck], ['dateTime' => 'DESC']);
+
+
+        if($lastLoginOnAnySectorAttendance
+            && $lastLoginOnAnySectorAttendance->getSector()!=$this->getUser()->getSector()
+            && $lastLoginOnAnySectorAttendance->getDirection()==='entrance'){
+            $result = true;
+        }
+        return new JsonResponse($result);
+    }
     /**
      * @Route("/attendance/new/{login}", name ="AddAttendance")
      */
@@ -54,8 +72,6 @@ class AttendanceController extends AbstractController
         }
 
         return $redirect;
-
-//        return $this->redirectToRoute('SMworkInterface');
     }
 
     /**
