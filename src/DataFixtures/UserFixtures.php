@@ -22,7 +22,7 @@ class UserFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
-        for ($i=1;$i<10;$i++) {
+        for ($i=1;$i<20;$i++) {
             $user = new User();
             $user->setUsername('user'.$i);
             $user->setPassword($this->passwordEncoder->encodePassword(
@@ -32,7 +32,7 @@ class UserFixtures extends Fixture
 
             $user->setRoles(['ROLE_SECTOR_MANAGER']);
             $user->setShift(rand(1,4));
-            $user->setSector('sector'.$i);
+            $user->setSector(array_rand(USER::SECTORS_LIST));
             $manager->persist($user);
         }
 
