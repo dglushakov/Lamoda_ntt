@@ -52,7 +52,8 @@ class ReportsController extends AbstractController
 
             if (!isset($workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()])) {
                 $adyForArray = clone $dateFrom;
-                for ($day = 0; $day <= $daysCount; $day++) {
+                $adyForArray->modify('-1 Days');
+                for ($day = 0; $day <= $daysCount+1; $day++) {
 
                     $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][1] = 0;
                     $workTime[$attendances[$i]->getLogin()][$attendances[$i]->getSector()][$adyForArray->format('d.m.Y')][2] = 0;
