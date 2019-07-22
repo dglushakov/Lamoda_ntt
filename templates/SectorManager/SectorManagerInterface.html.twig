@@ -67,23 +67,25 @@
             $("#inputLogin").keydown(function (event) {
 
                 if (event.keyCode == 9) {
-                    $(this).prop('disabled', true);
+                    if ($('#inputLogin').val() != "") {
+                        if ($('#inputLogin').val() != "" && $('#inputLogin').val() != " ")
+                            $(this).prop('disabled', true);
 
-                    var url = '/checkonanothersector/' + $('#inputLogin').val();
-                    $.ajax({
-                        method: 'POST',
-                        url: url
-                    }).done(function (data) {
-                        var $not_valid=data;
-                        if ($not_valid) {
-                            alert("!not valid")
-                            window.location.href = '/SectorManagerWorkSpace'
-                        } else {
-                            window.location.href = '/attendance/new/' + $('#inputLogin').val();
-                        }
+                        var url = '/checkonanothersector/' + $('#inputLogin').val();
+                        $.ajax({
+                            method: 'POST',
+                            url: url
+                        }).done(function (data) {
+                            var $not_valid = data;
+                            if ($not_valid) {
+                                alert("!not valid")
+                                window.location.href = '/SectorManagerWorkSpace'
+                            } else {
+                                window.location.href = '/attendance/new/' + $('#inputLogin').val();
+                            }
 
-                    });
-
+                        });
+                    }
 
                     event.preventDefault();
                 }
