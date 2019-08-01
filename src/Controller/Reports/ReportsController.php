@@ -46,7 +46,10 @@ class ReportsController extends AbstractController
         $attendances = $attendanceRepo->findAllforLastDaysFilteredBySectorOrCompany($dateFrom, $dateTo, $sector, $provider);
 
         //dump($attendances);
-        $daysCount = $dateFrom->diff($dateTo)->d;
+        //$daysCount = $dateFrom->diff($dateTo)->d;
+        $diff = date_diff($dateFrom,$dateTo);
+        $daysCount = $diff->format("%a");
+
         $workTime = [];
         for ($i = 0; $i < count($attendances) - 1; $i++) {
 
