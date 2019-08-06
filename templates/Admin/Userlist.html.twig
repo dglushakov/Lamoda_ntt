@@ -74,6 +74,12 @@
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
+                <div class="row">
+                    <div class="clickable m-2 col-11 shadow-sm" data-toggle="collapse" data-target=".without_role"
+                         aria-expanded="false" aria-controls="group-of-rows-1">
+                        <h3>Without roles <img src="{{ asset('img/arow_down.png') }}" width="30px"></h3>
+                    </div>
+                </div>
                 {% for user in users %}
                     {% if user.roles|length<=1 %}
                         <div class="row without_role collapse bg-light">
