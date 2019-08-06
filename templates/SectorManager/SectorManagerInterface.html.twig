@@ -57,12 +57,6 @@
 
     <script>
         $(document).ready(function () {
-            // $("#inputLogin").keyup(function (event) {
-            //     if (event.keyCode == 13) {
-            //         window.location.href = '/attendance/new/' + $('#inputLogin').val();
-            //
-            //     }
-            // });
             $("#inputLogin").focus();
             $("#inputLogin").keydown(function (event) {
 
@@ -76,9 +70,9 @@
                             method: 'POST',
                             url: url
                         }).done(function (data) {
-                            var $not_valid = data;
+                            var $not_valid = data['status'];
                             if ($not_valid) {
-                                alert("!not valid")
+                                alert(" Сотрудник "+ data['username'] + " не выписан с участка " + data['sector'] + "Смены №"+ data['shift']);
                                 window.location.href = '/SectorManagerWorkSpace'
                             } else {
                                 window.location.href = '/attendance/new/' + $('#inputLogin').val();
@@ -97,21 +91,10 @@
 
             $("#inputLogin").keyup(function (event) {
                 if (/[а-я]/i.test($(this).val())) {
-
                     $(this).val('');
                     alert('Ввод кириллицы запрещен!');
                 }
-
             });
-
-
-            // $(".form-control-input-comment").keyup(function (event) {
-            //     if($(this).val().length>5){
-            //         //alert($(this).val());
-            //         $(this).prop("disabled", false);
-            //     }
-            // });
-
             $(".editComment").click(function () {
                 //alert('start');
                 $commentId = $(this).attr('data-commentId');

@@ -27,7 +27,12 @@ class AttendanceController extends AbstractController
         if($lastLoginOnAnySectorAttendance
             && $lastLoginOnAnySectorAttendance->getSector()!=$this->getUser()->getSector()
             && $lastLoginOnAnySectorAttendance->getDirection()==='entrance'){
-            $result = true;
+            $result = [
+                'status' => true,
+                'username'=>$loginToCheck,
+                'sector'=>$lastLoginOnAnySectorAttendance->getSector(),
+                'shift'=>$lastLoginOnAnySectorAttendance->getShift(),
+            ];
         }
         return new JsonResponse($result);
     }
