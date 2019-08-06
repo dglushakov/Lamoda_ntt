@@ -72,7 +72,7 @@
                         }).done(function (data) {
                             var $not_valid = data['status'];
                             if ($not_valid) {
-                                alert(" Сотрудник "+ data['username'] + " не выписан с участка " + data['sector'] + "Смены №"+ data['shift']);
+                                alert(" Сотрудник "+ data['username'] + " не выписан с участка " + data['sector'] + " Смены №"+ data['shift']);
                                 window.location.href = '/SectorManagerWorkSpace'
                             } else {
                                 window.location.href = '/attendance/new/' + $('#inputLogin').val();
