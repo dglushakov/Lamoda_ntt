@@ -260,11 +260,14 @@ class AttendanceController extends AbstractController
         }
 
         $usersInSectorQty['MAINTENANCE']['total']=
-            $usersInSectorQty['CAD_IN']['total']
             +$usersInSectorQty['QUALITY']['total']
             +$usersInSectorQty['MAIN']['total'];
 
+        $usersInSectorQty['TROUB']['total']=
+        $usersInSectorQty['CAD_IN']['total'];
+
         $usersInSectorQty['OUTBOUND']['total']=
+            $usersInSectorQty['PICK_K']['total']+
             $usersInSectorQty['PICK_M1']['total']+
             $usersInSectorQty['PICK_M2']['total']+
             $usersInSectorQty['PACK_MB']['total']+
@@ -275,10 +278,15 @@ class AttendanceController extends AbstractController
             $usersInSectorQty['UNPACK']['total']+
             $usersInSectorQty['IN']['total']+
             $usersInSectorQty['RET']['total']+
+            $usersInSectorQty['PUT_K']['total']+
             $usersInSectorQty['PUT_M1']['total']+
             $usersInSectorQty['PUT_M2']['total'];
 
-        $usersInSectorQty['OPS_PERSONAL']['total']=$usersInSectorQty['OUTBOUND']['total']+$usersInSectorQty['INBOUND']['total'];
+        $usersInSectorQty['OPS_PERSONAL']['total']=
+            $usersInSectorQty['OUTBOUND']['total']
+            +$usersInSectorQty['INBOUND']['total']
+            +$usersInSectorQty['TROUB']['total'];
+
         $usersInSectorQty['NTT_PERSONAL']['total']=
             $usersInSectorQty['OPS_PERSONAL']['total']+
             $usersInSectorQty['PUP_porter']['total']+
@@ -287,13 +295,17 @@ class AttendanceController extends AbstractController
             $usersInSectorQty['JEWELRY']['total']+
             $usersInSectorQty['MAIN']['total'];
 
+
         foreach (USER::PROVIDERS_LIST as $key => $value) {
             $usersInSectorQty['MAINTENANCE'][$key]=
-                $usersInSectorQty['CAD_IN'][$key]
                 +$usersInSectorQty['QUALITY'][$key]
                 +$usersInSectorQty['MAIN'][$key];
 
+            $usersInSectorQty['TROUB'][$key]=
+                $usersInSectorQty['CAD_IN'][$key];
+
             $usersInSectorQty['OUTBOUND'][$key]=
+                $usersInSectorQty['PICK_K'][$key]+
                 $usersInSectorQty['PICK_M1'][$key]+
                 $usersInSectorQty['PICK_M2'][$key]+
                 $usersInSectorQty['PACK_MB'][$key]+
@@ -305,12 +317,14 @@ class AttendanceController extends AbstractController
                 $usersInSectorQty['UNPACK'][$key]+
                 $usersInSectorQty['IN'][$key]+
                 $usersInSectorQty['RET'][$key]+
+                $usersInSectorQty['PUT_K'][$key]+
                 $usersInSectorQty['PUT_M1'][$key]+
                 $usersInSectorQty['PUT_M2'][$key];
 
             $usersInSectorQty['OPS_PERSONAL'][$key]=
                 $usersInSectorQty['OUTBOUND'][$key]+
-                $usersInSectorQty['INBOUND'][$key];
+                $usersInSectorQty['INBOUND'][$key]
+            +$usersInSectorQty['TROUB'][$key];
 
             $usersInSectorQty['NTT_PERSONAL'][$key]=
                 $usersInSectorQty['OPS_PERSONAL'][$key]+

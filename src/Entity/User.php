@@ -46,6 +46,7 @@ class User implements UserInterface
         
     ];
     const PROVIDERS_LIST=[
+        'lamoda'=>'Lamoda',
         'ar'=>'Arcada',
         'gs'=>'GSR',
         'lt'=>'Leader Team',
@@ -55,7 +56,7 @@ class User implements UserInterface
         'sm'=>'SMG',
         'st'=>'Stolica',
         'vp'=>'Vremya Pervih',
-        'lamoda'=>'Lamoda',
+
 
     ];
     const USER_ROLES=[

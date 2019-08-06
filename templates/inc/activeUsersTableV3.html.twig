@@ -1,5 +1,5 @@
-{% set InboundArray = ['UNPACK', 'IN', 'RET', 'PUT_M1', 'PUT_M2'] %}
-{% set OutBoundArray = ['PICK_M1', 'PICK_M2', 'PACK_MB', 'PACK_IS', 'SORT', 'LOAD'] %}
+{% set InboundArray = ['UNPACK', 'IN', 'RET', 'PUT_K','PUT_M1', 'PUT_M2'] %}
+{% set OutBoundArray = ['PICK_K','PICK_M1', 'PICK_M2', 'PACK_MB', 'PACK_IS', 'SORT', 'LOAD'] %}
 
 <div class="container">
     <div class="row">
@@ -69,6 +69,31 @@
             {% endfor %}
         </div>
     {% endfor %}
+
+
+
+    <div class="row text-white">
+        <div class="col-2  border-right border-white border-bottom"></div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom">TROUB</div>
+        <div class="col-1 bg-dark  border-right border-white border-bottom" id="{{ 'TROUB'~'total' }}">{{ 'x' }}</div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col bg-dark text-white font-weight-bold border-white table-bordered" id="{{ 'TROUB'~key }}">
+                {{ 'x' }}
+            </div>
+        {% endfor %}
+    </div>
+
+        <div class="row border-white ">
+            <div class="col-2"></div>
+            <div class="col-1">CAD_IN</div>
+            <div class="col-1" id="{{ 'CAD_IN'~'total' }}"></div>
+            {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+                <div class="col" id = "{{ 'CAD_IN'~key }}"></div>
+            {% endfor %}
+        </div>
+
+
+
     <div class="row mb-3">
         <div class="col"></div>
     </div>
