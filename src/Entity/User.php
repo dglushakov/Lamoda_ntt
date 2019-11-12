@@ -56,6 +56,7 @@ class User implements UserInterface
         'sm'=>'SMG',
         'st'=>'Stolica',
         'vp'=>'Vremya Pervih',
+        'lp'=>'LPS',
 
 
     ];
