@@ -235,9 +235,9 @@
         <div class="col-1 border-right">
             TOTAL
         </div>
-        <div class="col-1 {{ 'MAINTENANCE'~'total' }}"></div>
+        <div class="col-1 {{ 'NOT_OPS'~'total' }}"></div>
         {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
-            <div class="col {{ 'MAINTENANCE'~key }}"></div>
+            <div class="col {{ 'NOT_OPS'~key }}"></div>
         {% endfor %}
     </div>
     <div class="row">
