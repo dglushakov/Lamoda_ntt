@@ -259,6 +259,10 @@ class AttendanceController extends AbstractController
             $lastLogin = $attendance->getLogin();
         }
 
+        $usersInSectorQty['NOT_OPS']['total']=
+            +$usersInSectorQty['High-altitude_storage']['total']
+            +$usersInSectorQty['Extra_NTT']['total'];
+
         $usersInSectorQty['MAINTENANCE']['total']=
             +$usersInSectorQty['QUALITY']['total']
             +$usersInSectorQty['MAIN']['total'];
@@ -293,10 +297,16 @@ class AttendanceController extends AbstractController
             $usersInSectorQty['MAINTENANCE']['total']+
             $usersInSectorQty['INDITEX']['total']+
             $usersInSectorQty['JEWELRY']['total']+
-            $usersInSectorQty['MAIN']['total'];
+            $usersInSectorQty['MAIN']['total']+
+            $usersInSectorQty['NOT_OPS']['total'];
 
 
         foreach (USER::PROVIDERS_LIST as $key => $value) {
+
+            $usersInSectorQty['NOT_OPS'][$key]=
+                +$usersInSectorQty['High-altitude_storage'][$key]
+                +$usersInSectorQty['Extra_NTT'][$key];
+
             $usersInSectorQty['MAINTENANCE'][$key]=
                 +$usersInSectorQty['QUALITY'][$key]
                 +$usersInSectorQty['MAIN'][$key];
@@ -332,7 +342,8 @@ class AttendanceController extends AbstractController
                 $usersInSectorQty['MAINTENANCE'][$key]+
                 $usersInSectorQty['INDITEX'][$key]+
                 $usersInSectorQty['JEWELRY'][$key]+
-                $usersInSectorQty['MAIN'][$key];
+                $usersInSectorQty['MAIN'][$key]+
+                $usersInSectorQty['NOT_OPS'][$key];
         }
 
 

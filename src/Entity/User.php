@@ -43,6 +43,9 @@ class User implements UserInterface
         'INDITEX'=>'INDITEX',
         'MAIN'=>'MAIN',
         'JEWELRY'=>'JEWELRY',
+        'NOT_OPS'=>'NOT_OPS',
+        'High-altitude_storage' => 'High-altitude_storage',
+        'Extra_NTT' => 'Extra_NTT'
         
     ];
     const PROVIDERS_LIST=[

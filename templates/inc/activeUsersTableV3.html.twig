@@ -227,6 +227,48 @@
         <div class="col"></div>
     </div>
 
+
+    <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
+        <div class="col-2 border-right">
+            NOT OPS
+        </div>
+        <div class="col-1 border-right">
+            TOTAL
+        </div>
+        <div class="col-1 {{ 'MAINTENANCE'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'MAINTENANCE'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-2 border-right">
+
+        </div>
+        <div class="col-1 border-right">
+            High-altitude storage
+        </div>
+        <div class="col-1 {{ 'High-altitude_storage'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col {{ 'High-altitude_storage'~key }}"></div>
+        {% endfor %}
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+
+        </div>
+        <div class="col-1">
+            Extra NTT
+        </div>
+        <div class="col-1" id="{{ 'Extra_NTT'~'total' }}"></div>
+        {% for key, comp in constant('APP\\Entity\\USER::PROVIDERS_LIST') %}
+            <div class="col " id="{{ 'Extra_NTT'~key }}"></div>
+        {% endfor %}
+    </div>
+    <div class="row mb-2">
+        <div class="col"></div>
+    </div>
+
     <div class="row bg-dark text-white font-weight-bold border-white table-bordered">
         <div class="col-2 border-right">
             NTT PERSONAL
@@ -239,6 +281,10 @@
             <div class="col {{ 'NTT_PERSONAL'~key }}">x</div>
         {% endfor %}
     </div>
+
+
+
+
 
 
 </div>
